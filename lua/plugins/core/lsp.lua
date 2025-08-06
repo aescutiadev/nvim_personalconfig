@@ -115,11 +115,6 @@ return {
             vim.tbl_extend("force", opts_keymap, { desc = "Rename symbol" })
           )
 
-          -- Formateo
-          vim.keymap.set({ "n", "v" }, "<leader>cf", function()
-            require("conform").format({ async = true, lsp_fallback = true })
-          end, vim.tbl_extend("force", opts_keymap, { desc = "Format code" }))
-
           -- Diagnósticos
           vim.keymap.set(
             "n",

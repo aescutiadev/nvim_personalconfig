@@ -3,7 +3,7 @@ local keymap = vim.keymap
 
 -- Cambiar la tecla líder (asegúrate de que esto esté también en init.lua antes de cargar plugins)
 vim.g.mapleader = " "
-vim.g.maplocalleader = "\\"
+vim.g.maplocalleader = ","
 
 -- 🖋️ Modo Insertar
 keymap.set("i", "jk", "<ESC>", { desc = "Salir a modo normal" })

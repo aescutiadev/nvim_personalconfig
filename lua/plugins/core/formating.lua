@@ -6,7 +6,7 @@ return {
     cmd = { "ConformInfo" },
     keys = {
       {
-        "<leader>f",
+        "<leader>cf",
         function()
           require("conform").format({ async = true, lsp_fallback = true })
         end,
@@ -44,11 +44,16 @@ return {
       formatters = {
         stylua = {
           prepend_args = {
-            "--column-width", "100",
-            "--line-endings", "Unix",
-            "--indent-type", "Spaces",
-            "--indent-width", "2",
-            "--quote-style", "AutoPreferDouble",
+            "--column-width",
+            "100",
+            "--line-endings",
+            "Unix",
+            "--indent-type",
+            "Spaces",
+            "--indent-width",
+            "2",
+            "--quote-style",
+            "AutoPreferDouble",
           },
         },
         prettierd = {
@@ -73,9 +78,9 @@ return {
     opts = {
       ensure_installed = {
         -- Formatters
-        "stylua",    -- Lua formatter
+        "stylua", -- Lua formatter
         "prettierd", -- Prettier daemon (más rápido)
-        "prettier",  -- Prettier fallback
+        "prettier", -- Prettier fallback
 
         -- Linters
         "eslint_d", -- ESLint daemon
@@ -89,7 +94,7 @@ return {
         "html-lsp",
         "css-lsp",
         "emmet-ls",
-        "astro-language-server", -- Astro Language Server
+        "astro-language-server",
       },
       auto_update = true,
       run_on_start = true,

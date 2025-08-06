@@ -35,6 +35,7 @@ return {
         "jsonls", -- JSON
         "emmet_ls", -- Emmet para HTML/CSS
         "astro", -- Astro Language Server
+        "tailwindcss", -- tailwindcss-language-server
       },
       -- Instalación automática de LSP servers cuando abras archivos
       automatic_installation = true,
@@ -227,7 +228,7 @@ return {
               "vue",
               "svelte",
               "astro",
-              "tailwindcss-language-server",
+              "tailwindcss",
             },
           })
         end,
