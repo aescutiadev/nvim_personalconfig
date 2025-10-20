@@ -1,200 +1,79 @@
 return {
-  -- LSP Keymaps y configuración adicional
   {
     "neovim/nvim-lspconfig",
-    opts = function()
-      local keys = require("lazy.core.handler").handlers.keys
-      -- Resolver duplicados de keymaps
-      if not keys.resolve then
-        return {}
-      end
-      return {
-        diagnostics = {
-          underline = true,
-          update_in_insert = false,
-          virtual_text = {
-            spacing = 4,
-            source = "if_many",
-            prefix = "●",
-          },
-          severity_sort = true,
-          signs = {
-            text = {
-              [vim.diagnostic.severity.ERROR] = " ",
-              [vim.diagnostic.severity.WARN] = " ",
-              [vim.diagnostic.severity.HINT] = " ",
-              [vim.diagnostic.severity.INFO] = " ",
+    dependencies = { "saghen/blink.cmp", "williamboman/mason-lspconfig.nvim" },
+    config = function()
+      local lsp = vim.lsp
+      local mason_lspconfig = require("mason-lspconfig")
+
+      -- Configuración global de diagnósticos
+      vim.diagnostic.config({
+        underline = true,
+        update_in_insert = false,
+        virtual_text = {
+          spacing = 4,
+          source = "if_many",
+          prefix = "●",
+        },
+        severity_sort = true,
+      })
+
+      -- Configuraciones específicas por servidor (opcional)
+      local server_configs = {
+        lua_ls = {
+          settings = {
+            Lua = {
+              runtime = { version = "LuaJIT", path = vim.split(package.path, ";") },
+              diagnostics = {
+                globals = {
+                  "vim",
+                  "describe",
+                  "it",
+                  "before_each",
+                  "after_each",
+                  "Snacks",
+                  "Blink",
+                  "snacks",
+                  "blink",
+                },
+              },
+              workspace = { library = { vim.env.VIMRUNTIME }, checkThirdParty = false },
+              telemetry = { enable = false },
             },
           },
         },
-        inlay_hints = {
-          enabled = true,
-        },
-        codelens = {
-          enabled = false,
-        },
-        capabilities = {},
-        format = {
-          formatting_options = nil,
-          timeout_ms = nil,
-        },
-        servers = {},
-        setup = {},
+        -- Puedes añadir más servidores aquí si quieres
       }
-    end,
-    config = function(_, opts)
-      -- Setup keymaps
-      vim.api.nvim_create_autocmd("LspAttach", {
-        group = vim.api.nvim_create_augroup("UserLspConfig", {}),
-        callback = function(ev)
-          local opts_keymap = { buffer = ev.buf, silent = true }
 
-          -- Navegación
-          vim.keymap.set(
-            "n",
-            "gD",
-            vim.lsp.buf.declaration,
-            vim.tbl_extend("force", opts_keymap, { desc = "Go to declaration" })
-          )
-          vim.keymap.set(
-            "n",
-            "gd",
-            vim.lsp.buf.definition,
-            vim.tbl_extend("force", opts_keymap, { desc = "Go to definition" })
-          )
-          vim.keymap.set(
-            "n",
-            "gi",
-            vim.lsp.buf.implementation,
-            vim.tbl_extend("force", opts_keymap, { desc = "Go to implementation" })
-          )
-          vim.keymap.set(
-            "n",
-            "gr",
-            vim.lsp.buf.references,
-            vim.tbl_extend("force", opts_keymap, { desc = "Show references" })
-          )
-          vim.keymap.set(
-            "n",
-            "gt",
-            vim.lsp.buf.type_definition,
-            vim.tbl_extend("force", opts_keymap, { desc = "Go to type definition" })
-          )
-
-          -- Información
-          vim.keymap.set(
-            "n",
-            "K",
-            vim.lsp.buf.hover,
-            vim.tbl_extend("force", opts_keymap, { desc = "Hover documentation" })
-          )
-          vim.keymap.set(
-            "n",
-            "<C-k>",
-            vim.lsp.buf.signature_help,
-            vim.tbl_extend("force", opts_keymap, { desc = "Signature help" })
-          )
-          vim.keymap.set(
-            "i",
-            "<C-k>",
-            vim.lsp.buf.signature_help,
-            vim.tbl_extend("force", opts_keymap, { desc = "Signature help" })
-          )
-
-          -- Acciones de código
-          vim.keymap.set(
-            { "n", "v" },
-            "<leader>ca",
-            vim.lsp.buf.code_action,
-            vim.tbl_extend("force", opts_keymap, { desc = "Code action" })
-          )
-          vim.keymap.set(
-            "n",
-            "<leader>rn",
-            vim.lsp.buf.rename,
-            vim.tbl_extend("force", opts_keymap, { desc = "Rename symbol" })
-          )
-
-          -- Diagnósticos
-          vim.keymap.set(
-            "n",
-            "<leader>d",
-            vim.diagnostic.open_float,
-            vim.tbl_extend("force", opts_keymap, { desc = "Show line diagnostics" })
-          )
-          vim.keymap.set(
-            "n",
-            "[d",
-            vim.diagnostic.goto_prev,
-            vim.tbl_extend("force", opts_keymap, { desc = "Previous diagnostic" })
-          )
-          vim.keymap.set(
-            "n",
-            "]d",
-            vim.diagnostic.goto_next,
-            vim.tbl_extend("force", opts_keymap, { desc = "Next diagnostic" })
-          )
-          vim.keymap.set(
-            "n",
-            "<leader>cq",
-            vim.diagnostic.setloclist,
-            vim.tbl_extend("force", opts_keymap, { desc = "Add diagnostics to location list" })
-          )
-
-          -- TypeScript específicos (solo para archivos TS/JS)
-          local filetype = vim.bo[ev.buf].filetype
-          if
-            filetype == "typescript"
-            or filetype == "javascript"
-            or filetype == "typescriptreact"
-            or filetype == "javascriptreact"
-          then
-            vim.keymap.set(
-              "n",
-              "<leader>to",
-              "<cmd>TSLspOrganizeImports<cr>",
-              vim.tbl_extend("force", opts_keymap, { desc = "Organize imports" })
-            )
-            vim.keymap.set(
-              "n",
-              "<leader>tR",
-              "<cmd>TSLspRenameFile<cr>",
-              vim.tbl_extend("force", opts_keymap, { desc = "Rename file" })
-            )
-            vim.keymap.set(
-              "n",
-              "<leader>ti",
-              "<cmd>TSLspImportAll<cr>",
-              vim.tbl_extend("force", opts_keymap, { desc = "Import all missing imports" })
-            )
-          end
-
-          -- Inlay hints toggle
-          if vim.lsp.inlay_hint then
-            vim.keymap.set("n", "<leader>th", function()
-              vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())
-            end, vim.tbl_extend("force", opts_keymap, { desc = "Toggle inlay hints" }))
-          end
+      -- Para cada servidor instalado con mason-lspconfig
+      mason_lspconfig.setup_handlers({
+        function(server_name)
+          local config = server_configs[server_name] or {}
+          -- Añadir capacidades de blink.cmp
+          config.capabilities = require("blink.cmp").get_lsp_capabilities(config.capabilities or {})
+          -- Configura y habilita el servidor
+          lsp.config(server_name, config)
+          lsp.enable(server_name)
         end,
       })
 
-      -- Configurar diagnósticos
-      vim.diagnostic.config(opts.diagnostics)
+      -- Keymaps globales de LSP
+      vim.api.nvim_create_autocmd("LspAttach", {
+        group = vim.api.nvim_create_augroup("LspKeymaps", { clear = true }),
+        callback = function(event)
+          local map = function(keys, func, desc)
+            vim.keymap.set("n", keys, func, { buffer = event.buf, desc = "LSP: " .. desc })
+          end
 
-      -- Configurar signos
-      for severity, icon in pairs(opts.diagnostics.signs.text) do
-        local name = vim.diagnostic.severity[severity]:lower():gsub("^%l", string.upper)
-        name = "DiagnosticSign" .. name
-        vim.fn.sign_define(name, { text = icon, texthl = name, numhl = "" })
-      end
-
-      -- Configurar borders para floating windows
-      local orig_util_open_floating_preview = vim.lsp.util.open_floating_preview
-      function vim.lsp.util.open_floating_preview(contents, syntax, opts, ...)
-        opts = opts or {}
-        opts.border = opts.border or "rounded"
-        return orig_util_open_floating_preview(contents, syntax, opts, ...)
-      end
+          map("K", vim.lsp.buf.hover, "Hover Documentation")
+          map("<leader>lr", vim.lsp.buf.rename, "LSP Rename")
+          map("<leader>la", vim.lsp.buf.code_action, "LSP Code Action")
+          map("<leader>lf", vim.lsp.buf.format, "LSP Format")
+          map("<leader>lt", vim.lsp.buf.type_definition, "LSP Type Definition")
+          map("<leader>li", vim.lsp.buf.implementation, "LSP Implementation")
+          map("gO", vim.lsp.buf.document_symbol, "LSP Document Symbols")
+        end,
+      })
     end,
   },
 }

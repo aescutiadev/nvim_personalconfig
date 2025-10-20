@@ -120,13 +120,23 @@ vim.api.nvim_create_autocmd("BufWritePre", {
   end,
 })
 
--- 10. 
+-- 10. Copiar al clipboard del sistema al hacer yank
 vim.api.nvim_create_autocmd("TextYankPost", {
   group = vim.api.nvim_create_augroup("yank_to_clipboard", { clear = true }),
   callback = function()
     if vim.v.event.operator == "y" and vim.v.event.regname == "" then
       vim.fn.setreg("+", vim.fn.getreg('"'))
     end
+  end,
+})
+
+-- 11. Quitar resaltado de búsqueda al presionar ESC
+vim.api.nvim_create_autocmd("CmdlineLeave", {
+  group = augroup("clear_search_highlight"),
+  callback = function()
+    vim.schedule(function()
+      vim.cmd("nohlsearch")
+    end)
   end,
 })
 

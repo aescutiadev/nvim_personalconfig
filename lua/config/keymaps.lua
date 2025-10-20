@@ -8,8 +8,11 @@ vim.g.maplocalleader = ","
 -- 🖋️ Modo Insertar
 keymap.set("i", "jk", "<ESC>", { desc = "Salir a modo normal" })
 
--- Clear search highlights
-keymap.set("n", "<leader>nh", ":nohlsearch<CR>", { desc = "Clear search highlights" })
+-- Clear search highlights (cambio para evitar conflicto con <leader>n)
+keymap.set("n", "<leader>nc", ":nohlsearch<CR>", { desc = "Clear search highlights" })
+
+-- Quitar resaltado con ESC en modo normal
+keymap.set("n", "<Esc>", ":nohlsearch<CR><Esc>", { desc = "Quitar resaltado de búsqueda", silent = true })
 
 -- 💾 Guardar
 keymap.set("n", "<leader>w", "<CMD>w<CR>", { desc = "Guardar archivo" })
@@ -24,6 +27,12 @@ keymap.set("n", "<leader>sv", "<C-w>v", { desc = "Dividir ventana verticalmente"
 keymap.set("n", "<leader>sh", "<C-w>s", { desc = "Dividir ventana horizontalmente" })
 keymap.set("n", "<leader>se", "<C-w>=", { desc = "Igualar tamaño de ventanas" })
 keymap.set("n", "<leader>sx", "<CMD>close<CR>", { desc = "Cerrar ventana actual" })
+
+-- Navegación entre ventanas
+keymap.set("n", "<C-h>", "<C-w>h", { desc = "Ir a ventana izquierda" })
+keymap.set("n", "<C-j>", "<C-w>j", { desc = "Ir a ventana abajo" })
+keymap.set("n", "<C-k>", "<C-w>k", { desc = "Ir a ventana arriba" })
+keymap.set("n", "<C-l>", "<C-w>l", { desc = "Ir a ventana derecha" })
 
 -- 📋 Copiar y pegar
 keymap.set("n", "<leader>Y", '"+Y', { desc = "Copiar línea al portapapeles del sistema" })

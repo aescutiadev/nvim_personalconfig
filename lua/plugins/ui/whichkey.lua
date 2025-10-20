@@ -3,36 +3,25 @@ return {
   event = "VeryLazy",
   opts = {
     preset = "helix",
-    defaults = {},
-    spec = {
-      {
-        mode = { "n", "v" },
-        { "<leader><tab>", group = "tabs" },
-        { "<leader>c", group = "code" },
-        { "<leader>d", group = "debug" },
-        { "<leader>dp", group = "profiler" },
-        { "<leader>f", group = "file/find" },
-        { "<leader>g", group = "git" },
-        { "<leader>gh", group = "hunks" },
-        { "<leader>q", group = "quit/session" },
-        { "<leader>s", group = "search" },
-        { "<leader>u", group = "ui", icon = { icon = "󰙵 ", color = "cyan" } },
-        { "<leader>x", group = "diagnostics/quickfix", icon = { icon = "󱖫 ", color = "green" } },
-        { "g", group = "goto" },
-        { "gs", group = "surround" },
-        { "z", group = "fold" },
-        {
-          "<leader>b",
-          group = "buffer",
-          expand = function()
-            return require("which-key.extras").expand.buf()
-          end,
-        },
-      },
-    },
   },
   config = function(_, opts)
     local wk = require("which-key")
     wk.setup(opts)
+    
+    -- Registrar grupos de teclas
+    wk.add({
+      mode = { "n", "v" },
+      { "<leader>f", group = "file", icon = "󰈙" },
+      { "<leader>g", group = "git", icon = "󰊢" },
+      { "<leader>s", group = "search", icon = "󰍉" },
+      { "<leader>c", group = "code", icon = "󰨞" },
+      { "<leader>b", group = "buffers", icon = "󰓩" },
+      { "<leader>p", group = "plugins", icon = "󰏖" },
+      { "<leader>t", group = "terminal", icon = "󰆍" },
+      { "<leader>n", group = "notifications", icon = "󰎟" },
+      { "<leader>h", group = "help", icon = "󰋖" },
+      { "<leader>u", group = "ui", icon = "󰙵" },
+      { "<leader>l", group = "lsp", icon = "󰒋" },
+    })
   end,
 }

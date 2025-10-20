@@ -1,17 +1,17 @@
-local exclude = {
-  exclude = {
-    "node_modules",
-    "package-lock.json",
-    "lazy-lock.json",
-    "nuxt",
-    "next",
-    "build",
-    "dist",
-    ".git",
-    ".cache",
-    "__pycache__",
-    ".DS_Store",
-  },
+-- Snacks configuration
+-- Note: The snacks module will be available after the plugin loads
+
+local excludeData = {
+  ".git",
+  "node_modules",
+  "dist",
+  "build",
+  ".cache",
+  "package-lock.json",
+  "pnpm-lock.json",
+  "vendor",
+  "__pycache__",
+  ".DS_Store",
 }
 
 return {
@@ -21,15 +21,27 @@ return {
   ---@type snacks.Config
   opts = {
     bigfile = { enabled = true },
-    dashboard = { enabled = true },
+    dashboard = {
+      enabled = true,
+      -- Disable conflicting keymaps
+      keys = {
+        { key = "g", action = false }, -- Disable 'g' keymap to avoid conflicts
+      },
+    },
     explorer = { enabled = true },
-    indent = { enabled = false },
+    indent = { enabled = true },
     input = { enabled = true },
     notifier = {
       enabled = true,
       timeout = 6000,
     },
-    picker = { enabled = true },
+    picker = {
+      sources = {
+        buffers = {
+          current = false,
+        },
+      },
+    },
     quickfile = { enabled = true },
     scope = { enabled = true },
     scroll = { enabled = true },
@@ -37,31 +49,41 @@ return {
     words = { enabled = true },
     styles = {
       notification = {
-        wo = { wrap = true }, -- Wrap notifications
+        -- wo = { wrap = true } -- Wrap notifications
+      },
+    },
+    terminal = {
+      win = {
+        style = "terminal",
       },
     },
   },
   keys = {
     -- Top Pickers & Explorer
     {
-      "<leader><space>",
+      "<leader>ff",
       function()
         Snacks.picker.smart()
       end,
+
       desc = "Smart Find Files",
     },
     {
-      "<Tab>",
+      "<leader>,",
       function()
         Snacks.picker.buffers()
       end,
+
       desc = "Buffers",
     },
     {
       "<leader>/",
       function()
-        Snacks.picker.grep(exclude)
+        Snacks.picker.grep({
+          exclude = excludeData,
+        })
       end,
+
       desc = "Grep",
     },
     {
@@ -87,7 +109,7 @@ return {
     },
     -- find
     {
-      "<leader>fb",
+      "<Tab>",
       function()
         Snacks.picker.buffers()
       end,
@@ -101,9 +123,17 @@ return {
       desc = "Find Config File",
     },
     {
-      "<leader>ff",
+      "<leader><space>",
       function()
-        Snacks.picker.files(exclude)
+        Snacks.picker.explorer({ auto_close = true, layout = { preset = "default", preview = true } })
+      end,
+    },
+    {
+      ",",
+      function()
+        Snacks.picker.files({
+          exclude = excludeData,
+        })
       end,
       desc = "Find Files",
     },
@@ -180,13 +210,6 @@ return {
     },
     -- Grep
     {
-      "<leader>sb",
-      function()
-        Snacks.picker.lines()
-      end,
-      desc = "Buffer Lines",
-    },
-    {
       "<leader>sB",
       function()
         Snacks.picker.grep_buffers()
@@ -196,14 +219,14 @@ return {
     {
       "<leader>sg",
       function()
-        Snacks.picker.grep(exclude)
+        Snacks.picker.grep()
       end,
       desc = "Grep",
     },
     {
       "<leader>sw",
       function()
-        Snacks.picker.grep_word(exclude)
+        Snacks.picker.grep_word()
       end,
       desc = "Visual selection or word",
       mode = { "n", "x" },
@@ -372,7 +395,7 @@ return {
       desc = "Goto Declaration",
     },
     {
-      "gr",
+      "grr",
       function()
         Snacks.picker.lsp_references()
       end,
@@ -511,6 +534,7 @@ return {
     },
     {
       "<leader>N",
+
       desc = "Neovim News",
       function()
         Snacks.win({
@@ -539,7 +563,15 @@ return {
         _G.bt = function()
           Snacks.debug.backtrace()
         end
-        vim.print = _G.dd -- Override print to use snacks for `:=` command
+
+        -- Override print to use snacks for `:=` command
+        if vim.fn.has("nvim-0.11") == 1 then
+          vim._print = function(_, ...)
+            dd(...)
+          end
+        else
+          vim.print = _G.dd
+        end
 
         -- Create some toggle mappings
         Snacks.toggle.option("spell", { name = "Spelling" }):map("<leader>us")
@@ -551,9 +583,7 @@ return {
           .option("conceallevel", { off = 0, on = vim.o.conceallevel > 0 and vim.o.conceallevel or 2 })
           :map("<leader>uc")
         Snacks.toggle.treesitter():map("<leader>uT")
-        Snacks.toggle
-          .option("background", { off = "light", on = "dark", name = "Dark Background" })
-          :map("<leader>ub")
+        Snacks.toggle.option("background", { off = "light", on = "dark", name = "Dark Background" }):map("<leader>ub")
         Snacks.toggle.inlay_hints():map("<leader>uh")
         Snacks.toggle.indent():map("<leader>ug")
         Snacks.toggle.dim():map("<leader>uD")

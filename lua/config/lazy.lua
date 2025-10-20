@@ -28,6 +28,10 @@ require("lazy").setup({
     -- import your plugins
     { "nvim-tree/nvim-web-devicons", lazy = false },
     { import = "plugins.core" },
+    { import = "plugins.core.langs.lua" },
+    { import = "plugins.core.langs.typescript" },
+    { import = "plugins.core.langs.javascript" },
+    { import = "plugins.core.langs.python" },
     { import = "plugins.ui" },
   },
   -- Configure any other settings here. See the documentation for more details.
