@@ -11,8 +11,8 @@ return {
         icons = {
           package_installed = "✓",
           package_pending = "➜",
-          package_uninstalled = "✗"
-        }
+          package_uninstalled = "✗",
+        },
       },
       ensure_installed = {
         -- Will be populated by language-specific configs
@@ -30,7 +30,7 @@ return {
           })
         end, 100)
       end)
-      
+
       -- Auto-install tools if not already installed
       mr.refresh(function()
         for _, tool in ipairs(opts.ensure_installed or {}) do
@@ -57,24 +57,25 @@ return {
     },
   },
   {
-  "folke/edgy.nvim",
-  ---@module 'edgy'
-  ---@param opts Edgy.Config
-  opts = function(_, opts)
-    for _, pos in ipairs({ "top", "bottom", "left", "right" }) do
-      opts[pos] = opts[pos] or {}
-      table.insert(opts[pos], {
-        ft = "snacks_terminal",
-        size = { height = 0.4 },
-        title = "%{b:snacks_terminal.id}: %{b:term_title}",
-        filter = function(_buf, win)
-          return vim.w[win].snacks_win
-            and vim.w[win].snacks_win.position == pos
-            and vim.w[win].snacks_win.relative == "editor"
-            and not vim.w[win].trouble_preview
-        end,
-      })
-    end
-  end,
-},
+    "folke/edgy.nvim",
+    ---@module 'edgy'
+    ---@param opts Edgy.Config
+    opts = function(_, opts)
+      for _, pos in ipairs({ "top", "bottom", "left", "right" }) do
+        opts[pos] = opts[pos] or {}
+        table.insert(opts[pos], {
+          ft = "snacks_terminal",
+          size = { height = 0.4 },
+          title = "%{b:snacks_terminal.id}: %{b:term_title}",
+          filter = function(_buf, win)
+            return vim.w[win].snacks_win
+              and vim.w[win].snacks_win.position == pos
+              and vim.w[win].snacks_win.relative == "editor"
+              and not vim.w[win].trouble_preview
+          end,
+        })
+      end
+    end,
+  },
 }
+

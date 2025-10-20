@@ -11,10 +11,10 @@ return {
     },
     config = function(_, opts)
       local lint = require("lint")
-      
+
       -- Set linters by filetype
       lint.linters_by_ft = opts.linters_by_ft
-      
+
       -- Override linter configurations if provided
       for name, config in pairs(opts.linters) do
         if lint.linters[name] then
@@ -29,7 +29,7 @@ return {
 
       -- Auto-lint autocmds
       local lint_augroup = vim.api.nvim_create_augroup("Lint", { clear = true })
-      
+
       vim.api.nvim_create_autocmd({ "BufEnter", "BufWritePost", "InsertLeave" }, {
         group = lint_augroup,
         callback = lint_current_buffer,
@@ -40,3 +40,4 @@ return {
     end,
   },
 }
+

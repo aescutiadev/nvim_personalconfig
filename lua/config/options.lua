@@ -52,7 +52,9 @@ opt.writebackup = false -- No crear respaldo temporal al escribir
 opt.swapfile = false -- Desactivar archivos swap (con undofile es suficiente)
 opt.undolevels = 10000 -- Más niveles de deshacer
 opt.hidden = true -- Permitir buffers ocultos con cambios
-opt.softtabstop = 2
+opt.autoread = true -- Recargar archivos modificados externamente
+opt.encoding = "utf-8" -- Codificación por defecto
+opt.fileencoding = "utf-8" -- Codificación de archivos
 
 -- 🛠 Misceláneo
 opt.virtualedit = "block" -- Mover cursor donde no hay texto (bloque visual)
@@ -62,10 +64,6 @@ opt.pumheight = 15 -- Máximo de elementos en menú emergente
 opt.wrapscan=true
 
 opt.wildmenu=true
-
-opt.cmdheight=1
-
-opt.showcmd=true
 
 -- 🎨 Visual y UX
 opt.conceallevel = 2 -- Ocultar elementos de sintaxis (útil para markdown)
@@ -89,16 +87,11 @@ opt.fillchars = { -- Characters for UI elements
   foldclose = "▸",
 }
 
-
 -- 🚀 Rendimiento
 opt.lazyredraw = false -- No lazy redraw (mejor para plugins modernos)
 opt.ttyfast = true -- Terminal rápido
 opt.synmaxcol = 300 -- Límite de sintaxis por línea (mejor rendimiento)
 opt.undoreload = 10000
-
--- 🔍 Búsqueda mejorada
-opt.grepprg = "rg --vimgrep" -- Usar ripgrep si está disponible
-opt.grepformat = "%f:%l:%c:%m" -- Formato para ripgrep
 
 -- 📝 Edición avanzada
 opt.formatoptions:remove("c") -- No auto-wrap comentarios
@@ -108,9 +101,9 @@ opt.formatoptions:append("j") -- Unir líneas inteligentemente
 opt.iskeyword:append("-") -- Tratar - como parte de palabras
 
 -- 🖼️ Interfaz
-opt.cmdheight = 0 -- Altura de línea de comandos (0 = auto)
+opt.cmdheight = 1 -- Altura de línea de comandos (0 = auto)
 opt.laststatus = 3 -- Statusline global (una sola barra)
-opt.showtabline = 0 -- No mostrar tabline por defecto
+opt.showtabline = 1 -- No mostrar tabline por defecto
 opt.winbar = "%=%m %f" -- Winbar simple con nombre de archivo
 
 -- 🎯 Fold (plegado de código)
@@ -167,5 +160,5 @@ vim.g.loaded_ruby_provider = 0  -- Disable Ruby provider
 -- Python provider - will be configured after installing python neovim package
 -- vim.g.loaded_python3_provider = 0  -- Uncomment to disable if not using Python features
 
--- Node.js provider - will be configured after installing neovim npm package  
+-- Node.js provider - will be configured after installing neovim npm package
 -- vim.g.loaded_node_provider = 0     -- Uncomment to disable if not using Node.js features

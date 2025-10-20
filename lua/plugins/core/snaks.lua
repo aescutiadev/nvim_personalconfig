@@ -69,7 +69,7 @@ return {
       desc = "Smart Find Files",
     },
     {
-      "<leader>,",
+      "<leader>fb",
       function()
         Snacks.picker.buffers()
       end,
@@ -466,12 +466,48 @@ return {
       end,
       desc = "Notification History",
     },
+    -- Buffers avanzados con Snacks
     {
       "<leader>bd",
       function()
         Snacks.bufdelete()
       end,
       desc = "Delete Buffer",
+    },
+    {
+      "<leader>ba",
+      function()
+        Snacks.bufdelete({ all = true })
+      end,
+      desc = "Delete All Buffers",
+    },
+    {
+      "<leader>br",
+      function()
+        Snacks.bufdelete({ direction = "right" })
+      end,
+      desc = "Delete Buffers to the Right",
+    },
+    {
+      "<leader>bl",
+      function()
+        Snacks.bufdelete({ direction = "left" })
+      end,
+      desc = "Delete Buffers to the Left",
+    },
+    {
+      "<leader>be",
+      function()
+        Snacks.bufsort("extension")
+      end,
+      desc = "Sort Buffers by Extension",
+    },
+    {
+      "<leader>bp",
+      function()
+        Snacks.bufsort("path")
+      end,
+      desc = "Sort Buffers by Path",
     },
     {
       "<leader>cR",

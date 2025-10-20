@@ -30,7 +30,7 @@ Snacks = {}
 ---@field git_branches function
 ---@field git_log function
 ---@field git_log_line function
----@field git_log_file function  
+---@field git_log_file function
 ---@field git_status function
 ---@field git_stash function
 ---@field git_diff function
@@ -90,3 +90,4 @@ Snacks = {}
 
 ---@class SnacksRename
 ---@field rename_file function
+

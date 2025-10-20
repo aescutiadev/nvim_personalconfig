@@ -28,8 +28,14 @@ return {
             diagnostics = {
               globals = {
                 "vim",
-                "describe", "it", "before_each", "after_each",
-                "setup", "teardown", "pending", "async",
+                "describe",
+                "it",
+                "before_each",
+                "after_each",
+                "setup",
+                "teardown",
+                "pending",
+                "async",
               },
             },
             workspace = {
@@ -102,12 +108,18 @@ return {
             return { "--config-path", config_file }
           end
           return {
-            "--column-width", "120",
-            "--line-endings", "Unix",
-            "--indent-type", "Spaces",
-            "--indent-width", "2",
-            "--quote-style", "AutoPreferDouble",
-            "--call-parentheses", "Always",
+            "--column-width",
+            "120",
+            "--line-endings",
+            "Unix",
+            "--indent-type",
+            "Spaces",
+            "--indent-width",
+            "2",
+            "--quote-style",
+            "AutoPreferDouble",
+            "--call-parentheses",
+            "Always",
           }
         end,
       }
@@ -125,11 +137,17 @@ return {
       opts.linters = opts.linters or {}
       opts.linters.luacheck = {
         args = {
-          "--globals", "vim",
-          "--globals", "describe", "it", "before_each", "after_each",
+          "--globals",
+          "vim",
+          "--globals",
+          "describe",
+          "it",
+          "before_each",
+          "after_each",
           "--codes",
           "--ranges",
-          "--formatter", "plain",
+          "--formatter",
+          "plain",
           "-",
         },
       }
@@ -161,11 +179,16 @@ return {
               { "<leader>Lr", "<cmd>luafile %<cr>", desc = "Ejecutar archivo Lua", buffer = event.buf },
               { "<leader>Ls", "<cmd>source %<cr>", desc = "Source archivo Lua", buffer = event.buf },
               { "<leader>Le", ":lua ", desc = "Ejecutar comando Lua", buffer = event.buf },
-              { "<leader>Lc", function()
+              {
+                "<leader>Lc",
+                function()
                   local line = vim.api.nvim_get_current_line()
                   local result = loadstring("return " .. line)()
                   print(vim.inspect(result))
-                end, desc = "Evaluar línea actual", buffer = event.buf },
+                end,
+                desc = "Evaluar línea actual",
+                buffer = event.buf,
+              },
             })
           end
         end,
@@ -207,4 +230,3 @@ return {
     end,
   },
 }
-
