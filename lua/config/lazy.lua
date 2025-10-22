@@ -41,9 +41,9 @@ require("lazy").setup({
       },
     },
     {
-  "neovim/nvim-lspconfig",
-  event = "BufReadPre", -- o LazyLoad según tu setup
-},
+      "neovim/nvim-lspconfig",
+      event = "BufReadPre", -- o LazyLoad según tu setup
+    },
     { import = "plugins" },
   },
   -- Configure any other settings here. See the documentation for more details.

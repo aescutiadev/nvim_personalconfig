@@ -1,17 +1,13 @@
 {
-  "Lua.diagnostics.globals": ["vim", "Snacks"],
-  "Lua.runtime.version": "LuaJIT",
-  "Lua.workspace.checkThirdParty": false,
-  "Lua.workspace.library": [
-    "${3rd}/luv/library",
-    "${3rd}/busted/library",
-    "./lua/types"
+  "runtime.version": "LuaJIT",
+  "runtime.path": [
+    "lua/?.lua",
+    "lua/?/init.lua"
   ],
-  "Lua.completion.callSnippet": "Replace",
-  "Lua.hint.enable": true,
-  "Lua.hint.setType": false,
-  "Lua.hint.paramType": true,
-  "Lua.hint.paramName": "Disable",
-  "Lua.hint.semicolon": "Disable",
-  "Lua.hint.arrayIndex": "Disable"
+  "diagnostics.globals": ["vim", "Snacks", "snacks"],
+  "workspace.checkThirdParty": false,
+  "workspace.library": [
+    "$VIMRUNTIME"
+  ]
 }
+
