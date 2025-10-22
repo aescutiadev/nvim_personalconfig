@@ -17,10 +17,10 @@ return {
 
     vim.o.laststatus = vim.g.lualine_laststatus
 
-    local function pretty_path()
-      local file = vim.fn.expand("%:~:.") -- ruta relativa
-      return file
-    end
+    -- local function pretty_path()
+    --   local file = vim.fn.expand("%:~:.") -- ruta relativa
+    --   return file
+    -- end
 
     local opts = {
       options = {
