@@ -11,17 +11,18 @@ return {
     wk.add({
       mode = { "n", "v" },
       { "<leader>a", group = "copilot", icon = "󰚩" },
+      { "<leader>b", group = "buffers", icon = "󰓩" },
+      { "<leader>c", group = "code", icon = "󰨞" },
       { "<leader>f", group = "file", icon = "󰈙" },
       { "<leader>g", group = "git", icon = "󰊢" },
+      { "<leader>h", group = "help", icon = "󰋖" },
+      { "<leader>l", group = "lsp", icon = "󰒋" },
+      { "<leader>n", group = "notifications", icon = "󰎟" },
+      { "<leader>r", group = "replace and search", icon = "󰍉" },
       { "<leader>s", group = "search", icon = "󰍉" },
-      { "<leader>c", group = "code", icon = "󰨞" },
-      { "<leader>b", group = "buffers", icon = "󰓩" },
       -- { "<leader>p", group = "plugins", icon = "󰏖" },
       { "<leader>t", group = "terminal", icon = "󰆍" },
-      { "<leader>n", group = "notifications", icon = "󰎟" },
-      { "<leader>h", group = "help", icon = "󰋖" },
       { "<leader>u", group = "ui", icon = "󰙵" },
-      { "<leader>l", group = "lsp", icon = "󰒋" },
     })
   end,
 }
