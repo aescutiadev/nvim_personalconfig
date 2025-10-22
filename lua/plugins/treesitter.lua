@@ -19,6 +19,13 @@ return {
         "regex",
         "html",
         "css", -- Always install these base ones
+        "typescript",
+        "javascript",
+        "astro",
+        "markdown",
+        "markdown_inline",
+        "json",
+        "jsonc"
       },
       auto_install = true,
       highlight = {

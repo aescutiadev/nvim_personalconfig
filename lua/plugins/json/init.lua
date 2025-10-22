@@ -1,40 +1,8 @@
 return {
-  -- 📦 Schemas para JSON usando schemastore
   {
     "b0o/schemastore.nvim",
     lazy = true,
   },
-
-  -- 🌲 Treesitter para JSON
-  {
-    "nvim-treesitter/nvim-treesitter",
-    optional = true,
-    opts = function(_, opts)
-      if opts.ensure_installed ~= "all" then
-        opts.ensure_installed = vim.tbl_deep_extend("force", opts.ensure_installed or {}, { "json", "jsonc" })
-      end
-    end,
-  },
-
-  -- 🛠 Mason LSP config
-  {
-    "williamboman/mason-lspconfig.nvim",
-    optional = true,
-    opts = function(_, opts)
-      opts.ensure_installed = vim.tbl_deep_extend("force", opts.ensure_installed or {}, { "jsonls" })
-    end,
-  },
-
-  -- 🛠 Mason tool installer
-  {
-    "WhoIsSethDaniel/mason-tool-installer.nvim",
-    optional = true,
-    opts = function(_, opts)
-      opts.ensure_installed = vim.tbl_deep_extend("force", opts.ensure_installed or {}, { "json-lsp" })
-    end,
-  },
-
-  -- ⚙ Configuración de LSP nativa para JSON
   {
     "neovim/nvim-lspconfig",
     optional = true,
@@ -49,17 +17,6 @@ return {
             validate = { enable = true },
           },
         },
-      })
-
-      vim.diagnostic.config({
-        underline = true,
-        update_in_insert = false,
-        virtual_text = {
-          spacing = 4,
-          source = "if_many",
-          prefix = "●",
-        },
-        severity_sort = true,
       })
 
       -- Mapeos de teclas LSP (igual que Lua)

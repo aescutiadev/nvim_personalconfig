@@ -1,5 +1,7 @@
 local opt = vim.opt
 
+vim.o.statuscolumn = ""
+
 -- 📄 Apariencia y navegación
 opt.number = true -- Números de línea
 opt.relativenumber = true -- Números relativos
@@ -10,6 +12,7 @@ opt.sidescrolloff = 8 -- Margen horizontal
 opt.wrap = true -- Ajusta líneas largas visualmente
 opt.linebreak = true -- Rompe líneas por palabras
 opt.termguicolors = true -- Colores verdaderos
+opt.winborder = 'rounded' -- Set the default border for all floating windows
 
 -- ⌨️ Edición y sangría
 opt.tabstop = 2 -- Espacios por tabulador
@@ -99,6 +102,9 @@ opt.formatoptions:remove("r") -- No continuar comentarios con Enter
 opt.formatoptions:remove("o") -- No continuar comentarios con o/O
 opt.formatoptions:append("j") -- Unir líneas inteligentemente
 opt.iskeyword:append("-") -- Tratar - como parte de palabras
+
+-- Preview substitutions
+vim.opt.inccommand = 'split'
 
 -- 🖼️ Interfaz
 opt.cmdheight = 1 -- Altura de línea de comandos (0 = auto)

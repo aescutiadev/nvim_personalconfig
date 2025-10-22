@@ -45,6 +45,16 @@ keymap.set("n", "q", function()
   if answer:lower() == "y" then
     return "q" -- deja que Neovim capture el registro después
   else
-    return "" -- no hace nada
+    return ""  -- no hace nada
   end
 end, { desc = "Confirmar antes de grabar macro", expr = true })
+
+-- Formateo automático
+-- Asignar <leader>cf para formatear el archivo actual
+vim.keymap.set("n", "<leader>cf", function()
+  if vim.bo.filetype == "lua" then
+    vim.lsp.buf.format({ async = true })
+  else
+    print("No LSP client attached or not a Lua file")
+  end
+end, { desc = "Formatear archivo actual", expr = true })

@@ -23,12 +23,27 @@ return {
     bigfile = { enabled = true },
     dashboard = {
       enabled = true,
+      preset = {
+        header = table.concat({
+          " █████  ███████ ███████  ██████ ██    ██ ████████ ██  █████ ",
+          "██   ██ ██      ██      ██      ██    ██    ██    ██ ██   ██",
+          "███████ █████   ███████ ██      ██    ██    ██    ██ ███████",
+          "██   ██ ██           ██ ██      ██    ██    ██    ██ ██   ██",
+          "██   ██ ███████ ███████  ██████  ██████     ██    ██ ██   ██",
+          "                                                            ",
+          "                  ██████  ███████ ██    ██                  ",
+          "                  ██   ██ ██      ██    ██                  ",
+          "                  ██   ██ █████   ██    ██                  ",
+          "                  ██   ██ ██       ██  ██                   ",
+          "                  ██████  ███████   ████                    ",
+        }, "\n"),
+      },
       -- Disable conflicting keymaps
       keys = {
         { key = "g", action = false }, -- Disable 'g' keymap to avoid conflicts
       },
     },
-    explorer = { enabled = true },
+    explorer = { enabled = false },
     indent = { enabled = true },
     input = { enabled = true },
     notifier = {
@@ -49,7 +64,7 @@ return {
     words = { enabled = true },
     styles = {
       notification = {
-        -- wo = { wrap = true } -- Wrap notifications
+        wo = { wrap = true }, -- Wrap notifications
       },
     },
     terminal = {
@@ -100,13 +115,13 @@ return {
       end,
       desc = "Notification History",
     },
-    {
-      "<leader>e",
-      function()
-        Snacks.explorer()
-      end,
-      desc = "File Explorer",
-    },
+    -- {
+    --   "<leader>e",
+    --   function()
+    --     Snacks.explorer()
+    --   end,
+    --   desc = "File Explorer",
+    -- },
     -- find
     {
       "<Tab>",
@@ -122,12 +137,12 @@ return {
       end,
       desc = "Find Config File",
     },
-    {
-      "<leader><space>",
-      function()
-        Snacks.picker.explorer({ auto_close = true, layout = { preset = "default", preview = true } })
-      end,
-    },
+    -- {
+    --   "<leader><space>",
+    --   function()
+    --     Snacks.picker.explorer({ auto_close = true, layout = { preset = "default", preview = false } })
+    --   end,
+    -- },
     {
       ",",
       function()
@@ -602,7 +617,7 @@ return {
 
         -- Override print to use snacks for `:=` command
         if vim.fn.has("nvim-0.11") == 1 then
-          vim._print = function(_, ...)
+          vim.print = function(_, ...)
             dd(...)
           end
         else
@@ -616,8 +631,8 @@ return {
         Snacks.toggle.diagnostics():map("<leader>ud")
         Snacks.toggle.line_number():map("<leader>ul")
         Snacks.toggle
-          .option("conceallevel", { off = 0, on = vim.o.conceallevel > 0 and vim.o.conceallevel or 2 })
-          :map("<leader>uc")
+            .option("conceallevel", { off = 0, on = vim.o.conceallevel > 0 and vim.o.conceallevel or 2 })
+            :map("<leader>uc")
         Snacks.toggle.treesitter():map("<leader>uT")
         Snacks.toggle.option("background", { off = "light", on = "dark", name = "Dark Background" }):map("<leader>ub")
         Snacks.toggle.inlay_hints():map("<leader>uh")

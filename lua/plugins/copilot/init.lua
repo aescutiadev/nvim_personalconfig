@@ -1,6 +1,7 @@
 local prompts = {
   Concise = "Please rewrite the following text to make it more concise.",
-  CreateAPost = "Please provide documentation for the following code to post it in social media, like Linkedin, it has be deep, well explained and easy to understand. Also do it in a fun and engaging way.",
+  CreateAPost =
+  "Please provide documentation for the following code to post it in social media, like Linkedin, it has be deep, well explained and easy to understand. Also do it in a fun and engaging way.",
   Documentation = "Please provide documentation for the following code.",
   DocumentationForGithub = "Please provide documentation for the following code ready for GitHub using markdown.",
   Explain = "Please explain how the following code works.",
@@ -19,6 +20,41 @@ local prompts = {
 }
 
 return {
+  {
+    "zbirenbaum/copilot.lua",
+    requires = {
+      "copilotlsp-nvim/copilot-lsp",
+    },
+    cmd = "Copilot",
+    event = "InsertEnter",
+    config = function()
+      require("copilot").setup({
+        panel = { enabled = true },
+        suggestion = {
+          enabled = true,
+          auto_trigger = true, -- activa el autocompletado automático
+          keymap = {
+            accept = "<Tab>",  -- aceptar sugerencia
+            accept_word = false,
+            accept_line = false,
+            next = "<C-N>",    -- siguiente sugerencia
+            prev = "<C-P>",    -- anterior sugerencia
+            dismiss = "<C-K>", -- descartar sugerencia
+          },
+        },
+        filetypes = {
+          lua = true,
+          python = true,
+          javascript = true,
+          typescript = true,
+          markdown = true,
+          html = true,
+          astro = true,
+          css = true,
+        },
+      })
+    end,
+  },
   {
     "CopilotC-Nvim/CopilotChat.nvim",
     version = "^4",
@@ -46,11 +82,11 @@ return {
     keys = function()
       local prefix = "<leader>a"
       return {
-        { prefix .. "o", "<cmd>CopilotChatOpen<CR>", desc = "Open Chat" },
-        { prefix .. "c", "<cmd>CopilotChatClose<CR>", desc = "Close Chat" },
+        { prefix .. "o", "<cmd>CopilotChatOpen<CR>",   desc = "Open Chat" },
+        { prefix .. "c", "<cmd>CopilotChatClose<CR>",  desc = "Close Chat" },
         { prefix .. "t", "<cmd>CopilotChatToggle<CR>", desc = "Toggle Chat" },
-        { prefix .. "r", "<cmd>CopilotChatReset<CR>", desc = "Reset Chat" },
-        { prefix .. "s", "<cmd>CopilotChatStop<CR>", desc = "Stop Chat" },
+        { prefix .. "r", "<cmd>CopilotChatReset<CR>",  desc = "Reset Chat" },
+        { prefix .. "s", "<cmd>CopilotChatStop<CR>",   desc = "Stop Chat" },
         {
           prefix .. "S",
           function()
@@ -125,7 +161,7 @@ return {
       model = "claude-sonnet-4.5", -- Cambia a tu modelo preferido
       prompts = prompts,
       system_prompt = [[
-You are an expert in clean architecture and scalable software design, specialized in 
+You are an expert in clean architecture and scalable software design, specialized in
 HTML, CSS, Tailwind, Javascript, React, Vue, Angular, Svelte, PHP, Python, SQL and NoSQL databases,
 and frameworks like Next.js, Nestjs, Nuxt, Adonis, Laravel, Django, Node.js and TypeScript.
 Your responses should be clear, with practical examples applicable to real projects.
@@ -144,23 +180,5 @@ and all comments in code in english.
     config = function(_, opts)
       require("CopilotChat").setup(opts)
     end,
-  },
-
-  -- Blink CMP integration (opcional)
-  {
-    "saghen/blink.cmp",
-    optional = true,
-    opts = {
-      sources = {
-        providers = {
-          path = {
-            -- Evita conflictos con comandos de CopilotChat
-            enabled = function()
-              return vim.bo.filetype ~= "copilot-chat"
-            end,
-          },
-        },
-      },
-    },
-  },
+  }
 }
