@@ -15,7 +15,7 @@ return {
       { "<leader>c", group = "code", icon = "󰨞" },
       { "<leader>f", group = "file", icon = "󰈙" },
       { "<leader>g", group = "git", icon = "󰊢" },
-      { "<leader>h", group = "help", icon = "󰋖" },
+      { "<leader>h", group = "git [h]unks", icon = "󰊢" },
       { "<leader>l", group = "lsp", icon = "󰒋" },
       { "<leader>n", group = "notifications", icon = "󰎟" },
       { "<leader>r", group = "replace and search", icon = "󰍉" },
