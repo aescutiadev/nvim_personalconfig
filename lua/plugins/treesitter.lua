@@ -25,12 +25,12 @@ return {
         "markdown",
         "markdown_inline",
         "json",
-        "jsonc"
+        "jsonc",
       },
       auto_install = true,
       highlight = {
         enable = true,
-        additional_vim_regex_highlighting = false,
+        additional_vim_regex_highlighting = true,
       },
       indent = {
         enable = true,
@@ -96,7 +96,7 @@ return {
     dependencies = { "nvim-treesitter/nvim-treesitter" },
     opts = {
       enable = true,
-      max_lines = 3,
+      max_lines = 8,
       min_window_height = 0,
       line_numbers = true,
       multiline_threshold = 20,

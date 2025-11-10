@@ -54,6 +54,7 @@ return {
       sources = {
         buffers = {
           current = false,
+          sort_lastused = true,
         },
       },
     },
@@ -126,7 +127,7 @@ return {
     {
       "<Tab>",
       function()
-        Snacks.picker.buffers()
+        Snacks.picker.buffers({ sort_lastused = true })
       end,
       desc = "Buffers",
     },
@@ -492,9 +493,22 @@ return {
     {
       "<leader>ba",
       function()
-        Snacks.bufdelete({ all = true })
+        local current = vim.api.nvim_get_current_buf()
+        local deleted = 0
+        for _, buf in ipairs(vim.api.nvim_list_bufs()) do
+          if vim.api.nvim_buf_is_loaded(buf) and buf ~= current then
+            if pcall(vim.api.nvim_buf_delete, buf, {}) then
+              deleted = deleted + 1
+            end
+          end
+        end
+        if deleted > 0 then
+          Snacks.notifier.success("Deleted " .. deleted .. " buffers")
+        else
+          Snacks.notifier.info("No other buffers to delete")
+        end
       end,
-      desc = "Delete All Buffers",
+      desc = "Delete All Other Buffers",
     },
     {
       "<leader>br",

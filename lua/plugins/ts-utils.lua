@@ -47,14 +47,22 @@ return {
       },
     },
   },
+  -- tailwind-tools.lua
+  {
+    "luckasRanarison/tailwind-tools.nvim",
+    name = "tailwind-tools",
+    build = ":UpdateRemotePlugins",
+    dependencies = {
+      "nvim-treesitter/nvim-treesitter",
+      "neovim/nvim-lspconfig",
+    },
+  },
   {
     "NvChad/nvim-colorizer.lua",
     optional = true,
     opts = {
-      user_default_options = {
-        names = true,
-        tailwind = true,
-      },
+      names = true,
+      tailwind = true,
     },
   },
 }
