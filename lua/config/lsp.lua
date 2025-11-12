@@ -11,7 +11,6 @@ vim.lsp.enable('tailwindcss')
 vim.lsp.enable('mdx_analyzer')
 vim.lsp.enable('marksman')
 vim.lsp.enable('html')
-vim.lsp.enable('copilot')
 
 -- Capabilities globales para TODOS los clientes (extiende defaults)
 vim.lsp.config('*', {

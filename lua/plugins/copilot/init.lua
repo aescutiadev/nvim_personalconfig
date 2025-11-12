@@ -158,7 +158,7 @@ return {
       }
     end,
     opts = {
-      model = "claude-sonnet-4.5", -- Cambia a tu modelo preferido
+      model = "claude-sonnet-4.5", -- Cambia a tu modelo preferido claude-sonnet-4.5
       prompts = prompts,
       system_prompt = [[
 You are an expert in clean architecture and scalable software design, specialized in
