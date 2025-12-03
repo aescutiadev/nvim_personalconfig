@@ -1,5 +1,18 @@
 return {
   {
+    "echasnovski/mini.icons",
+    optional = true,
+    opts = function(_, opts)
+      if not opts.file then opts.file = {} end
+      opts.file[".nvmrc"] = { glyph = "", hl = "MiniIconsGreen" }
+      opts.file[".node-version"] = { glyph = "", hl = "MiniIconsGreen" }
+      opts.file["package.json"] = { glyph = "", hl = "MiniIconsGreen" }
+      opts.file["tsconfig.json"] = { glyph = "", hl = "MiniIconsAzure" }
+      opts.file["tsconfig.build.json"] = { glyph = "", hl = "MiniIconsAzure" }
+      opts.file["yarn.lock"] = { glyph = "", hl = "MiniIconsBlue" }
+    end,
+  },
+  {
     'nvim-mini/mini.pairs',
     version = false,
     event = "VeryLazy",

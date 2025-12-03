@@ -3,6 +3,18 @@ local function augroup(name)
   return vim.api.nvim_create_augroup(name, { clear = true })
 end
 
+vim.api.nvim_create_autocmd("CompleteChanged", {
+  group = augroup("PmenuBorderColor"),
+  callback = function()
+    local pumvisible = vim.fn.pumvisible()
+    if pumvisible == 1 then
+      vim.cmd('highlight PmenuBorder guifg=#555555')
+      vim.cmd('redraw')
+    end
+  end
+})
+
+
 -- 1. Recargar archivos si cambiaron fuera de Neovim
 vim.api.nvim_create_autocmd({ "FocusGained", "TermClose", "TermLeave" }, {
   group = augroup("checktime"),

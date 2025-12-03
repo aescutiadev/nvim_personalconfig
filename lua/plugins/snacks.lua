@@ -532,7 +532,7 @@ return {
       desc = "Sort Buffers by Extension",
     },
     {
-      "<leader>bp",
+      "<leader>bs",
       function()
         Snacks.bufsort("path")
       end,

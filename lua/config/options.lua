@@ -1,6 +1,7 @@
 local opt = vim.opt
 
 vim.o.statuscolumn = ""
+vim.o.winborder = "rounded"
 
 -- 📄 Apariencia y navegación
 opt.number = true -- Números de línea
@@ -12,7 +13,7 @@ opt.sidescrolloff = 8 -- Margen horizontal
 opt.wrap = true -- Ajusta líneas largas visualmente
 opt.linebreak = true -- Rompe líneas por palabras
 opt.termguicolors = true -- Colores verdaderos
-opt.winborder = 'rounded' -- Set the default border for all floating windows
+opt.winborder = "rounded" -- Set the default border for all floating windows
 
 -- ⌨️ Edición y sangría
 opt.tabstop = 2 -- Espacios por tabulador
@@ -29,7 +30,6 @@ opt.hlsearch = true -- Resaltar coincidencias
 opt.showmatch = true -- Resaltar paréntesis/corchetes
 opt.grepprg = "rg --vimgrep --no-heading --smart-case" -- Enhanced ripgrep configuration
 opt.grepformat = "%f:%l:%c:%m" -- Format string for ripgrep output parsing
-
 
 -- 🖱️ Interacción y usabilidad
 opt.mouse = "a" -- Habilitar ratón
@@ -64,9 +64,9 @@ opt.virtualedit = "block" -- Mover cursor donde no hay texto (bloque visual)
 opt.wildmode = "longest:full,full" -- Autocompletado en línea de comandos
 opt.pumheight = 15 -- Máximo de elementos en menú emergente
 
-opt.wrapscan=true
+opt.wrapscan = true
 
-opt.wildmenu=true
+opt.wildmenu = true
 
 -- 🎨 Visual y UX
 opt.conceallevel = 2 -- Ocultar elementos de sintaxis (útil para markdown)
@@ -74,20 +74,20 @@ opt.concealcursor = "nc" -- Cuando ocultar (normal y command mode)
 opt.list = true -- Mostrar caracteres invisibles
 opt.breakindent = true
 opt.listchars = {
-  tab = "→ ", -- Show tabs as →
-  trail = "•", -- Trailing spaces as •
-  extends = "▸", -- Line continues to the right
-  precedes = "◂", -- Line continues to the left
-  nbsp = "␣", -- Non-breaking spaces
+	tab = "→ ", -- Show tabs as →
+	trail = "•", -- Trailing spaces as •
+	extends = "▸", -- Line continues to the right
+	precedes = "◂", -- Line continues to the left
+	nbsp = "␣", -- Non-breaking spaces
 }
 opt.fillchars = { -- Characters for UI elements
-  fold = " ",
-  eob = " ", -- End of buffer
-  diff = "╱", -- Deleted lines in diff mode
-  msgsep = "‾",
-  foldopen = "▾",
-  foldsep = "│",
-  foldclose = "▸",
+	fold = " ",
+	eob = " ", -- End of buffer
+	diff = "╱", -- Deleted lines in diff mode
+	msgsep = "‾",
+	foldopen = "▾",
+	foldsep = "│",
+	foldclose = "▸",
 }
 
 -- 🚀 Rendimiento
@@ -104,7 +104,7 @@ opt.formatoptions:append("j") -- Unir líneas inteligentemente
 opt.iskeyword:append("-") -- Tratar - como parte de palabras
 
 -- Preview substitutions
-vim.opt.inccommand = 'split'
+vim.opt.inccommand = "split"
 
 -- 🖼️ Interfaz
 opt.cmdheight = 1 -- Altura de línea de comandos (0 = auto)
@@ -121,14 +121,14 @@ opt.foldenable = true
 
 -- 🌐 Sesiones
 opt.sessionoptions = {
-  "buffers",
-  "curdir",
-  "tabpages",
-  "winsize",
-  "help",
-  "globals",
-  "skiprtp",
-  "folds",
+	"buffers",
+	"curdir",
+	"tabpages",
+	"winsize",
+	"help",
+	"globals",
+	"skiprtp",
+	"folds",
 }
 
 -- 🔧 Spell checking (opcional)
@@ -146,12 +146,12 @@ opt.shortmess:append("I") -- No mostrar intro message
 
 -- 🎨 Cursor shapes (opcional)
 opt.guicursor = {
-  "n-v-c:block", -- Normal, visual, command: block
-  "i-ci-ve:ver25", -- Insert, command insert, visual exclusive: vertical bar
-  "r-cr:hor20", -- Replace, command replace: horizontal bar
-  "o:hor50", -- Operator pending: horizontal bar
-  "a:blinkwait700-blinkoff400-blinkon250", -- All modes: blink settings
-  "sm:block-blinkwait175-blinkoff150-blinkon175", -- Showmatch: block with blink
+	"n-v-c:block", -- Normal, visual, command: block
+	"i-ci-ve:ver25", -- Insert, command insert, visual exclusive: vertical bar
+	"r-cr:hor20", -- Replace, command replace: horizontal bar
+	"o:hor50", -- Operator pending: horizontal bar
+	"a:blinkwait700-blinkoff400-blinkon250", -- All modes: blink settings
+	"sm:block-blinkwait175-blinkoff150-blinkon175", -- Showmatch: block with blink
 }
 
 -- 🎛️ Wildmenu (mejor autocompletado en command line)
@@ -160,8 +160,8 @@ opt.pumblend = 10 -- Transparencia del popup menu
 
 -- 🔌 Provider Configuration
 -- Disable unused providers to avoid warnings
-vim.g.loaded_perl_provider = 0  -- Disable Perl provider
-vim.g.loaded_ruby_provider = 0  -- Disable Ruby provider
+vim.g.loaded_perl_provider = 0 -- Disable Perl provider
+vim.g.loaded_ruby_provider = 0 -- Disable Ruby provider
 
 -- Python provider - will be configured after installing python neovim package
 -- vim.g.loaded_python3_provider = 0  -- Uncomment to disable if not using Python features

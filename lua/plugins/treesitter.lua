@@ -19,9 +19,11 @@ return {
         "regex",
         "html",
         "css", -- Always install these base ones
+        "scss",
         "typescript",
         "javascript",
         "astro",
+        "tsx",
         "markdown",
         "markdown_inline",
         "json",
