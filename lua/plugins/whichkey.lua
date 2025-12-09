@@ -17,11 +17,16 @@ return {
       { "<leader>bP", "<Cmd>BufferLinePick<CR>", desc = "Pick buffer" },
       { "<leader>bC", "<Cmd>BufferLinePickClose<CR>", desc = "Pick close buffer" },
       { "<leader>bp", "<Cmd>BufferLineTogglePin<CR>", desc = "Toggle Pin" },
-      { "S-Tab", "<Cmd>BufferLineCycleNext<CR>", desc = "Next buffer" },
+      { "<Tab>", "<Cmd>BufferLineCycleNext<CR>", desc = "Next buffer" },
+      { "<S-Tab>", "<Cmd>BufferLineCyclePrev<CR>", desc = "Prev buffer" },
       { "<leader>bc", "<Cmd>BufferLineCloseOthers<CR>", desc = "Close other buffers" },
-      { "<leader>bb", "<Cmd>BufferLineGoToBuffer -1<CR>", desc = "Go to last buffer" },
+      { "<leader>bL", "<Cmd>BufferLineGoToBuffer -1<CR>", desc = "Go to last buffer" },
+      { "<leader>bb", "<Cmd>b#<CR>", desc = "Go to previously used buffer" },
       { "<leader>bP", "<Cmd>BufferLineGroupClose ungrouped<CR>", desc = "Delete non-pinned buffers" },
       { "<leader>bo", "<Cmd>BufferLineCloseLeft<CR><Cmd>BufferLineCloseRight<CR>", desc = "Close other buffers" },
+      { "<leader><", "<Cmd>BufferLineMovePrev<CR>", desc = "Move buffer left" },
+      { "<leader>>", "<Cmd>BufferLineMoveNext<CR>", desc = "Move buffer right" },
+
 
       { "<leader>c", group = "code", icon = "󰨞" },
       { "<leader>f", group = "file", icon = "󰈙" },

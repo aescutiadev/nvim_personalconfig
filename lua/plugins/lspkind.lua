@@ -35,23 +35,10 @@ return {
         Event = "",
         Operator = "󰆕",
         TypeParameter = "",
+        Copilot = "",
       },
     })
 
-    -- Interceptar completado de LSP nativo y agregar íconos
-    vim.lsp.handlers["textDocument/completion"] = function(err, result)
-      if err or not result or vim.tbl_isempty(result.items) then
-        return
-      end
-
-      local items = result.items
-
-      for _, item in ipairs(items) do
-        local kind_name = vim.lsp.protocol.CompletionItemKind[item.kind] or "Text"
-        item.kind = require("lspkind").symbol_map[kind_name] or kind_name
-      end
-
-      vim.lsp.util.complete_items(items)
-    end
+    -- Note: Completion icons are now handled by blink.cmp
   end,
 }

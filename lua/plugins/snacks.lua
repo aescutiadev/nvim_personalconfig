@@ -43,8 +43,19 @@ return {
         { key = "g", action = false }, -- Disable 'g' keymap to avoid conflicts
       },
     },
+    codelens = { enabled = false },
     explorer = { enabled = false },
-    indent = { enabled = true },
+    indent = {
+      indent = {
+        enabled = false,
+      },
+      scope = {
+        enabled = true,
+        only_current = true,
+        only_scope = true,
+        char = "│",
+      },
+    },
     input = { enabled = true },
     notifier = {
       enabled = true,
@@ -110,7 +121,7 @@ return {
       desc = "Command History",
     },
     {
-      "<leader>n",
+      "<leader>nn",
       function()
         Snacks.picker.notifications()
       end,
@@ -125,11 +136,11 @@ return {
     -- },
     -- find
     {
-      "<Tab>",
+      "<leader>fB",
       function()
         Snacks.picker.buffers({ sort_lastused = true })
       end,
-      desc = "Buffers",
+      desc = "Buffers sorted",
     },
     {
       "<leader>fc",

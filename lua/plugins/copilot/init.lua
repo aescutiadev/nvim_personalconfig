@@ -22,25 +22,13 @@ local prompts = {
 return {
   {
     "zbirenbaum/copilot.lua",
-    requires = {
-      "copilotlsp-nvim/copilot-lsp",
-    },
     cmd = "Copilot",
     event = "InsertEnter",
     config = function()
       require("copilot").setup({
-        panel = { enabled = true },
+        panel = { enabled = false },
         suggestion = {
-          enabled = true,
-          auto_trigger = true, -- activa el autocompletado automático
-          keymap = {
-            accept = "<Tab>",  -- aceptar sugerencia
-            accept_word = false,
-            accept_line = false,
-            next = "<C-N>",    -- siguiente sugerencia
-            prev = "<C-P>",    -- anterior sugerencia
-            dismiss = "<C-K>", -- descartar sugerencia
-          },
+          enabled = false, -- Disabled: using blink-cmp-copilot instead
         },
         filetypes = {
           lua = true,
