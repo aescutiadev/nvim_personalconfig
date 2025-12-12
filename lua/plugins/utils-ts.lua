@@ -8,6 +8,8 @@ return {
     config = function()
       local capabilities = require("blink.cmp").get_lsp_capabilities()
 
+      vim.opt.conceallevel = 0
+
       require("typescript-tools").setup({
         capabilities = capabilities,
 
@@ -20,7 +22,7 @@ return {
           separate_diagnostic_server = true,
           publish_diagnostic_on = "insert_leave",
 
-          expose_as_code_action = {},
+          expose_as_code_action = "all",
           tsserver_path = nil,
           tsserver_plugins = {},
 
@@ -84,24 +86,15 @@ return {
       },
     },
   },
-  -- TwoSlash queries - Anotaciones TypeScript inline
   {
-    "marilari88/twoslash-queries.nvim",
-    ft = { "typescript", "typescriptreact", "javascript", "javascriptreact" },
+    "andymass/vim-matchup",
     opts = {
-      multi_line = true,     -- Mostrar anotaciones multi-línea
-      is_enabled = true,     -- Habilitado por defecto
-      highlight = "Comment", -- Resaltado como comentario
-    },
-    keys = {
-      {
-        "<leader>lt",
-        "<cmd>TwoslashQueriesInspect<cr>",
-        desc = "Toggle TwoSlash Queries",
-        ft = { "typescript", "typescriptreact" },
-      },
-    },
+      treesitter = {
+        stopline = 500,
+      }
+    }
   },
+  -- TwoSlash queries - Anotaciones TypeScript inline
   {
     "axelvc/template-string.nvim",
     event = "InsertEnter",

@@ -23,7 +23,7 @@ return {
     },
 
     sources = {
-      default = { 'lsp', 'path', 'snippets', 'buffer', 'copilot' },
+      default = { 'lsp', 'path', 'snippets', 'copilot' },
       providers = {
         copilot = {
           name = 'copilot',
@@ -93,14 +93,40 @@ return {
       "mdx_analyzer",
       "marksman",
       "html",
+      "jsonls",
       "tailwindcss",
+      "rust-analyzer",
+      "taplo",
     }
 
     for _, server in ipairs(servers) do
       vim.lsp.enable(server)
-      vim.lsp.config(server, {
-        capabilities = capabilities,
-      })
+      if server == "rust_analyzer" then
+        vim.lsp.config(server, {
+          capabilities = capabilities,
+          settings = {
+            ["rust-analyzer"] = {
+              files = {
+                excludeDirs = {
+                  ".direnv",
+                  ".git",
+                  "target",
+                },
+              },
+              check = {
+                command = "clippy",
+                extraArgs = {
+                  "--no-deps",
+                },
+              },
+            },
+          },
+        })
+      else
+        vim.lsp.config(server, {
+          capabilities = capabilities,
+        })
+      end
     end
 
     -- DIAGNOSTICS CONFIG

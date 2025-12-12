@@ -28,6 +28,8 @@ return {
         "markdown_inline",
         "json",
         "jsonc",
+        "rust",
+        "toml",
       },
       auto_install = true,
       highlight = {

@@ -22,7 +22,6 @@ return {
       { "<leader>bc", "<Cmd>BufferLineCloseOthers<CR>", desc = "Close other buffers" },
       { "<leader>bL", "<Cmd>BufferLineGoToBuffer -1<CR>", desc = "Go to last buffer" },
       { "<leader>bb", "<Cmd>b#<CR>", desc = "Go to previously used buffer" },
-      { "<leader>bP", "<Cmd>BufferLineGroupClose ungrouped<CR>", desc = "Delete non-pinned buffers" },
       { "<leader>bo", "<Cmd>BufferLineCloseLeft<CR><Cmd>BufferLineCloseRight<CR>", desc = "Close other buffers" },
       { "<leader><", "<Cmd>BufferLineMovePrev<CR>", desc = "Move buffer left" },
       { "<leader>>", "<Cmd>BufferLineMoveNext<CR>", desc = "Move buffer right" },

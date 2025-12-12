@@ -28,29 +28,17 @@ require("lazy").setup({
   spec = {
     -- import your plugins
     { "nvim-tree/nvim-web-devicons", lazy = false },
-    {
-      "folke/tokyonight.nvim",
-      lazy = false,    -- make sure we load this during startup if it is your main colorscheme
-      priority = 1000, -- make sure to load this before all the other start plugins
-      config = function()
-        -- load the colorscheme here
-        vim.cmd([[colorscheme tokyonight-night]])
-      end,
-      opts = {
-        style = "night",
-      },
-    },
-    {
-      "neovim/nvim-lspconfig",
-      event = "BufReadPre", -- o LazyLoad según tu setup
-    },
+    { "neovim/nvim-lspconfig",       event = "BufReadPre" }, -- o LazyLoad según tu setup
     { import = "plugins" },
   },
   -- Configure any other settings here. See the documentation for more details.
   -- colorscheme that will be used when installing plugins.
   install = { colorscheme = { "tokyonight" } },
   -- automatically check for plugin updates
-  checker = { enabled = true }, -- automatically check for plugin updates
+  checker = {
+    enabled = true, -- check for plugin updates periodically
+    notify = true,  -- notify on update
+  },                -- automatically check for plugin updates
   performance = {
     rtp = {
       -- disable some rtp plugins

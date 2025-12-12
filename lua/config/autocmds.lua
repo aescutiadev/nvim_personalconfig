@@ -111,13 +111,34 @@ vim.api.nvim_create_autocmd("FileType", {
   end,
 })
 
--- 8. Mostrar todo el contenido en JSON (conceallevel = 0)
 vim.api.nvim_create_autocmd("FileType", {
-  group = augroup("json_conceal"),
-  pattern = { "json", "jsonc", "json5" },
+  pattern = {
+    "typescript",
+    "typescriptreact",
+    "javascript",
+    "javascriptreact",
+    "vue",
+    "svelte",
+    "html",
+    "css",
+    "scss",
+    "jsx",
+    "tsx",
+  },
   callback = function()
     vim.opt_local.conceallevel = 0
   end,
+  desc = "Disable conceallevel for web dev files",
+})
+
+
+-- Enable conceallevel for markdown and JSON files
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = { "markdown", "json" },
+  callback = function()
+    vim.opt_local.conceallevel = 2
+  end,
+  desc = "Enable conceallevel for markdown and JSON",
 })
 
 -- 9. Crear directorios automáticamente al guardar

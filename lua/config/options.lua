@@ -11,7 +11,7 @@ opt.cursorline = true     -- Resaltar la línea actual
 opt.scrolloff = 8         -- Margen vertical
 opt.sidescrolloff = 8     -- Margen horizontal
 opt.wrap = true           -- Ajusta líneas largas visualmente
-opt.linebreak = true      -- Rompe líneas por palabras
+opt.linebreak = false     -- Rompe líneas por palabras
 opt.termguicolors = true  -- Colores verdaderos
 opt.winborder = "rounded" -- Set the default border for all floating windows
 
@@ -69,10 +69,10 @@ opt.wrapscan = true
 opt.wildmenu = true
 
 -- 🎨 Visual y UX
-opt.conceallevel = 2    -- Ocultar elementos de sintaxis (útil para markdown)
+opt.conceallevel = 2    -- No Ocultar elementos de sintaxis (2 para markdown)
 opt.concealcursor = "c" -- Cuando ocultar (normal y command mode)
 opt.list = true         -- Mostrar caracteres invisibles
-opt.breakindent = true
+opt.breakindent = false
 opt.listchars = {
   tab = "→ ", -- Show tabs as →
   trail = "•", -- Trailing spaces as •
@@ -146,11 +146,11 @@ opt.shortmess:append("I") -- No mostrar intro message
 
 -- 🎨 Cursor shapes (opcional)
 opt.guicursor = {
-  "n-v-c:block",                                 -- Normal, visual, command: block
-  "i-ci-ve:ver25",                               -- Insert, command insert, visual exclusive: vertical bar
-  "r-cr:hor20",                                  -- Replace, command replace: horizontal bar
-  "o:hor50",                                     -- Operator pending: horizontal bar
-  "a:blinkwait700-blinkoff400-blinkon250",       -- All modes: blink settings
+  "n-v-c:block",                                  -- Normal, visual, command: block
+  "i-ci-ve:ver25",                                -- Insert, command insert, visual exclusive: vertical bar
+  "r-cr:hor20",                                   -- Replace, command replace: horizontal bar
+  "o:hor50",                                      -- Operator pending: horizontal bar
+  "a:blinkwait700-blinkoff400-blinkon250",        -- All modes: blink settings
   "sm:block-blinkwait175-blinkoff150-blinkon175", -- Showmatch: block with blink
 }
 
