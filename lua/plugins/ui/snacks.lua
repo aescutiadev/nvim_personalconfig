@@ -21,24 +21,56 @@ return {
   ---@type snacks.Config
   opts = {
     bigfile = { enabled = true },
+    animate = { enabled = true },
     dashboard = {
-      enabled = true,
       preset = {
         header = table.concat({
-          " █████  ███████ ███████  ██████ ██    ██ ████████ ██  █████ ",
-          "██   ██ ██      ██      ██      ██    ██    ██    ██ ██   ██",
-          "███████ █████   ███████ ██      ██    ██    ██    ██ ███████",
-          "██   ██ ██           ██ ██      ██    ██    ██    ██ ██   ██",
-          "██   ██ ███████ ███████  ██████  ██████     ██    ██ ██   ██",
-          "                                                            ",
-          "                  ██████  ███████ ██    ██                  ",
-          "                  ██   ██ ██      ██    ██                  ",
-          "                  ██   ██ █████   ██    ██                  ",
-          "                  ██   ██ ██       ██  ██                   ",
-          "                  ██████  ███████   ████                    ",
+          "                                                                 ",
+          "   █████╗ ███████╗███████╗ ██████╗██╗   ██╗████████╗██╗ █████╗   ",
+          "  ██╔══██╗██╔════╝██╔════╝██╔════╝██║   ██║╚══██╔══╝██║██╔══██╗  ",
+          "  ███████║█████╗  ███████╗██║     ██║   ██║   ██║   ██║███████║  ",
+          "  ██╔══██║██╔══╝  ╚════██║██║     ██║   ██║   ██║   ██║██╔══██║  ",
+          "  ██║  ██║███████╗███████║╚██████╗╚██████╔╝   ██║   ██║██║  ██║  ",
+          "  ╚═╝  ╚═╝╚══════╝╚══════╝ ╚═════╝ ╚═════╝    ╚═╝   ╚═╝╚═╝  ╚═╝  ",
+          "                                                                 ",
+          "                     ██████╗ ███████╗██╗   ██╗                   ",
+          "                     ██╔══██╗██╔════╝██║   ██║                   ",
+          "                     ██║  ██║█████╗  ██║   ██║                   ",
+          "                     ██║  ██║██╔══╝  ╚██╗ ██╔╝                   ",
+          "                     ██████╔╝███████╗ ╚████╔╝                    ",
+          "                     ╚═════╝ ╚══════╝  ╚═══╝                     ",
         }, "\n"),
       },
-      -- Disable conflicting keymaps
+      sections = {
+        { section = "header" },
+        { section = "keys", gap = 1, padding = 1 },
+        { pane = 1, icon = " ", title = "Projects", section = "projects", indent = 2, padding = 1 },
+        {
+          pane = 1,
+          icon = " ",
+          desc = "Browse Repo",
+          padding = 1,
+          key = "b",
+          action = function()
+            Snacks.gitbrowse()
+          end,
+        },
+        {
+          pane = 1,
+          icon = " ",
+          title = "Git Status",
+          section = "terminal",
+          enabled = function()
+            return Snacks.git.get_root() ~= nil
+          end,
+          cmd = "git status --short --branch --renames",
+          height = 5,
+          padding = 1,
+          ttl = 5 * 60,
+          indent = 3,
+        },
+        { section = "startup" },
+      },
       keys = {
         { key = "g", action = false }, -- Disable 'g' keymap to avoid conflicts
       },
@@ -72,7 +104,20 @@ return {
     quickfile = { enabled = true },
     scope = { enabled = true },
     scroll = { enabled = true },
-    statuscolumn = { enabled = true },
+    statuscolumn = {
+      enabled = true,
+      left = { "mark", "sign" }, -- priority of signs on the left (high to low)
+      right = { "fold", "git" }, -- priority of signs on the right (high to low)
+      folds = {
+        open = false,            -- show open fold icons
+        git_hl = false,          -- use Git Signs hl for fold icons
+      },
+      git = {
+        -- patterns to match Git signs
+        patterns = { "GitSign", "MiniDiffSign" },
+      },
+      refresh = 50, -- refresh at most every 50ms
+    },
     words = { enabled = true },
     styles = {
       notification = {
@@ -656,7 +701,7 @@ return {
         Snacks.toggle.diagnostics():map("<leader>ud")
         Snacks.toggle.line_number():map("<leader>ul")
         Snacks.toggle
-            .option("conceallevel", { off = 0, on = vim.o.conceallevel > 0 and vim.o.conceallevel or 2 })
+            .option("conceallevel", { off = 0, on = 2, name = "Conceal Level" })
             :map("<leader>uc")
         Snacks.toggle.treesitter():map("<leader>uT")
         Snacks.toggle.option("background", { off = "light", on = "dark", name = "Dark Background" }):map("<leader>ub")
