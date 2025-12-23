@@ -19,6 +19,11 @@ local treesitter = {
       "html",
       "css",
       "rust",
+      "markdown",
+      "bash",
+      "yaml",
+      "toml",
+      "norg",
     })
   end,
 }

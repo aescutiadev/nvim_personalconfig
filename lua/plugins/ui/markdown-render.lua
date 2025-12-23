@@ -9,5 +9,7 @@ return {
   end,
   ---@module 'render-markdown'
   ---@type render.md.UserConfig
-  opts = {},
+  opts = {
+    { yaml = { enabled = true } }
+  },
 }
