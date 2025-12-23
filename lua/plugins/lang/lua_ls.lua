@@ -4,7 +4,9 @@ local capabilities = vim.tbl_deep_extend(
   require("blink.cmp").get_lsp_capabilities()
 )
 
-vim.lsp.config("lua_ls", {
+local lsp_name = "lua_ls"
+
+vim.lsp.config(lsp_name, {
   cmd = { "lua-language-server" },
 
   capabilities = capabilities,
@@ -25,6 +27,19 @@ vim.lsp.config("lua_ls", {
 
   settings = {
     Lua = {
+      format = {
+        enable = true,
+        defaultConfig = {
+          indent_style = "space",
+          indent_size = "2",
+          continuation_indent_size = "2",
+
+          max_line_length = "120",
+          break_after_operator = true,
+          break_before_brace = false,
+        },
+      },
+
       codeLens = {
         enable = true,
       },
@@ -48,6 +63,6 @@ vim.lsp.config("lua_ls", {
   },
 })
 
-vim.lsp.enable("lua_ls")
+vim.lsp.enable(lsp_name)
 
 return {}

@@ -107,10 +107,11 @@ opt.iskeyword:append("-")     -- Tratar - como parte de palabras
 vim.opt.inccommand = "split"
 
 -- 🖼️ Interfaz
-opt.cmdheight = 1      -- Altura de línea de comandos (0 = auto)
-opt.laststatus = 3     -- Statusline global (una sola barra)
-opt.showtabline = 1    -- No mostrar tabline por defecto
-opt.winbar = "%=%m %f" -- Winbar simple con nombre de archivo
+opt.cmdheight = 1   -- Altura de línea de comandos (0 = auto)
+opt.laststatus = 3  -- Statusline global (una sola barra)
+opt.showtabline = 2 -- No mostrar tabline por defecto
+vim.o.winbar = nil  -- Desactivar winbar por defecto
+-- opt.winbar = "%=%m %f" -- Winbar simple con nombre de archivo
 
 -- 🎯 Fold (plegado de código)
 opt.foldmethod = "expr"                     -- Usar expresiones para folding
@@ -146,11 +147,11 @@ opt.shortmess:append("I") -- No mostrar intro message
 
 -- 🎨 Cursor shapes (opcional)
 opt.guicursor = {
-  "n-v-c:block",                                 -- Normal, visual, command: block
-  "i-ci-ve:ver25",                               -- Insert, command insert, visual exclusive: vertical bar
-  "r-cr:hor20",                                  -- Replace, command replace: horizontal bar
-  "o:hor50",                                     -- Operator pending: horizontal bar
-  "a:blinkwait700-blinkoff400-blinkon250",       -- All modes: blink settings
+  "n-v-c:block",                                  -- Normal, visual, command: block
+  "i-ci-ve:ver25",                                -- Insert, command insert, visual exclusive: vertical bar
+  "r-cr:hor20",                                   -- Replace, command replace: horizontal bar
+  "o:hor50",                                      -- Operator pending: horizontal bar
+  "a:blinkwait700-blinkoff400-blinkon250",        -- All modes: blink settings
   "sm:block-blinkwait175-blinkoff150-blinkon175", -- Showmatch: block with blink
 }
 

@@ -68,7 +68,6 @@ local treesitter = {
     require("nvim-treesitter").install({
       "lua",
       "regex",
-      "query",
       "latex",
       "norg",
       "typst",
@@ -88,6 +87,7 @@ local treesitter = {
       "bash",
       "yaml",
       "toml",
+      "htmldjango",
     })
   end,
 }

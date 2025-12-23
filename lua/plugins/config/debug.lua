@@ -15,46 +15,50 @@ return {
 
     -- Add your own debuggers here
     'leoluz/nvim-dap-go',
+    'mfussenegger/nvim-dap-python',
+    -- JavaScript Debugger
+    'mxsdev/nvim-dap-vscode-js',
+    'microsoft/vscode-js-debug',
   },
   keys = {
     -- Basic debugging keymaps, feel free to change to your liking!
     {
-      '<F5>',
+      '<leader>dc',
       function()
         require('dap').continue()
       end,
       desc = 'Debug: Start/Continue',
     },
     {
-      '<F1>',
+      '<leader>di',
       function()
         require('dap').step_into()
       end,
       desc = 'Debug: Step Into',
     },
     {
-      '<F2>',
+      '<leader>dv',
       function()
         require('dap').step_over()
       end,
       desc = 'Debug: Step Over',
     },
     {
-      '<F3>',
+      '<leader>do',
       function()
         require('dap').step_out()
       end,
       desc = 'Debug: Step Out',
     },
     {
-      '<leader>b',
+      '<leader>db',
       function()
         require('dap').toggle_breakpoint()
       end,
       desc = 'Debug: Toggle Breakpoint',
     },
     {
-      '<leader>B',
+      '<leader>bB',
       function()
         require('dap').set_breakpoint(vim.fn.input 'Breakpoint condition: ')
       end,
@@ -62,7 +66,7 @@ return {
     },
     -- Toggle to see last session result. Without this, you can't see session output in case of unhandled exception.
     {
-      '<F7>',
+      '<leader>bs',
       function()
         require('dapui').toggle()
       end,
@@ -87,6 +91,8 @@ return {
       ensure_installed = {
         -- Update this to ensure that you have the debuggers for the langs you want
         'delve',
+        'python',
+        'js',
       },
     }
 
@@ -136,5 +142,55 @@ return {
         detached = vim.fn.has 'win32' == 0,
       },
     }
+
+    -- 🐍 Python
+    require('dap-python').setup('python')
+
+    table.insert(dap.configurations.python, {
+      type = 'python',
+      request = 'launch',
+      name = 'Django',
+      program = vim.fn.getcwd() .. '/manage.py',
+      args = { 'runserver', '--noreload' },
+      django = true,
+      justMyCode = false,
+    })
+
+    -- 🟦 JS / TS
+    require('dap-vscode-js').setup {
+      debugger_path = vim.fn.stdpath 'data' .. '/lazy/vscode-js-debug',
+      adapters = {
+        'pwa-node',
+        'pwa-chrome',
+        'pwa-msedge',
+        'node-terminal',
+      },
+    }
+
+    for _, language in ipairs { 'typescript', 'javascript' } do
+      dap.configurations[language] = {
+        {
+          type = 'pwa-node',
+          request = 'launch',
+          name = 'Launch file',
+          program = '${file}',
+          cwd = '${workspaceFolder}',
+        },
+        {
+          type = 'pwa-node',
+          request = 'attach',
+          name = 'Attach',
+          processId = require('dap.utils').pick_process,
+          cwd = '${workspaceFolder}',
+        },
+        {
+          type = 'pwa-chrome',
+          request = 'launch',
+          name = 'Chrome',
+          url = 'http://localhost:3000',
+          webRoot = '${workspaceFolder}',
+        },
+      }
+    end
   end,
 }

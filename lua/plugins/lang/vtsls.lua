@@ -16,6 +16,7 @@ vim.lsp.config("vtsls", {
     typescript = {
       preferences = {
         importModuleSpecifierPreference = "shortest",
+        quotePreference = "auto",
       },
     },
 

@@ -8,6 +8,7 @@ local excludeData = {
   "build",
   ".cache",
   "package-lock.json",
+  "target",
   "pnpm-lock.json",
   "vendor",
   "__pycache__",
@@ -291,9 +292,18 @@ return {
     {
       "<leader>sg",
       function()
-        Snacks.picker.grep()
+        Snacks.picker.grep({
+          exclude = excludeData,
+        })
       end,
       desc = "Grep",
+    },
+    {
+      "<leader>sG",
+      function()
+        Snacks.picker.grep()
+      end,
+      desc = "Total Grep",
     },
     {
       "<leader>sw",
