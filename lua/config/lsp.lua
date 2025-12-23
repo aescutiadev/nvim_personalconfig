@@ -22,6 +22,8 @@ vim.diagnostic.config({
   },
 })
 
+vim.lsp.semantic_tokens.enable = true
+
 -- LSP ATTACH
 vim.api.nvim_create_autocmd('LspAttach', {
   group = vim.api.nvim_create_augroup('blink.lsp', { clear = true }),

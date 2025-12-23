@@ -6,26 +6,105 @@ local treesitter = {
     -- SOLO cosas del manager
     require("nvim-treesitter").setup({
       install_dir = vim.fn.stdpath("data") .. "/site",
+      highlight = {
+        enable = true,
+        additional_vim_regex_highlighting = false,
+      },
+      indent = {
+        enable = true,
+      },
+      textobjects = {
+        select = {
+          enable = true,
+          lookahead = true,
+          keymaps = {
+            ["af"] = "@function.outer",
+            ["if"] = "@function.inner",
+            ["ac"] = "@class.outer",
+            ["ic"] = "@class.inner",
+            ["aa"] = "@parameter.outer",
+            ["ia"] = "@parameter.inner",
+            ["ab"] = "@block.outer",
+            ["ib"] = "@block.inner",
+          },
+        },
+        move = {
+          enable = true,
+          set_jumps = true,
+          goto_next_start = {
+            ["]f"] = "@function.outer",
+            ["]c"] = "@class.outer",
+            ["]a"] = "@parameter.inner",
+          },
+          goto_next_end = {
+            ["]F"] = "@function.outer",
+            ["]C"] = "@class.outer",
+            ["]A"] = "@parameter.inner",
+          },
+          goto_previous_start = {
+            ["[f"] = "@function.outer",
+            ["[c"] = "@class.outer",
+            ["[a"] = "@parameter.inner",
+          },
+          goto_previous_end = {
+            ["[F"] = "@function.outer",
+            ["[C"] = "@class.outer",
+            ["[A"] = "@parameter.inner",
+          },
+        },
+        swap = {
+          enable = true,
+          swap_next = {
+            ["<leader>Aa"] = "@parameter.inner",
+          },
+          swap_previous = {
+            ["<leader>A"] = "@parameter.inner",
+          },
+        },
+      },
     })
 
     -- Parsers a instalar
     require("nvim-treesitter").install({
       "lua",
       "regex",
+      "query",
+      "latex",
+      "norg",
+      "typst",
       "python",
       "javascript",
       "typescript",
       "json",
       "html",
+      "tsx",
+      "jsx",
+      "json",
+      "jsonc",
       "css",
+      "scss",
       "rust",
       "markdown",
       "bash",
       "yaml",
       "toml",
-      "norg",
     })
   end,
 }
 
-return treesitter
+local treesitter_context = {
+  "nvim-treesitter/nvim-treesitter-context",
+  dependencies = { "nvim-treesitter/nvim-treesitter" },
+  opts = {
+    enable = true,
+    max_lines = 8,
+    min_window_height = 0,
+    line_numbers = true,
+    multiline_threshold = 20,
+    trim_scope = "outer",
+    mode = "cursor",
+    separator = nil,
+  },
+}
+
+return { treesitter, treesitter_context }
