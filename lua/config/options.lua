@@ -34,7 +34,7 @@ opt.grepformat = "%f:%l:%c:%m"                         -- Format string for ripg
 -- 🖱️ Interacción y usabilidad
 opt.mouse = "a"                                     -- Habilitar ratón
 opt.showcmd = true                                  -- Ver comandos mientras se tipea
--- opt.clipboard = "unnamedplus"    -- Copiar/pegar al portapapeles del sistema
+-- opt.clipboard = "unnamedplus"                       -- Copiar/pegar al portapapeles del sistema
 opt.confirm = true                                  -- Confirmar al cerrar buffers con cambios
 opt.completeopt = { "menu", "menuone", "noselect" } -- Autocompletado amigable
 -- opt.timeoutlen = 300             -- Delay corto para combinaciones de teclas
