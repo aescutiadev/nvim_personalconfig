@@ -1,13 +1,4 @@
-local treesitter = {
-  'nvim-treesitter/nvim-treesitter',
-  lazy = false,
-  build = ':TSUpdate',
-  config = function()
-    require("editor.treesitter").setup()
-  end,
-}
-
-local blink = {
+return {
   "saghen/blink.cmp",
   dependencies = { "rafamadriz/friendly-snippets" },
   version = "1.*",
@@ -15,7 +6,7 @@ local blink = {
   ---@module 'blink.cmp'
   ---@type blink.cmp.Config
   opts = {
-    keymap = { preset = "default" },
+    keymap = { preset = "super-tab", ["<C-y>"] = { "select_and_accept" } },
     appearance = { nerd_font_variant = "mono" },
     completion = {
       documentation = {
@@ -36,12 +27,4 @@ local blink = {
     fuzzy = { implementation = "prefer_rust" },
   },
   opts_extend = { "sources.default" },
-}
-
-local todocomments = { "folke/todo-comments.nvim", opts = {} }
-
-return {
-  treesitter,
-  blink,
-  todocomments,
 }

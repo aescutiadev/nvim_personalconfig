@@ -1,4 +1,4 @@
-local mason = {
+return {
   "mason-org/mason.nvim",
   opts = {
     ui = {
@@ -9,8 +9,4 @@ local mason = {
       }
     }
   }
-}
-
-return {
-  mason,
 }

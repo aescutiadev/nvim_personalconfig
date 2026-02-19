@@ -33,7 +33,7 @@ function M.setup()
 
       -- Inlay hints toggle
       if client:supports_method("textDocument/inlayHint") then
-        map("<leader>th", function()
+        map("<leader>uH", function()
           vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled({ bufnr = event.buf }), { bufnr = event.buf })
         end, "Toggle inlay hints")
       end
