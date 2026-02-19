@@ -1,0 +1,13 @@
+# lua_ls proyecto local
+.luarc.json
+
+# Archivos compilados de spell
+spell/*.spl
+
+# Plugin auto-generados
+plugin/
+
+# Swap/backup (desactivados pero por seguridad)
+*.swp
+*.swo
+*~

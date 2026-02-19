@@ -1,0 +1,11 @@
+-- Configurar capabilities y handlers
+require("lsp.capabilities").setup()
+require("lsp.handlers").setup()
+
+-- Habilitar servidores LSP instalados con Mason
+vim.lsp.enable("lua_ls")
+vim.lsp.enable("vtsls")
+vim.lsp.enable("html")
+vim.lsp.enable("marksman")
+vim.lsp.enable("astro")
+vim.lsp.enable("html")

@@ -1,4 +1,0 @@
--- lsp.lua - Neovim 0.11+ LSP configuration
--- Note: LspAttach autocmd is now handled in blink-cmp.lua plugin
-
--- LSP DIAGNOSTICS CONFIG

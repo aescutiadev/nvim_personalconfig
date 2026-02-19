@@ -1,0 +1,37 @@
+local root_markers1 = {
+  '.emmyrc.json',
+  '.luarc.json',
+  '.luarc.jsonc',
+}
+local root_markers2 = {
+  '.luacheckrc',
+  '.stylua.toml',
+  'stylua.toml',
+  'selene.toml',
+  'selene.yml',
+}
+
+return {
+  cmd = { "lua-language-server" },
+  filetypes = { "lua" },
+  root_markers = { root_markers1, root_markers2, ".git" },
+  settings = {
+    Lua = {
+      codeLens = { enable = true },
+      hint = { enable = true, semicolon = 'Disable' },
+      diagnostics = {
+        globals = { "vim" },
+      },
+      workspace = {
+        library = vim.api.nvim_get_runtime_file("", true),
+        checkThirdParty = false,
+      },
+      telemetry = {
+        enable = false,
+      },
+      completion = {
+        callSnippet = "Replace",
+      },
+    },
+  },
+}
