@@ -2,7 +2,7 @@ local M = {}
 
 M.ensure_installed = {
   "bash", "c", "css", "html", "javascript", "json", "lua", "markdown", "markdown_inline",
-  "query", "regex", "rust", "scss", "svelte", "toml", "tsx", "typescript",
+  "query", "regex", "rust", "scss", "svelte", "toml", "tsx", "jsx", "typescript", "astro",
   "typst", "vim", "vimdoc", "vue", "yaml",
 }
 

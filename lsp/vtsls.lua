@@ -20,7 +20,7 @@ return {
     local root_markers = { 'package-lock.json', 'yarn.lock', 'pnpm-lock.yaml', 'bun.lockb', 'bun.lock' }
     -- Give the root markers equal priority by wrapping them in a table
     root_markers = vim.fn.has('nvim-0.11.3') == 1 and { root_markers, { '.git' } }
-      or vim.list_extend(root_markers, { '.git' })
+        or vim.list_extend(root_markers, { '.git' })
     -- exclude deno
     local deno_root = vim.fs.root(bufnr, { 'deno.json', 'deno.jsonc' })
     local deno_lock_root = vim.fs.root(bufnr, { 'deno.lock' })
@@ -37,4 +37,31 @@ return {
     -- We fallback to the current working directory if no project root is found
     on_dir(project_root or vim.fn.getcwd())
   end,
+  settings = {
+    typescript = {
+      updateImportsOnFileMove = { enabled = "always" },
+      inlayHints = {
+        enumMemberValues = { enabled = true },
+        functionLikeReturnTypes = { enabled = true },
+        parameterNames = { enabled = "all" },
+        parameterTypes = { enabled = true },
+        propertyDeclarationTypes = { enabled = true },
+        variableTypes = { enabled = true },
+      },
+    },
+    javascript = {
+      updateImportsOnFileMove = { enabled = "always" },
+      inlayHints = {
+        enumMemberValues = { enabled = true },
+        functionLikeReturnTypes = { enabled = true },
+        parameterNames = { enabled = "literals" },
+        parameterTypes = { enabled = true },
+        propertyDeclarationTypes = { enabled = true },
+        variableTypes = { enabled = true },
+      },
+    },
+    vtsls = {
+      enableMoveToFileCodeAction = true,
+    },
+  },
 }
