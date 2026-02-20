@@ -19,17 +19,35 @@ map.set("n", "<leader>w", "<CMD>w<CR>", { desc = "Guardar archivo" })
 map.set("n", "<leader>W", "<CMD>wa<CR>", { desc = "Guardar todos los buffers" })
 
 -- Buffers
--- Keymaps globales con excepción de neo-tree
+-- Navegación usando lista ordenada personalizada
 vim.keymap.set("n", "<Tab>", function()
-  if vim.bo.filetype ~= "neo-tree" then
-    vim.cmd("bnext")
+  if vim.bo.filetype == "neo-tree" then return end
+  local order = (_G._buf_order and #_G._buf_order > 0) and _G._buf_order or {}
+  if #order == 0 then vim.cmd("bnext"); return end
+  local cur = vim.api.nvim_get_current_buf()
+  for i, buf in ipairs(order) do
+    if buf == cur then
+      local next = order[i % #order + 1]
+      vim.api.nvim_set_current_buf(next)
+      return
+    end
   end
+  vim.cmd("bnext")
 end, { desc = "Next buffer" })
 
 vim.keymap.set("n", "<S-Tab>", function()
-  if vim.bo.filetype ~= "neo-tree" then
-    vim.cmd("bprevious")
+  if vim.bo.filetype == "neo-tree" then return end
+  local order = (_G._buf_order and #_G._buf_order > 0) and _G._buf_order or {}
+  if #order == 0 then vim.cmd("bprevious"); return end
+  local cur = vim.api.nvim_get_current_buf()
+  for i, buf in ipairs(order) do
+    if buf == cur then
+      local prev = order[(i - 2) % #order + 1]
+      vim.api.nvim_set_current_buf(prev)
+      return
+    end
   end
+  vim.cmd("bprevious")
 end, { desc = "Previous buffer" })
 
 map.set("n", "<leader>x", "<cmd>bdelete<cr>", { desc = "Delete buffer" })

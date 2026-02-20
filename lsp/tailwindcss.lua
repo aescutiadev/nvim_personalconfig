@@ -7,8 +7,7 @@ return {
     'django-html', 'htmldjango', 'edge', 'eelixir', 'elixir', 'ejs',
     'erb', 'eruby', 'gohtml', 'gohtmltmpl', 'haml', 'handlebars', 'hbs',
     'html', 'htmlangular', 'html-eex', 'heex', 'jade', 'leaf', 'liquid',
-    'markdown', 'mdx', 'mustache', 'njk', 'nunjucks', 'php', 'razor',
-    'slim', 'twig',
+    'markdown', 'mdx', 'mustache', 'njk', 'nunjucks', 'php', 'razor', 'slim', 'twig',
     -- css
     'css', 'less', 'postcss', 'sass', 'scss', 'stylus', 'sugarss',
     -- js

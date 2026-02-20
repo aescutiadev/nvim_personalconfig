@@ -1,6 +1,12 @@
 return {
   "saghen/blink.cmp",
-  dependencies = { "rafamadriz/friendly-snippets" },
+  dependencies = {
+    "rafamadriz/friendly-snippets",
+    {
+      'giuxtaposition/blink-cmp-copilot',
+      dependencies = { 'zbirenbaum/copilot.lua' },
+    },
+  },
   version = "1.*",
   event = "InsertEnter",
   ---@module 'blink.cmp'
@@ -22,7 +28,15 @@ return {
     },
     signature = { enabled = true },
     sources = {
-      default = { "lsp", "path", "snippets", "buffer" },
+      default = { "lsp", "path", "snippets", "buffer", "copilot" },
+      providers = {
+        copilot = {
+          name = 'copilot',
+          module = 'blink-cmp-copilot',
+          score_offset = 100,
+          async = true,
+        },
+      },
     },
     fuzzy = { implementation = "prefer_rust" },
   },

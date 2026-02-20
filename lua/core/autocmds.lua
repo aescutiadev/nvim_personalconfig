@@ -206,3 +206,13 @@ vim.api.nvim_create_autocmd("CmdlineLeave", {
     end)
   end,
 })
+
+-- 12. Aplicar estado global de inlay hints a nuevos buffers con LSP
+vim.api.nvim_create_autocmd("LspAttach", {
+  group = augroup("inlay_hints_global"),
+  callback = function(event)
+    if vim.g.inlay_hints_enabled then
+      vim.lsp.inlay_hint.enable(true, { bufnr = event.buf })
+    end
+  end,
+})

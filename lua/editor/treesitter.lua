@@ -1,9 +1,9 @@
 local M = {}
 
 M.ensure_installed = {
-  "c", "css", "html", "javascript", "lua", "markdown", "markdown_inline",
-  "query", "regex", "scss", "svelte", "tsx", "typescript",
-  "typst", "vim", "vimdoc", "vue",
+  "bash", "c", "css", "html", "javascript", "json", "lua", "markdown", "markdown_inline",
+  "query", "regex", "rust", "scss", "svelte", "toml", "tsx", "typescript",
+  "typst", "vim", "vimdoc", "vue", "yaml",
 }
 
 function M.setup()

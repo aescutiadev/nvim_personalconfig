@@ -234,7 +234,20 @@ return {
           "<leader>uc")
         Snacks.toggle.treesitter():map("<leader>uT")
         Snacks.toggle.option("background", { off = "light", on = "dark", name = "Dark Background" }):map("<leader>ub")
-        Snacks.toggle.inlay_hints():map("<leader>uh")
+        Snacks.toggle({
+          name = "Inlay Hints (Global)",
+          get = function()
+            return vim.g.inlay_hints_enabled or false
+          end,
+          set = function(state)
+            vim.g.inlay_hints_enabled = state
+            for _, buf in ipairs(vim.api.nvim_list_bufs()) do
+              if vim.api.nvim_buf_is_loaded(buf) and #vim.lsp.get_clients({ bufnr = buf }) > 0 then
+                vim.lsp.inlay_hint.enable(state, { bufnr = buf })
+              end
+            end
+          end,
+        }):map("<leader>uh")
         Snacks.toggle.indent():map("<leader>ug")
         Snacks.toggle.dim():map("<leader>uD")
       end,
