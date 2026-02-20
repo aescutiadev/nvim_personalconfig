@@ -63,9 +63,12 @@ vim.api.nvim_create_autocmd("LspProgress", {
   end,
 })
 
--- Iniciar Tree-sitter al abrir un archivo
+-- Iniciar Tree-sitter al abrir un archivo (excepto bigfiles)
 vim.api.nvim_create_autocmd("FileType", {
   callback = function(args)
+    if vim.b[args.buf].bigfile then
+      return
+    end
     pcall(vim.treesitter.start, args.buf)
   end,
 })
@@ -159,7 +162,7 @@ vim.api.nvim_create_autocmd("FileType", {
 -- 7. Activar wrap y spell para archivos de texto
 vim.api.nvim_create_autocmd("FileType", {
   group = augroup("wrap_spell"),
-  pattern = { "text", "plaintex", "typst", "gitcommit", "markdown" },
+  pattern = { "text", "plaintex", "typst" },
   callback = function()
     vim.opt_local.wrap = true
     vim.opt_local.spell = true
@@ -214,5 +217,69 @@ vim.api.nvim_create_autocmd("LspAttach", {
     if vim.g.inlay_hints_enabled then
       vim.lsp.inlay_hint.enable(true, { bufnr = event.buf })
     end
+  end,
+})
+
+-- 13. Format on save (controlado por vim.g.format_on_save)
+vim.api.nvim_create_autocmd("BufWritePre", {
+  group = augroup("format_on_save"),
+  callback = function(event)
+    if not vim.g.format_on_save then
+      return
+    end
+    local clients = vim.lsp.get_clients({ bufnr = event.buf, method = "textDocument/formatting" })
+    if #clients > 0 then
+      vim.lsp.buf.format({ bufnr = event.buf, timeout_ms = 3000 })
+    end
+  end,
+})
+
+-- 13. Optimización para archivos grandes (>1MB)
+vim.api.nvim_create_autocmd("BufReadPre", {
+  group = augroup("bigfile"),
+  callback = function(ev)
+    local file = ev.match
+    local stat = vim.uv.fs_stat(file)
+    if not stat or stat.size <= 1024 * 1024 then
+      return
+    end
+
+    vim.b[ev.buf].bigfile = true
+
+    -- Desactivar syntax y treesitter
+    vim.api.nvim_create_autocmd("BufReadPost", {
+      buffer = ev.buf,
+      once = true,
+      callback = function()
+        vim.cmd("syntax clear")
+        vim.opt_local.syntax = ""
+        pcall(vim.treesitter.stop, ev.buf)
+      end,
+    })
+
+    -- Desactivar features costosas
+    vim.opt_local.foldmethod = "manual"
+    vim.opt_local.foldexpr = ""
+    vim.opt_local.spell = false
+    vim.opt_local.list = false
+    vim.opt_local.conceallevel = 0
+    vim.opt_local.undolevels = 100
+    vim.opt_local.swapfile = false
+    vim.opt_local.synmaxcol = 0
+
+    -- Desactivar matchparen
+    vim.cmd("NoMatchParen")
+
+    -- Detach LSP clients del buffer
+    vim.api.nvim_create_autocmd("LspAttach", {
+      buffer = ev.buf,
+      callback = function(args)
+        vim.schedule(function()
+          vim.lsp.buf_detach_client(ev.buf, args.data.client_id)
+        end)
+      end,
+    })
+
+    vim.notify("⚡ Archivo grande detectado: features desactivadas", vim.log.levels.WARN)
   end,
 })

@@ -7,6 +7,10 @@ vim.diagnostic.config({
     prefix = '●',
   },
   severity_sort = true,
+  float = {
+    border = "rounded",
+    source = true,
+  },
   signs = {
     text = {
       [vim.diagnostic.severity.ERROR] = ' ',

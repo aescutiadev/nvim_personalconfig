@@ -15,6 +15,10 @@
 - ⚡ **Quick Navigation**: [flash.nvim](https://github.com/folke/flash.nvim) for jumping anywhere
 - 📝 **Git Integration**: [gitsigns.nvim](https://github.com/lewis6991/gitsigns.nvim) with inline blame and hunks
 - 🔑 **Keymap Discovery**: [which-key.nvim](https://github.com/folke/which-key.nvim) with helix preset
+- 🤖 **AI Assistant**: [CopilotChat.nvim](https://github.com/CopilotC-Nvim/CopilotChat.nvim) with [MCPHub](https://github.com/ravitemer/mcphub.nvim) integration
+- 📄 **Big File Optimization**: Auto-disables expensive features (treesitter, LSP, syntax) for files >1MB
+- 🔧 **Format on Save**: Toggle with `<leader>uf` (disabled by default)
+- 📁 **Project-local Config**: `exrc` support for per-project `.nvim.lua` files
 
 ### 🔤 Supported Languages
 
@@ -27,6 +31,11 @@
 | **HTML** | `html` | Formatting, embedded languages |
 | **Astro** | `astro` | Full Astro framework support |
 | **Markdown** | `marksman` | Links, references, navigation |
+| **Rust** | `rust_analyzer` | Full Rust support with crates.nvim |
+| **TOML** | `taplo` | TOML validation and formatting |
+| **YAML** | `yamlls` | Schema validation with SchemaStore |
+| **JSON** | `jsonls` | Schema validation with SchemaStore |
+| **Bash** | `bashls` | Shell script support |
 
 ## 🛠️ Installation
 
@@ -73,11 +82,17 @@ nvim
 │   ├── tailwindcss.lua
 │   ├── html.lua
 │   ├── astro.lua
-│   └── marksman.lua
+│   ├── marksman.lua
+│   ├── rust_analyzer.lua
+│   ├── taplo.lua
+│   ├── yamlls.lua
+│   ├── jsonls.lua
+│   └── bashls.lua
 ├── after/ftplugin/             # Per-language buffer-local settings
 │   ├── lua.lua
 │   ├── astro.lua
-│   └── markdown.lua
+│   ├── markdown.lua            # spell en/es
+│   └── gitcommit.lua           # spell en/es
 └── lua/
     ├── core/                   # Core configuration
     │   ├── options.lua         # vim.opt settings
@@ -118,20 +133,23 @@ nvim
             ├── grug-far.lua
             ├── schemastore.lua
             ├── package-info.lua
-            └── tsc.lua
+            ├── tsc.lua
+            ├── crates.lua
+            ├── copilot.lua
+            └── mcphub.lua
 ```
 
 ## ⌨️ Key Mappings
 
-**Leader**: `<Space>` · **Local leader**: `,`
+**Leader**: `<Space>` · **Local leader**: `\`
 
 ### General
 
 | Key | Action |
 |-----|--------|
 | `jk` | Exit insert mode |
-| `<leader>w` | Save file |
-| `<leader>q` | Quit window |
+| `<leader>w` / `<leader>W` | Save file / Save all |
+| `<leader>q` / `<leader>Q` | Quit window / Quit Neovim |
 | `<Esc>` | Clear search highlights |
 
 ### Navigation (Snacks)
@@ -160,6 +178,7 @@ nvim
 |-----|--------|
 | `gd` | Go to definition |
 | `gD` | Go to declaration |
+| `gK` | Signature help |
 | `gr` | References |
 | `gI` | Implementations |
 | `gy` | Type definition |
@@ -168,7 +187,7 @@ nvim
 | `gra` | Code action (built-in) |
 | `<leader>cd` | Show diagnostic float |
 | `<leader>cf` | Format with LSP |
-| `<leader>th` | Toggle inlay hints |
+| `<leader>uH` | Toggle inlay hints |
 
 ### Git
 
@@ -180,6 +199,25 @@ nvim
 | `<leader>ghp` | Preview hunk |
 | `<leader>ghb` | Blame line |
 | `]c` / `[c` | Next/prev git change |
+
+### Editing
+
+| Key | Action |
+|-----|--------|
+| `<A-j>` / `<A-k>` | Move line/selection down/up |
+| `<` / `>` (visual) | Indent keeping selection |
+| `<leader>y` / `<leader>p` | System clipboard copy/paste |
+| `<leader>Y` | Copy line to system clipboard |
+
+### Windows & Splits
+
+| Key | Action |
+|-----|--------|
+| `<C-h/j/k/l>` | Navigate between splits |
+| `<C-Up/Down/Left/Right>` | Resize splits |
+| `<leader>sv` / `<leader>sh` | Split vertical / horizontal |
+| `<leader>se` | Equalize split sizes |
+| `<leader>sx` | Close current split |
 
 ### Search & Replace
 
@@ -205,11 +243,22 @@ nvim
 | Key | Action |
 |-----|--------|
 | `<leader>z` | Zen mode |
-| `<leader>uh` | Toggle inlay hints |
+| `<leader>uf` | Toggle format on save |
+| `<leader>uH` | Toggle inlay hints |
 | `<leader>ud` | Toggle diagnostics |
 | `<leader>ul` | Toggle line numbers |
 | `<leader>uw` | Toggle word wrap |
 | `<leader>us` | Toggle spell check |
+
+### AI (CopilotChat)
+
+| Key | Action |
+|-----|--------|
+| `<leader>ao` | Open chat |
+| `<leader>at` | Toggle chat |
+| `<leader>ar` | Reset chat |
+| `<leader>ap` | Prompt actions |
+| `<leader>aq` | Quick chat |
 
 ## 🔧 Customization
 
@@ -250,6 +299,21 @@ return {
 
 It's auto-discovered by Lazy.nvim via `{ import = "plugins.editor" }`.
 
+### MCPHub (per-project MCP servers)
+
+Create `.mcphub/servers.json` in your project root or use `:MCPHub` to manage servers.
+
+## 📄 Big File Optimization
+
+Files larger than **1MB** automatically disable:
+- Treesitter & syntax highlighting
+- LSP (detaches clients)
+- Folds (switches to manual)
+- Spell, list, conceal
+- Reduced undo levels (100)
+
+A `⚡ Archivo grande detectado` notification appears when active.
+
 ## 🐛 Troubleshooting
 
 | Issue | Command |
@@ -259,6 +323,7 @@ It's auto-discovered by Lazy.nvim via `{ import = "plugins.editor" }`.
 | Treesitter errors | `:TSUpdate` |
 | Plugin load times | `:Lazy profile` |
 | Startup time | `nvim --startuptime startup.log` |
+| MCP servers | `:MCPHub` |
 
 ### Reset
 

@@ -106,7 +106,7 @@ local copilot_chat = {
         {
           prefix .. "p",
           function()
-            require("CopilotChat").select_prompt({ selection = require("CopilotChat.select").buffer })
+            require("CopilotChat").select_prompt({ selection = require("CopilotChat.selection").buffer })
           end,
           desc = "Prompt actions (buffer)",
           mode = "n",
@@ -114,7 +114,7 @@ local copilot_chat = {
         {
           prefix .. "p",
           function()
-            require("CopilotChat").select_prompt({ selection = require("CopilotChat.select").visual })
+            require("CopilotChat").select_prompt({ selection = require("CopilotChat.selection").visual })
           end,
           desc = "Prompt actions (visual)",
           mode = "v",
@@ -124,7 +124,7 @@ local copilot_chat = {
           function()
             vim.ui.input({ prompt = "Quick Chat: " }, function(input)
               if input and input ~= "" then
-                require("CopilotChat").ask(input, { selection = require("CopilotChat.select").buffer })
+                require("CopilotChat").ask(input, { selection = require("CopilotChat.selection").buffer })
               end
             end)
           end,
@@ -136,7 +136,7 @@ local copilot_chat = {
           function()
             vim.ui.input({ prompt = "Quick Chat: " }, function(input)
               if input and input ~= "" then
-                require("CopilotChat").ask(input, { selection = require("CopilotChat.select").visual })
+                require("CopilotChat").ask(input, { selection = require("CopilotChat.selection").visual })
               end
             end)
           end,
@@ -170,6 +170,18 @@ All code comments must be written in English and reflect industry best practices
       },
       separator = "━━",
       auto_fold = true,
+      -- MCPHub integration
+      extensions = {
+        mcphub = {
+          callback = "mcphub.extensions.copilot",
+          opts = {
+            make_request = true,
+            attach = {
+              on_chat_open = true,
+            },
+          },
+        },
+      },
     },
     config = function(_, opts)
       require("CopilotChat").setup(opts)

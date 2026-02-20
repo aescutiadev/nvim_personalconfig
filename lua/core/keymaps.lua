@@ -3,7 +3,7 @@ local map = vim.keymap
 
 -- Cambiar la tecla líder (asegúrate de que esto esté también en init.lua antes de cargar plugins)
 vim.g.mapleader = " "
-vim.g.maplocalleader = ","
+vim.g.maplocalleader = "\\"
 
 -- 🖋️ Modo Insertar
 map.set("i", "jk", "<ESC>", { desc = "Salir a modo normal" })
@@ -71,10 +71,26 @@ map.set("n", "<C-j>", "<C-w>j", { desc = "Ir a ventana abajo" })
 map.set("n", "<C-k>", "<C-w>k", { desc = "Ir a ventana arriba" })
 map.set("n", "<C-l>", "<C-w>l", { desc = "Ir a ventana derecha" })
 
+-- Redimensionar ventanas
+map.set("n", "<C-Up>", "<cmd>resize +2<cr>", { desc = "Aumentar altura" })
+map.set("n", "<C-Down>", "<cmd>resize -2<cr>", { desc = "Reducir altura" })
+map.set("n", "<C-Left>", "<cmd>vertical resize -2<cr>", { desc = "Reducir ancho" })
+map.set("n", "<C-Right>", "<cmd>vertical resize +2<cr>", { desc = "Aumentar ancho" })
+
 -- 📋 Copiar y pegar
 map.set("n", "<leader>Y", '"+Y', { desc = "Copiar línea al portapapeles del sistema" })
 map.set({ "n", "v" }, "<leader>y", '"+y', { desc = "Copiar al portapapeles del sistema" })
 map.set({ "n", "v" }, "<leader>p", '"+p', { desc = "Pegar desde portapapeles" })
+
+-- 🔀 Mover líneas
+map.set("n", "<A-j>", "<cmd>move .+1<cr>==", { desc = "Mover línea abajo" })
+map.set("n", "<A-k>", "<cmd>move .-2<cr>==", { desc = "Mover línea arriba" })
+map.set("v", "<A-j>", ":move '>+1<cr>gv=gv", { desc = "Mover selección abajo", silent = true })
+map.set("v", "<A-k>", ":move '<-2<cr>gv=gv", { desc = "Mover selección arriba", silent = true })
+
+-- Mantener selección al indentar
+map.set("v", "<", "<gv", { desc = "Indentar izquierda" })
+map.set("v", ">", ">gv", { desc = "Indentar derecha" })
 
 -- 🔴 Macro con confirmación
 map.set("n", "q", function()
@@ -91,3 +107,12 @@ end, { desc = "Confirmar antes de grabar macro", expr = true })
 vim.keymap.set({ "n", "v" }, "<leader>cf", function()
   vim.lsp.buf.format({ async = true })
 end, { desc = "Formatear con LSP" })
+
+-- Toggle format on save (inicia desactivado)
+vim.g.format_on_save = false
+
+vim.keymap.set("n", "<leader>uf", function()
+  vim.g.format_on_save = not vim.g.format_on_save
+  local state = vim.g.format_on_save and "activado" or "desactivado"
+  vim.notify("Format on save: " .. state)
+end, { desc = "Toggle format on save" })
