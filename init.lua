@@ -1,6 +1,6 @@
-require("config.options")
-require("config.keymaps")
-require("config.autocmds")
-require("config.lsp")
-require("config.lazy")
-
+require("core.options")
+require("core.keymaps")
+require("core.autocmds")
+require("core.diagnostics")
+require("core.lazy")
+require("lsp")

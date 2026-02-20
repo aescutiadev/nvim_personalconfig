@@ -1,326 +1,337 @@
 # Personal Neovim Configuration
 
-> A modern, modular Neovim configuration built for Neovim 0.11+ with native LSP, advanced UI, and multi-cursor editing.
+> A modern, modular Neovim configuration built for Neovim 0.11.6+ with native LSP, blink.cmp, and domain-based plugin organization.
 
 ## ✨ Features
 
 - 🚀 **Modern Plugin Manager**: [Lazy.nvim](https://github.com/folke/lazy.nvim) for fast plugin loading
-- 🎯 **Smart File Navigation**: [Snacks.nvim](https://github.com/folke/snacks.nvim) with fuzzy finder and live grep
-- 🔧 **Native LSP Support**: Neovim 0.11+ native LSP with `vim.lsp.enable()` and semantic tokens
-- 🌳 **Syntax Highlighting**: [nvim-treesitter](https://github.com/nvim-treesitter/nvim-treesitter) with enhanced parsing
-- 🎭 **Multi-cursor Editing**: [multiple-cursors.nvim](https://github.com/brenton-leighton/multiple-cursors.nvim) with visual mode support
-- 📑 **Buffer Management**: [bufferline.nvim](https://github.com/akinsho/bufferline.nvim) with custom styling
-- 🗂️ **File Explorer**: [neo-tree.nvim](https://github.com/nvim-neo-tree/neo-tree.nvim) with git integration
+- 🎯 **Smart File Navigation**: [Snacks.nvim](https://github.com/folke/snacks.nvim) with fuzzy finder, live grep, git pickers
+- 🔧 **Native LSP Support**: Neovim 0.11.6+ native LSP with `vim.lsp.enable()` — no nvim-lspconfig needed
+- ⚡ **Completion Engine**: [blink.cmp](https://github.com/saghen/blink.cmp) with LSP, snippets, path, and buffer sources
+- 🌳 **Syntax Highlighting**: [nvim-treesitter](https://github.com/nvim-treesitter/nvim-treesitter) with native `vim.treesitter.start()`
+- 🗂️ **File Explorer**: [neo-tree.nvim](https://github.com/nvim-neo-tree/neo-tree.nvim) with git integration and file operations
 - 🔍 **Search & Replace**: [grug-far.nvim](https://github.com/MagicDuck/grug-far.nvim) for project-wide find and replace
-- 🎨 **Modern UI**: Mini.icons, Lualine, and custom highlights
-- 🤖 **AI Integration**: GitHub Copilot with chat interface
+- 🎨 **Catppuccin Mocha**: Beautiful dark theme with LSP and Treesitter integration
 - ⚡ **Quick Navigation**: [flash.nvim](https://github.com/folke/flash.nvim) for jumping anywhere
 - 📝 **Git Integration**: [gitsigns.nvim](https://github.com/lewis6991/gitsigns.nvim) with inline blame and hunks
+- 🔑 **Keymap Discovery**: [which-key.nvim](https://github.com/folke/which-key.nvim) with helix preset
+- 🤖 **AI Assistant**: [CopilotChat.nvim](https://github.com/CopilotC-Nvim/CopilotChat.nvim) with [MCPHub](https://github.com/ravitemer/mcphub.nvim) integration
+- 📄 **Big File Optimization**: Auto-disables expensive features (treesitter, LSP, syntax) for files >1MB
+- 🔧 **Format on Save**: Toggle with `<leader>uf` (disabled by default)
+- 📁 **Project-local Config**: `exrc` support for per-project `.nvim.lua` files
 
 ### 🔤 Supported Languages
 
-- **Lua** - lua_ls with native LSP configuration
-- **Astro** - astro LSP for Astro framework
-- **Markdown** - marksman and mdx_analyzer for Markdown/MDX
-- **HTML** - html LSP for HTML files
-- Additional languages can be easily added via `lua/config/lsp.lua`
+| Language | LSP Server | Features |
+|----------|-----------|----------|
+| **Lua** | `lua_ls` | Neovim-aware diagnostics, completions, formatting |
+| **TypeScript/JavaScript** | `vtsls` | Inlay hints, refactoring, JSX/TSX support |
+| **CSS/SCSS/Less** | `cssls` + `css_variables` | Validation, CSS variables resolution |
+| **Tailwind CSS** | `tailwindcss` | Class completions, lint, multi-framework |
+| **HTML** | `html` | Formatting, embedded languages |
+| **Astro** | `astro` | Full Astro framework support |
+| **Markdown** | `marksman` | Links, references, navigation |
+| **Rust** | `rust_analyzer` | Full Rust support with crates.nvim |
+| **TOML** | `taplo` | TOML validation and formatting |
+| **YAML** | `yamlls` | Schema validation with SchemaStore |
+| **JSON** | `jsonls` | Schema validation with SchemaStore |
+| **Bash** | `bashls` | Shell script support |
 
 ## 🛠️ Installation
 
 ### Prerequisites
 
-Ensure you have the following installed:
-
-- **Neovim** >= 0.11.5 (required for native LSP features)
+- **Neovim** >= 0.11.6
 - **Git**
-- **Node.js** >= 22.0 (for treesitter and some LSP servers)
-- **pnpm** (package manager, managed via packageManager field)
+- **Node.js** >= 22.0 (for some LSP servers)
+- A [Nerd Font](https://www.nerdfonts.com/) for icons
 
-### Step 1: Backup Current Configuration
+### Setup
 
 ```bash
+# Backup existing config
 mv ~/.config/nvim ~/.config/nvim.bak
 mv ~/.local/share/nvim ~/.local/share/nvim.bak
-mv ~/.local/state/nvim ~/.local/state/nvim.bak
-mv ~/.cache/nvim ~/.cache/nvim.bak
-```
 
-### Step 2: Clone This Configuration
-
-```bash
+# Clone
 git clone https://github.com/aescutiadev/nvim_personalconfig ~/.config/nvim
-cd ~/.config/nvim
-```
 
-### Step 3: Start Neovim
-
-```bash
+# Launch (plugins install automatically)
 nvim
 ```
 
-On first launch, Lazy.nvim will automatically install all plugins.
-
-### Step 4: Verify Installation
-
-Run health checks to ensure everything is working correctly:
+### Post-install
 
 ```vim
-:checkhealth lazy
-:checkhealth nvim-treesitter
-:checkhealth lsp
+:Mason                    " Install LSP servers
+:TSInstall lua typescript " Install Treesitter parsers
+:checkhealth             " Verify everything works
 ```
 
-Check LSP status:
+## 🗂️ Project Structure
 
-```vim
-:LspInfo
 ```
-
-## 🎯 Key Features
-
-### 🔧 Native LSP Configuration (Neovim 0.11+)
-
-- **Native LSP** using `vim.lsp.enable()` for automatic server activation
-- **Enhanced capabilities** with semantic tokens and multiline token support
-- **Inlay hints** enabled automatically (disabled for lua, markdown, toml, and help files)
-- **Completion support** with snippet and documentation formatting
-- **LSP handlers** configured in `lua/config/lsp.lua`
-
-### 🎨 UI Enhancements
-
-- **Bufferline** with custom styling and buffer management
-- **Mini.icons** for file type icons throughout the UI
-- **Lualine** status line with custom sections
-- **Neo-tree** file explorer with git integration
-- **Grug-far** for powerful project-wide search and replace
-- **Flash** for quick navigation and search
-
-### 🖱️ Multi-cursor Editing
-
-Advanced multi-cursor capabilities:
-
-- `<C-Down>` / `<C-j>` - Add cursor and move down
-- `<C-Up>` / `<C-k>` - Add cursor and move up
-- `<C-LeftMouse>` - Add cursor at mouse position (normal mode)
-- `<S-LeftMouse>` - Add cursor with selection (insert mode)
-- Visual mode: Select then use `<C-j>` / `<C-k>` for multiple cursors
-
-### 🗂️ Project Structure
-
-```text
 .
-├── init.lua                  # Entry point - loads all config modules
-├── lazy-lock.json            # Plugin version lock file
-├── package.json              # Package manager configuration (pnpm)
-├── LICENSE                   # MIT License
-├── README.md                 # This file
+├── init.lua                    # Entry point
+├── lazy-lock.json              # Plugin version lock
+├── lsp/                        # Native LSP server configs (Neovim 0.11.6)
+│   ├── lua_ls.lua
+│   ├── vtsls.lua
+│   ├── cssls.lua
+│   ├── css_variables.lua
+│   ├── tailwindcss.lua
+│   ├── html.lua
+│   ├── astro.lua
+│   ├── marksman.lua
+│   ├── rust_analyzer.lua
+│   ├── taplo.lua
+│   ├── yamlls.lua
+│   ├── jsonls.lua
+│   └── bashls.lua
+├── after/ftplugin/             # Per-language buffer-local settings
+│   ├── lua.lua
+│   ├── astro.lua
+│   ├── markdown.lua            # spell en/es
+│   └── gitcommit.lua           # spell en/es
 └── lua/
-    ├── config/               # Core Neovim configuration
-    │   ├── autocmds.lua      # Auto-commands and event handlers
-    │   ├── keymaps.lua       # Global keybindings
-    │   ├── lazy.lua          # Lazy.nvim plugin manager setup
-    │   ├── lsp.lua           # Native LSP configuration (0.11+)
-    │   └── options.lua       # Neovim options and settings
-    └── plugins/              # Plugin configurations
-        ├── bufferline.lua    # Buffer tabline
-        ├── copilot/          # GitHub Copilot integration
-        │   └── init.lua
-        ├── flash.lua         # Quick navigation
-        ├── gitsigns.lua      # Git integration
-        ├── grug-far.lua      # Search and replace
-        ├── json/             # JSON language support
-        │   └── init.lua
-        ├── lspkind.lua       # LSP kind icons
-        ├── lualine.lua       # Status line
-        ├── markdown-render.lua # Markdown rendering
-        ├── mini.lua          # Mini.icons for file icons
-        ├── multicursor.lua   # Multiple cursors
-        ├── neo-tree.lua      # File explorer
-        ├── snacks.lua        # File picker and utilities
-        ├── treesitter.lua    # Syntax highlighting
-        ├── ts-utils.lua      # TypeScript utilities
-        └── whichkey.lua      # Key binding helper
+    ├── core/                   # Core configuration
+    │   ├── options.lua         # vim.opt settings
+    │   ├── keymaps.lua         # Global keybindings
+    │   ├── autocmds.lua        # Auto-commands
+    │   ├── diagnostics.lua     # Diagnostic config + keymaps
+    │   └── lazy.lua            # Lazy.nvim bootstrap
+    ├── lsp/                    # LSP logic modules
+    │   ├── init.lua            # vim.lsp.enable() for all servers
+    │   ├── capabilities.lua    # blink.cmp capabilities injection
+    │   └── handlers.lua        # LspAttach: keymaps, document highlight
+    ├── editor/                 # Editor logic modules
+    │   ├── treesitter.lua      # Treesitter setup + ensure_installed
+    │   ├── completion.lua      # Completion settings
+    │   ├── folding.lua         # Fold enhancements
+    │   └── formatting.lua      # Format commands
+    └── plugins/                # Plugin specs (one file per plugin)
+        ├── init.lua            # devicons, mini.icons
+        ├── ui/
+        │   ├── catppuccin.lua
+        │   ├── neo-tree.lua
+        │   ├── snacks.lua
+        │   ├── which-key.lua
+        │   └── lualine.lua
+        ├── editor/
+        │   ├── treesitter.lua
+        │   ├── blink.lua
+        │   ├── gitsigns.lua
+        │   ├── flash.lua
+        │   ├── pairs.lua
+        │   ├── matchup.lua
+        │   ├── template-string.lua
+        │   ├── todo-comments.lua
+        │   └── colorizer.lua
+        ├── lsp/
+        │   └── mason.lua
+        └── tools/
+            ├── grug-far.lua
+            ├── schemastore.lua
+            ├── package-info.lua
+            ├── tsc.lua
+            ├── crates.lua
+            ├── copilot.lua
+            └── mcphub.lua
 ```
 
-### ⌨️ Key Mappings
+## ⌨️ Key Mappings
 
-**Leader key**: `<Space>`  
-**Local leader key**: `,`
+**Leader**: `<Space>` · **Local leader**: `\`
 
-#### General
+### General
 
-- `<leader>w` - Save file
-- `<leader>W` - Save all buffers
-- `<leader>q` - Quit window
-- `<leader>Q` - Quit Neovim
-- `<leader>nc` - Clear search highlights
-- `jk` (insert mode) - Exit to normal mode
-- `<Esc>` - Clear search highlights
+| Key | Action |
+|-----|--------|
+| `jk` | Exit insert mode |
+| `<leader>w` / `<leader>W` | Save file / Save all |
+| `<leader>q` / `<leader>Q` | Quit window / Quit Neovim |
+| `<Esc>` | Clear search highlights |
 
-#### Window Management
+### Navigation (Snacks)
 
-- `<leader>sv` - Split window vertically
-- `<leader>sh` - Split window horizontally
-- `<leader>se` - Equalize window sizes
-- `<leader>sx` - Close current window
-- `<C-h/j/k/l>` - Navigate between windows
+| Key | Action |
+|-----|--------|
+| `,` | Find files |
+| `<leader>/` | Live grep |
+| `<leader>,` | Buffer switcher |
+| `<leader>fs` | Smart find files |
+| `<leader>fg` | Git files |
+| `<leader>fr` | Recent files |
+| `<leader>fp` | Projects |
 
-#### Clipboard Operations
+### File Explorer (Neo-tree)
 
-- `<leader>y` - Copy to system clipboard (normal/visual)
-- `<leader>Y` - Copy line to system clipboard
-- `<leader>p` - Paste from system clipboard
+| Key | Action |
+|-----|--------|
+| `<leader>e` | Toggle file explorer |
+| `<leader><space>` | Float file explorer |
+| `<leader>o` | Focus Neo-tree |
 
-#### Navigation (Snacks)
+### LSP
 
-- `<leader><space>` - Smart file finder
-- `<leader>,` - Buffer switcher
-- `<leader>/` - Live grep in project
-- `<leader>e` - Toggle file explorer (Neo-tree)
-- `<leader>sg` - Git files
-- `<leader>sG` - Git status
+| Key | Action |
+|-----|--------|
+| `gd` | Go to definition |
+| `gD` | Go to declaration |
+| `gK` | Signature help |
+| `gr` | References |
+| `gI` | Implementations |
+| `gy` | Type definition |
+| `K` | Hover documentation |
+| `grn` | Rename (built-in) |
+| `gra` | Code action (built-in) |
+| `<leader>cd` | Show diagnostic float |
+| `<leader>cf` | Format with LSP |
+| `<leader>uH` | Toggle inlay hints |
 
-#### Buffer Management (Bufferline)
+### Git
 
-Configured via `lua/plugins/bufferline.lua` with mouse support and custom styling.
+| Key | Action |
+|-----|--------|
+| `<leader>gg` | Lazygit |
+| `<leader>gs` | Git status |
+| `<leader>gl` | Git log |
+| `<leader>ghp` | Preview hunk |
+| `<leader>ghb` | Blame line |
+| `]c` / `[c` | Next/prev git change |
 
-#### LSP (Native 0.11+)
+### Editing
 
-LSP keymaps are configured in `lua/config/lsp.lua` and attach automatically when LSP starts.
+| Key | Action |
+|-----|--------|
+| `<A-j>` / `<A-k>` | Move line/selection down/up |
+| `<` / `>` (visual) | Indent keeping selection |
+| `<leader>y` / `<leader>p` | System clipboard copy/paste |
+| `<leader>Y` | Copy line to system clipboard |
 
-#### Multi-cursor Operations
+### Windows & Splits
 
-- `<C-Down>` / `<C-j>` - Add cursor and move down (normal mode)
-- `<C-Up>` / `<C-k>` - Add cursor and move up (normal mode)
-- `<C-LeftMouse>` - Add cursor at mouse position (normal mode)
-- `<S-LeftMouse>` - Add cursor at mouse with selection (insert mode)
-- Visual mode: Select text then use `<C-j>` / `<C-k>` for multiple cursors
+| Key | Action |
+|-----|--------|
+| `<C-h/j/k/l>` | Navigate between splits |
+| `<C-Up/Down/Left/Right>` | Resize splits |
+| `<leader>sv` / `<leader>sh` | Split vertical / horizontal |
+| `<leader>se` | Equalize split sizes |
+| `<leader>sx` | Close current split |
 
-#### Git Integration (Gitsigns)
+### Search & Replace
 
-Configured in `lua/plugins/gitsigns.lua` with stage, reset, and blame features.
+| Key | Action |
+|-----|--------|
+| `<leader>rs` | Search/replace workspace |
+| `<leader>rw` | Replace current word |
+| `<leader>rf` | Search/replace in file |
+| `s` / `S` | Flash jump / Treesitter |
 
-#### Search & Replace (Grug-far)
+### Diagnostics
 
-Configured in `lua/plugins/grug-far.lua` for project-wide operations.
+| Key | Action |
+|-----|--------|
+| `<leader>cd` | Diagnostic float (inline) |
+| `<leader>sd` | All diagnostics (picker) |
+| `<leader>sD` | Buffer diagnostics |
+| `]d` / `[d` | Next/prev diagnostic |
+| `<leader>ud` | Toggle diagnostics |
+
+### UI Toggles
+
+| Key | Action |
+|-----|--------|
+| `<leader>z` | Zen mode |
+| `<leader>uf` | Toggle format on save |
+| `<leader>uH` | Toggle inlay hints |
+| `<leader>ud` | Toggle diagnostics |
+| `<leader>ul` | Toggle line numbers |
+| `<leader>uw` | Toggle word wrap |
+| `<leader>us` | Toggle spell check |
+
+### AI (CopilotChat)
+
+| Key | Action |
+|-----|--------|
+| `<leader>ao` | Open chat |
+| `<leader>at` | Toggle chat |
+| `<leader>ar` | Reset chat |
+| `<leader>ap` | Prompt actions |
+| `<leader>aq` | Quick chat |
 
 ## 🔧 Customization
 
 ### Adding a New Language
 
-This configuration uses Neovim 0.11+ native LSP. To add a new language:
-
-1. **Enable the LSP server** in `lua/config/lsp.lua`:
+1. Create `lsp/<server_name>.lua` at the config root:
    ```lua
-   vim.lsp.enable('your_language_server')
-   ```
-
-2. **Add Treesitter parser** in `lua/plugins/treesitter.lua`:
-   ```lua
-   ensure_installed = {
-     -- existing parsers...
-     "your_language",
-   }
-   ```
-
-3. **Create language-specific plugin** (optional):
-   Create `lua/plugins/your_language/init.lua` for additional tooling:
-   ```lua
+   ---@type vim.lsp.Config
    return {
-     {
-       "nvim-treesitter/nvim-treesitter",
-       opts = function(_, opts)
-         vim.list_extend(opts.ensure_installed, { "your_language" })
-         return opts
-       end,
-     },
+     cmd = { 'server-binary', '--stdio' },
+     filetypes = { 'your_language' },
+     root_markers = { 'config.json', '.git' },
+     settings = {},
    }
    ```
 
-### Customizing LSP Behavior
+2. Enable it in `lua/lsp/init.lua`:
+   ```lua
+   vim.lsp.enable('server_name')
+   ```
 
-Edit `lua/config/lsp.lua` to modify:
+3. Add Treesitter parser to `ensure_installed` in `lua/editor/treesitter.lua`
 
-- **Global LSP settings**: Modify the `vim.lsp.config('*', {...})` block
-- **LSP capabilities**: Extend the capabilities table with additional features
-- **Inlay hints**: Add/remove filetypes from `INLAY_HINTS_DISABLED_FT`
-- **Server-specific settings**: Use `vim.lsp.config('server_name', {...})` for individual servers
+4. Optionally create `after/ftplugin/<filetype>.lua` for buffer-local settings
 
-### Customizing UI Elements
+### Adding a New Plugin
 
-- **Bufferline**: Edit `lua/plugins/bufferline.lua` for tab styling
-- **Status line**: Edit `lua/plugins/lualine.lua` for status bar customization
-- **File icons**: Edit `lua/plugins/mini.lua` for icon configuration
-- **File explorer**: Edit `lua/plugins/neo-tree.lua` for tree view settings
-- **Keymaps**: Edit `lua/config/keymaps.lua` for custom key bindings
-- **Options**: Edit `lua/config/options.lua` for Neovim settings
+Create a file in the appropriate domain subdirectory:
+
+```lua
+-- lua/plugins/editor/my-plugin.lua
+return {
+  "author/my-plugin.nvim",
+  event = "VeryLazy",
+  opts = {},
+}
+```
+
+It's auto-discovered by Lazy.nvim via `{ import = "plugins.editor" }`.
+
+### MCPHub (per-project MCP servers)
+
+Create `.mcphub/servers.json` in your project root or use `:MCPHub` to manage servers.
+
+## 📄 Big File Optimization
+
+Files larger than **1MB** automatically disable:
+- Treesitter & syntax highlighting
+- LSP (detaches clients)
+- Folds (switches to manual)
+- Spell, list, conceal
+- Reduced undo levels (100)
+
+A `⚡ Archivo grande detectado` notification appears when active.
 
 ## 🐛 Troubleshooting
 
-### Common Issues
+| Issue | Command |
+|-------|---------|
+| LSP not starting | `:LspInfo` / `:checkhealth lsp` |
+| Plugins not loading | `:Lazy health` / `:Lazy restore` |
+| Treesitter errors | `:TSUpdate` |
+| Plugin load times | `:Lazy profile` |
+| Startup time | `nvim --startuptime startup.log` |
+| MCP servers | `:MCPHub` |
 
-1. **LSP not starting**: 
-   ```vim
-   :LspInfo
-   ```
-   Check if the server is enabled in `lua/config/lsp.lua`
-
-2. **Plugins not loading**: 
-   ```vim
-   :Lazy health
-   :Lazy restore
-   ```
-
-3. **Treesitter errors**: 
-   ```vim
-   :TSUpdate
-   :TSUpdateSync
-   ```
-
-4. **Git integration issues**:
-   ```vim
-   :checkhealth gitsigns
-   ```
-
-5. **Neovim version**: This config requires Neovim 0.11.5+
-   ```bash
-   nvim --version
-   ```
-
-### Reset Configuration
-
-If something goes wrong, you can reset everything:
+### Reset
 
 ```bash
-rm -rf ~/.local/share/nvim
-rm -rf ~/.local/state/nvim
-rm -rf ~/.cache/nvim
-nvim  # Will reinstall all plugins
+rm -rf ~/.local/share/nvim ~/.local/state/nvim ~/.cache/nvim
+nvim  # Reinstalls everything
 ```
-
-### Performance Tips
-
-- Check plugin load times: `:Lazy profile`
-- Disable inlay hints: `:lua vim.lsp.inlay_hint.enable(false)`
-- Update Treesitter parsers: `:TSUpdate all`
-- Check startup time: `nvim --startuptime startup.log`
-
-## 📚 Resources
-
-- [Neovim 0.11 Documentation](https://neovim.io/doc/user/lsp.html) - Native LSP features
-- [Lazy.nvim](https://github.com/folke/lazy.nvim) - Plugin manager
-- [Neovim Treesitter](https://github.com/nvim-treesitter/nvim-treesitter) - Syntax highlighting
-- [Snacks.nvim](https://github.com/folke/snacks.nvim) - Collection of utilities
-- [Multiple Cursors](https://github.com/brenton-leighton/multiple-cursors.nvim) - Multi-cursor editing
-
-## 🤝 Contributing
-
-Contributions, issues, and feature requests are welcome! Feel free to check the [issues page](https://github.com/aescutiadev/nvim_personalconfig/issues).
 
 ## 📝 License
 
-This configuration is available under the MIT License. See [LICENSE](LICENSE) file for details.
-
----
-
-**Note**: This configuration is optimized for Neovim 0.11+ and uses native LSP features with `vim.lsp.enable()`. For older Neovim versions, consider using nvim-lspconfig instead.
+MIT License. See [LICENSE](LICENSE) for details.
