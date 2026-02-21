@@ -113,6 +113,11 @@ Personal Neovim 0.11.6+ configuration using Lazy.nvim. Structure follows domain-
 | Indent | `<` / `>` (visual) | Indent keeping selection |
 | Clipboard | `<leader>y` / `<leader>p` | System clipboard copy/paste |
 | LSP | `gd` / `gD` / `gK` | Definition / Declaration / Signature help |
+| LSP | `<leader>la` / `<leader>ln` | Code action / Rename |
+| LSP | `<leader>lr` / `<leader>li` | References / Implementations |
+| LSP | `<leader>lf` | Format with LSP |
+| LSP | `<leader>lS` / `<leader>lW` | Document / Workspace symbols |
+| LSP | `<leader>lR` | Restart LSP |
 | Format | `<leader>cf` | Format with LSP |
 | Toggles | `<leader>uf` | Toggle format on save |
 | Toggles | `<leader>uH` | Toggle inlay hints |

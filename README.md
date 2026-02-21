@@ -172,7 +172,7 @@ nvim
 | `<leader><space>` | Float file explorer |
 | `<leader>o` | Focus Neo-tree |
 
-### LSP
+### LSP (go-to shortcuts)
 
 | Key | Action |
 |-----|--------|
@@ -185,9 +185,28 @@ nvim
 | `K` | Hover documentation |
 | `grn` | Rename (built-in) |
 | `gra` | Code action (built-in) |
-| `<leader>cd` | Show diagnostic float |
-| `<leader>cf` | Format with LSP |
-| `<leader>uH` | Toggle inlay hints |
+
+### LSP (`<leader>l`)
+
+| Key | Action |
+|-----|--------|
+| `<leader>ld` | Ir a definición |
+| `<leader>lD` | Ir a declaración |
+| `<leader>lr` | Referencias |
+| `<leader>li` | Implementaciones |
+| `<leader>lt` | Type definition |
+| `<leader>lI` | Llamadas entrantes |
+| `<leader>lO` | Llamadas salientes |
+| `<leader>la` | Code action (n/v) |
+| `<leader>ln` | Renombrar símbolo |
+| `<leader>lf` | Formatear con LSP (n/v) |
+| `<leader>lk` | Hover documentación |
+| `<leader>ls` | Signature help |
+| `<leader>lS` | Símbolos del documento |
+| `<leader>lW` | Símbolos del workspace |
+| `<leader>ll` | Diagnóstico en línea (float) |
+| `<leader>lq` | Diagnósticos a loclist |
+| `<leader>lR` | Reiniciar LSP |
 
 ### Git
 
