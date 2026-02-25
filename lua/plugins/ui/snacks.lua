@@ -7,6 +7,8 @@ local excludeData = {
   "package-lock.json",
   "target",
   "pnpm-lock.json",
+  "bun.lock",
+  "yarn.lock",
   "vendor",
   "__pycache__",
   ".DS_Store",
