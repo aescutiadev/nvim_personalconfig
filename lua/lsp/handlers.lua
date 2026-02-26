@@ -15,7 +15,7 @@ function M.setup()
       map("gd", vim.lsp.buf.definition, "Ir a definición")
       map("gD", vim.lsp.buf.declaration, "Ir a declaración")
       map("gK", vim.lsp.buf.signature_help, "Signature help")
-      map("<leader>D", vim.lsp.buf.type_definition, "Type definition")
+      -- map("<leader>lT", vim.lsp.buf.type_definition, "Type definition")
 
       -- 🔧 Grupo <leader>l — Acciones LSP centralizadas
       -- Navegación
