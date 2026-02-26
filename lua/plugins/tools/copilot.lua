@@ -106,7 +106,7 @@ local copilot_chat = {
         {
           prefix .. "p",
           function()
-            require("CopilotChat").select_prompt({ selection = require("CopilotChat.selection").buffer })
+            require("CopilotChat").select_prompt({ selection = require("CopilotChat.select").buffer })
           end,
           desc = "Prompt actions (buffer)",
           mode = "n",
@@ -114,7 +114,7 @@ local copilot_chat = {
         {
           prefix .. "p",
           function()
-            require("CopilotChat").select_prompt({ selection = require("CopilotChat.selection").visual })
+            require("CopilotChat").select_prompt({ selection = require("CopilotChat.select").visual })
           end,
           desc = "Prompt actions (visual)",
           mode = "v",
@@ -124,7 +124,7 @@ local copilot_chat = {
           function()
             vim.ui.input({ prompt = "Quick Chat: " }, function(input)
               if input and input ~= "" then
-                require("CopilotChat").ask(input, { selection = require("CopilotChat.selection").buffer })
+                require("CopilotChat").ask(input, { selection = require("CopilotChat.select").buffer })
               end
             end)
           end,
@@ -136,7 +136,7 @@ local copilot_chat = {
           function()
             vim.ui.input({ prompt = "Quick Chat: " }, function(input)
               if input and input ~= "" then
-                require("CopilotChat").ask(input, { selection = require("CopilotChat.selection").visual })
+                require("CopilotChat").ask(input, { selection = require("CopilotChat.select").visual })
               end
             end)
           end,
@@ -146,7 +146,7 @@ local copilot_chat = {
       }
     end,
     opts = {
-      model = "claude-sonnet-4.5", -- Cambia a tu modelo preferido claude-sonnet-4.5
+      model = "claude-sonnet-4.6", -- Cambia a tu modelo preferido claude-sonnet-4.5
       prompts = prompts,
       system_prompt = [[
 You are an expert in Clean Architecture, scalable software design, and high-performance systems programming. You specialize in HTML, CSS, Tailwind, JavaScript, TypeScript, React, Vue, Angular, Svelte, PHP, Python, Rust, SQL and NoSQL databases, and frameworks such as Next.js, NestJS, Nuxt, Adonis, Laravel, Django, and Node.js.
