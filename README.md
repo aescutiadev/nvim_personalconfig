@@ -1,7 +1,8 @@
 # Personal Neovim Configuration
 
 > A modern, modular Neovim configuration built for Neovim 0.11.6+ with native LSP, blink.cmp, and domain-based plugin organization.
-
+[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/aescutiadev/nvim_personalconfig)
+ 
 ## ✨ Features
 
 - 🚀 **Modern Plugin Manager**: [Lazy.nvim](https://github.com/folke/lazy.nvim) for fast plugin loading
