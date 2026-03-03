@@ -12,8 +12,8 @@ function M.setup()
       end
 
       -- Navegación (complementa los defaults de Neovim 0.11: K, grn, gra, grr, gri)
-      map("gd", vim.lsp.buf.definition, "Ir a definición")
-      map("gD", vim.lsp.buf.declaration, "Ir a declaración")
+      -- map("gd", vim.lsp.buf.definition, "Ir a definición")
+      -- map("gD", vim.lsp.buf.declaration, "Ir a declaración")
       map("gK", vim.lsp.buf.signature_help, "Signature help")
       -- map("<leader>lT", vim.lsp.buf.type_definition, "Type definition")
 

@@ -106,7 +106,7 @@ return {
   keys = {
     -- Top Pickers & Explorer
     { "<leader>fs", function() Snacks.picker.smart() end,                         desc = "Smart Find Files" },
-    { "<leader>,",  function() Snacks.picker.buffers() end,                       desc = "Buffers" },
+    { "<leader>,",  function() Snacks.picker.buffers({ current = false }) end,    desc = "Buffers" },
     { "<leader>/",  function() Snacks.picker.grep({ exclude = excludeData }) end, desc = "Grep" },
     { "<leader>:",  function() Snacks.picker.command_history() end,               desc = "Command History" },
     { "<leader>n",  function() Snacks.picker.notifications() end,                 desc = "Notification History" },
@@ -122,7 +122,7 @@ return {
       desc = "Find Files"
     },
     { "<leader>fc", function() Snacks.picker.files({ cwd = vim.fn.stdpath("config") }) end, desc = "Find Config File" },
-    { "<leader>fb", function() Snacks.picker.buffers() end,                                 desc = "Buffers" },
+    { "<leader>fb", function() Snacks.picker.buffers({ current = false }) end,              desc = "Buffers" },
     { "<leader>fg", function() Snacks.picker.git_files() end,                               desc = "Find Git Files" },
     { "<leader>fp", function() Snacks.picker.projects() end,                                desc = "Projects" },
     { "<leader>fr", function() Snacks.picker.recent() end,                                  desc = "Recent" },
@@ -143,7 +143,7 @@ return {
     { "<leader>sb", function() Snacks.picker.lines() end,                                   desc = "Buffer Lines" },
     { "<leader>sB", function() Snacks.picker.grep_buffers() end,                            desc = "Grep Open Buffers" },
     { "<leader>sg", function() Snacks.picker.grep({ exclude = excludeData }) end,           desc = "Grep" },
-    { "<leader>sw", function() Snacks.picker.grep_word() end,                               desc = "Visual selection or word",   mode = { "n", "x" } },
+    { "<leader>sw", function() Snacks.picker.grep_word({ exclude = excludeData }) end,      desc = "Visual selection or word",   mode = { "n", "x" } },
     -- search
     { '<leader>s"', function() Snacks.picker.registers() end,                               desc = "Registers" },
     { '<leader>s/', function() Snacks.picker.search_history() end,                          desc = "Search History" },
