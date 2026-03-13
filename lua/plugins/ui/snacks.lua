@@ -91,7 +91,7 @@ return {
       enabled = true,
       timeout = 6000,
     },
-    picker = { enabled = true },
+    picker = { enabled = true, use_icons = true, ui_select = true },
     quickfile = { enabled = true },
     scope = { enabled = true },
     scroll = { enabled = true },

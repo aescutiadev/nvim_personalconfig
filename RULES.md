@@ -25,7 +25,8 @@ Personal Neovim 0.11.6+ configuration using Lazy.nvim. Structure follows domain-
 │   ├── taplo.lua
 │   ├── yamlls.lua
 │   ├── jsonls.lua
-│   └── bashls.lua
+│   ├── bashls.lua
+│   └── intelephense.lua
 ├── after/ftplugin/             # Per-language buffer-local settings
 │   ├── lua.lua
 │   ├── astro.lua
@@ -52,7 +53,7 @@ Personal Neovim 0.11.6+ configuration using Lazy.nvim. Structure follows domain-
         ├── ui/                 # catppuccin, neo-tree, snacks, which-key, lualine
         ├── editor/             # treesitter, blink, gitsigns, flash, pairs, matchup, etc.
         ├── lsp/                # mason
-        └── tools/              # grug-far, schemastore, package-info, tsc, copilot, mcphub
+        └── tools/              # grug-far, schemastore, package-info, tsc, copilot, mcphub, laravel
 ```
 
 ### Load order (`init.lua`)
@@ -72,6 +73,9 @@ Personal Neovim 0.11.6+ configuration using Lazy.nvim. Structure follows domain-
 - **Catppuccin Mocha** — colorscheme
 - **MCPHub** — MCP server integration (per-project `.mcphub/servers.json`)
 - **CopilotChat** — AI chat with MCPHub extension
+- **Laravel.nvim** — Artisan, routes, views, make pickers (Snacks integration)
+- **blade-nav** — Blade template navigation with blink.cmp
+- **laravel-ide-helper** — Generate model IDE helpers
 - No nvim-lspconfig — uses native `vim.lsp.enable()`
 
 ## Conventions
