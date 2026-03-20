@@ -163,10 +163,26 @@ nvim
 | `,` | Find files |
 | `<leader>/` | Live grep |
 | `<leader>,` | Buffer switcher |
+| `<leader>bd` | Delete all buffers |
 | `<leader>fs` | Smart find files |
 | `<leader>fg` | Git files |
 | `<leader>fr` | Recent files |
 | `<leader>fp` | Projects |
+
+### Buffers
+
+| Key | Action |
+|-----|--------|
+| `<Tab>`    | Next buffer |
+| `<S-Tab>`    | Previous buffer |
+| `<leader>x"` | Delete buffer |
+| `<leader>X"` | Force delete buffer |
+| `<leader>bd` | Delete all buffers |
+| `<leader>bb` | List buffers |
+| `<leader>bp` | Go to previous buffer |
+| `<leader>b<` | Move buffer to left |
+| `<leader>b>` | Move buffer to right |
+
 
 ### File Explorer (Neo-tree)
 
