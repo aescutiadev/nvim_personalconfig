@@ -52,6 +52,7 @@ end, { desc = "Previous buffer" })
 
 map.set("n", "<leader>x", "<cmd>bdelete<cr>", { desc = "Delete buffer" })
 map.set("n", "<leader>X", "<cmd>bdelete!<cr>", { desc = "Force delete buffer" })
+map.set("n", "<leader>bd", "<cmd>%bdelete<cr>", { desc = "Delete all buffers" })
 map.set("n", "<leader>bb", "<cmd>ls<cr>", { desc = "List buffers" })
 map.set("n", "<leader>bp", "<cmd>b#<cr>", { desc = "Go to previos buffer" })
 

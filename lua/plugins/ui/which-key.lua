@@ -17,6 +17,7 @@ return {
       { "<leader>g", group = "git", icon = "󰊢" },
       { "<leader>h", group = "git [h]unks", icon = "󰊢" },
       { "<leader>l", group = "lsp", icon = "󰒋" },
+      { "<leader>L", group = "Laravel", icon = "󰘐" },
       { "<leader>n", group = "notifications", icon = "󰎟" },
       { "<leader>r", group = "replace and search", icon = "󰍉" },
       { "<leader>m", group = "multicursor", icon = "󰇀" },

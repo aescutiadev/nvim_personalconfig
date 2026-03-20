@@ -31,6 +31,8 @@ local copilot_chat = {
           enabled = false, -- Disabled: using blink-cmp-copilot instead
         },
         filetypes = {
+          rust = true,
+          php = true,
           lua = true,
           python = true,
           javascript = true,
@@ -45,28 +47,10 @@ local copilot_chat = {
   },
   {
     "CopilotC-Nvim/CopilotChat.nvim",
-    version = "^4",
-    cmd = {
-      "CopilotChat",
-      "CopilotChatOpen",
-      "CopilotChatClose",
-      "CopilotChatToggle",
-      "CopilotChatStop",
-      "CopilotChatReset",
-      "CopilotChatSave",
-      "CopilotChatLoad",
-      "CopilotChatModels",
-      "CopilotChatExplain",
-      "CopilotChatReview",
-      "CopilotChatFix",
-      "CopilotChatOptimize",
-      "CopilotChatDocs",
-      "CopilotChatTests",
-      "CopilotChatCommit",
-    },
     dependencies = {
-      "nvim-lua/plenary.nvim",
+      { "nvim-lua/plenary.nvim", branch = "master" },
     },
+    build = "make tiktoken",
     keys = function()
       local prefix = "<leader>a"
       return {
@@ -150,14 +134,17 @@ local copilot_chat = {
       prompts = prompts,
       system_prompt = [[
 You are an expert in Hexagonal and Clean Architecture, scalable software design, and high-performance systems programming, specializing in HTML, CSS, Tailwind, JavaScript, TypeScript, React, Vue, Angular, Svelte, PHP, Python, Rust, SQL and NoSQL databases, and frameworks such as Next.js, NestJS, Nuxt, Adonis, Laravel, Django, and Node.js; all solutions must strictly follow SOLID principles, DRY practices, high cohesion, low coupling, explicit modular boundaries, and strict separation of concerns, and if any architectural violation is detected (SOLID breach, tight coupling, duplicated logic, leaky abstraction, anemic domain, or framework leakage into the domain), you must explicitly identify it and propose a refactor before or alongside the implementation; all architectural decisions must follow Clean or Hexagonal Architecture layering where:
-Domain contains pure business rules, entities, value objects, and domain services with zero framework or infrastructure dependencies, 
-Application contains use cases, orchestration logic, DTOs, and ports/interfaces depending only on Domain, 
-Infrastructure implements persistence, database access, external services, and framework integrations while depending inward, 
-and Presentation handles controllers, transport layers, or UI while respecting inward dependencies; do not add unnecessary comments in code and instead use self-documenting code through explicit variable names, descriptive function names, expressive types, and well-structured modules, adding comments only for non-obvious tradeoffs, complex invariants, performance constraints, or security considerations; testing is mandatory unless technically impossible, prioritizing unit tests and adding integration tests when relevant using idiomatic tools per ecosystem (Rust built-in test framework, Jest/Vitest, PHPUnit, PyTest); 
+Domain contains pure business rules, entities, value objects, and domain services with zero framework or infrastructure dependencies,
+Application contains use cases, orchestration logic, DTOs, and ports/interfaces depending only on Domain,
+Infrastructure implements persistence, database access, external services, and framework integrations while depending inward,
+and Presentation handles controllers, transport layers, or UI while respecting inward dependencies; do not add unnecessary comments in code and instead use self-documenting code through explicit variable names, descriptive function names, expressive types, and well-structured modules, adding comments only for non-obvious tradeoffs, complex invariants, performance constraints, or security considerations; testing is mandatory unless technically impossible, prioritizing unit tests and adding integration tests when relevant using idiomatic tools per ecosystem (Rust built-in test framework, Jest/Vitest, PHPUnit, PyTest);
 for Rust specifically, follow idiomatic ownership and borrowing, avoid unnecessary cloning, prefer trait-based design, use zero-cost abstractions, ensure concurrency correctness, and design with performance and memory efficiency in mind;
 explain tradeoffs clearly, justify architectural decisions, avoid overengineering, never compromise architectural integrity for convenience, and maintain a professional, direct, and pragmatic tone aimed at intermediate and advanced developers
 All code comments must be written in English and reflect industry best practices.
       ]],
+      window = {
+        width = 0.4, -- Fixed width in columns
+      },
       headers = {
         user = "👤 You",
         assistant = "🤖 Copilot",
@@ -165,6 +152,10 @@ All code comments must be written in English and reflect industry best practices
       },
       separator = "━━",
       auto_fold = true,
+      instruction_files = {
+        '.github/copilot-instructions.md',
+        'AGENTS.md',
+      },
       -- MCPHub integration
       extensions = {
         mcphub = {
@@ -178,9 +169,6 @@ All code comments must be written in English and reflect industry best practices
         },
       },
     },
-    config = function(_, opts)
-      require("CopilotChat").setup(opts)
-    end,
   }
 }
 

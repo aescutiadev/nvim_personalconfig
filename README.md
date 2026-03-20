@@ -36,6 +36,8 @@
 | **YAML** | `yamlls` | Schema validation with SchemaStore |
 | **JSON** | `jsonls` | Schema validation with SchemaStore |
 | **Bash** | `bashls` | Shell script support |
+| **PHP** | `intelephense` | Autocompletado, diagnósticos, refactors, indexación |
+| **Laravel/Blade** | `laravel.nvim` + `blade-nav` | Artisan, routes, views, Blade navigation, IDE helper |
 
 ## 🛠️ Installation
 
@@ -87,7 +89,8 @@ nvim
 │   ├── taplo.lua
 │   ├── yamlls.lua
 │   ├── jsonls.lua
-│   └── bashls.lua
+│   ├── bashls.lua
+│   └── intelephense.lua
 ├── after/ftplugin/             # Per-language buffer-local settings
 │   ├── lua.lua
 │   ├── astro.lua
@@ -135,6 +138,7 @@ nvim
             ├── package-info.lua
             ├── tsc.lua
             ├── crates.lua
+            ├── laravel.lua
             ├── copilot.lua
             └── mcphub.lua
 ```
@@ -159,10 +163,26 @@ nvim
 | `,` | Find files |
 | `<leader>/` | Live grep |
 | `<leader>,` | Buffer switcher |
+| `<leader>bd` | Delete all buffers |
 | `<leader>fs` | Smart find files |
 | `<leader>fg` | Git files |
 | `<leader>fr` | Recent files |
 | `<leader>fp` | Projects |
+
+### Buffers
+
+| Key | Action |
+|-----|--------|
+| `<Tab>`    | Next buffer |
+| `<S-Tab>`    | Previous buffer |
+| `<leader>x"` | Delete buffer |
+| `<leader>X"` | Force delete buffer |
+| `<leader>bd` | Delete all buffers |
+| `<leader>bb` | List buffers |
+| `<leader>bp` | Go to previous buffer |
+| `<leader>b<` | Move buffer to left |
+| `<leader>b>` | Move buffer to right |
+
 
 ### File Explorer (Neo-tree)
 
@@ -268,6 +288,24 @@ nvim
 | `<leader>ul` | Toggle line numbers |
 | `<leader>uw` | Toggle word wrap |
 | `<leader>us` | Toggle spell check |
+
+### Laravel (`<leader>L`)
+
+| Key | Action |
+|-----|--------|
+| `<leader>Ll` | Laravel picker |
+| `<leader>La` | Artisan picker |
+| `<leader>Lr` | Routes picker |
+| `<leader>Lm` | Make picker |
+| `<leader>Lc` | Commands picker |
+| `<leader>Lo` | Resources picker |
+| `<leader>Lp` | Command center |
+| `<leader>Lu` | Artisan hub |
+| `<leader>Lt` | Actions picker |
+| `<leader>Lh` | Documentation |
+| `<leader>Lgm` | Generate IDE helper (current model) |
+| `<leader>LgM` | Generate IDE helper (all models) |
+| `<C-g>` | View finder |
 
 ### AI (CopilotChat)
 
