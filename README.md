@@ -1,12 +1,12 @@
 # Personal Neovim Configuration
 
-> A modern, modular Neovim configuration built for Neovim 0.11.6+ with native LSP, blink.cmp, and domain-based plugin organization.
+> A modern, modular Neovim configuration built for Neovim 0.12+ with native LSP, blink.cmp, and domain-based plugin organization.
 
 ## ✨ Features
 
 - 🚀 **Modern Plugin Manager**: [Lazy.nvim](https://github.com/folke/lazy.nvim) for fast plugin loading
 - 🎯 **Smart File Navigation**: [Snacks.nvim](https://github.com/folke/snacks.nvim) with fuzzy finder, live grep, git pickers
-- 🔧 **Native LSP Support**: Neovim 0.11.6+ native LSP with `vim.lsp.enable()` — no nvim-lspconfig needed
+- 🔧 **Native LSP Support**: Neovim 0.12 native LSP with `vim.lsp.enable()` — no nvim-lspconfig needed
 - ⚡ **Completion Engine**: [blink.cmp](https://github.com/saghen/blink.cmp) with LSP, snippets, path, and buffer sources
 - 🌳 **Syntax Highlighting**: [nvim-treesitter](https://github.com/nvim-treesitter/nvim-treesitter) with native `vim.treesitter.start()`
 - 🗂️ **File Explorer**: [neo-tree.nvim](https://github.com/nvim-neo-tree/neo-tree.nvim) with git integration and file operations
@@ -19,6 +19,17 @@
 - 📄 **Big File Optimization**: Auto-disables expensive features (treesitter, LSP, syntax) for files >1MB
 - 🔧 **Format on Save**: Toggle with `<leader>uf` (disabled by default)
 - 📁 **Project-local Config**: `exrc` support for per-project `.nvim.lua` files
+
+### 🆕 Neovim 0.12 Highlights
+
+- **Popup menu border**: `pumborder = 'rounded'` for native completion popup styling
+- **Proximity-sorted completion**: `nearest` in `completeopt` for context-aware ordering
+- **New default LSP mappings**: `grt` (type definition), `grx` (run codelens), `gO` (document symbols), `Ctrl-S` (signature help)
+- **Built-in incremental selection**: `an`/`in` (expand/shrink) and `]n`/`[n` (sibling) in visual mode via Treesitter
+- **Built-in `:Undotree`** and **`:DiffTool`** plugins available via `:packadd`
+- **`vim.net.request()`**: Built-in HTTP client
+- **`vim.diagnostic.status()`** / **`vim.lsp.status()`**: Statusline integration APIs
+- **Markdown highlighting by default**: Treesitter-based, no extra setup needed
 
 ### 🔤 Supported Languages
 
@@ -44,7 +55,7 @@
 
 ### Prerequisites
 
-- **Neovim** >= 0.11.6
+- **Neovim** >= 0.12
 - **Git**
 - **Node.js** >= 22.0 (for some LSP servers)
 - A [Nerd Font](https://www.nerdfonts.com/) for icons
@@ -77,7 +88,7 @@ nvim
 .
 ├── init.lua                    # Entry point
 ├── lazy-lock.json              # Plugin version lock
-├── lsp/                        # Native LSP server configs (Neovim 0.11.6)
+├── lsp/                        # Native LSP server configs (Neovim 0.12)
 │   ├── lua_ls.lua
 │   ├── vtsls.lua
 │   ├── cssls.lua
@@ -207,6 +218,10 @@ nvim
 | `K` | Hover documentation |
 | `grn` | Rename (built-in) |
 | `gra` | Code action (built-in) |
+| `grt` | Type definition (built-in 0.12) |
+| `grx` | Run codelens (built-in 0.12) |
+| `gO` | Document symbols (built-in 0.12) |
+| `Ctrl-S` | Signature help in insert mode (built-in 0.12) |
 
 ### LSP (`<leader>l`)
 
@@ -379,7 +394,7 @@ A `⚡ Archivo grande detectado` notification appears when active.
 
 | Issue | Command |
 |-------|---------|
-| LSP not starting | `:LspInfo` / `:checkhealth lsp` |
+| LSP not starting | `:checkhealth vim.lsp` |
 | Plugins not loading | `:Lazy health` / `:Lazy restore` |
 | Treesitter errors | `:TSUpdate` |
 | Plugin load times | `:Lazy profile` |

@@ -4,14 +4,14 @@ function M.setup()
   vim.api.nvim_create_autocmd("LspAttach", {
     group = vim.api.nvim_create_augroup("LspHandlers", { clear = true }),
     callback = function(event)
-      local client = vim.lsp.get_client_by_id(event.data.client_id)
+      local client = vim.lsp.get_clients({ id = event.data.client_id })[1]
       if not client then return end
 
       local map = function(keys, func, desc, modes)
         vim.keymap.set(modes or "n", keys, func, { buffer = event.buf, desc = "LSP: " .. desc })
       end
 
-      -- Navegación (complementa los defaults de Neovim 0.11: K, grn, gra, grr, gri)
+      -- Navegación (complementa los defaults de Neovim 0.12: K, grn, gra, grr, gri, grt, grx, gO, Ctrl-S)
       -- map("gd", vim.lsp.buf.definition, "Ir a definición")
       -- map("gD", vim.lsp.buf.declaration, "Ir a declaración")
       map("gK", vim.lsp.buf.signature_help, "Signature help")
@@ -46,7 +46,7 @@ function M.setup()
       map("<leader>lR", function()
         local clients = vim.lsp.get_clients({ bufnr = event.buf })
         for _, c in ipairs(clients) do
-          vim.lsp.stop_client(c.id)
+          c:stop()
         end
         vim.defer_fn(function() vim.cmd("edit") end, 500)
         vim.notify("LSP reiniciado", vim.log.levels.INFO)

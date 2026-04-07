@@ -2,7 +2,7 @@
 
 ## Architecture
 
-Personal Neovim 0.11.6+ configuration using Lazy.nvim. Structure follows domain-based organization per `RULES.md`.
+Personal Neovim 0.12+ configuration using Lazy.nvim. Structure follows domain-based organization per `RULES.md`.
 
 **Load order** (`init.lua`):
 1. `core.options` — editor settings (`vim.opt`)
@@ -26,7 +26,7 @@ Personal Neovim 0.11.6+ configuration using Lazy.nvim. Structure follows domain-
 **Native LSP server configs** (`lsp/` at config root):
 - One file per server (e.g., `lsp/lua_ls.lua`, `lsp/vtsls.lua`, `lsp/tailwindcss.lua`)
 - Each returns a `vim.lsp.Config` table with `cmd`, `filetypes`, `root_markers`, and `settings`
-- Auto-discovered by Neovim 0.11.6
+- Auto-discovered by Neovim 0.12
 - Enable servers via `vim.lsp.enable()` in `lua/lsp/init.lua`
 
 **Filetype overrides**: `after/ftplugin/` for per-language buffer-local settings.
@@ -37,6 +37,17 @@ Personal Neovim 0.11.6+ configuration using Lazy.nvim. Structure follows domain-
 - **blink.cmp** — completion engine with LSP, snippets, path, buffer sources
 - **Catppuccin Mocha** — colorscheme
 - No nvim-lspconfig — uses native `vim.lsp.enable()`
+
+## Neovim 0.12 APIs
+
+- Use `vim.lsp.get_clients()` instead of deprecated `vim.lsp.get_client_by_id()`
+- Use `client:stop()` instead of deprecated `vim.lsp.stop_client()`
+- Use `vim.hl.on_yank()` directly (no compatibility shim needed)
+- Use `vim.diagnostic.config()` with `signs.text` — never `:sign-define`
+- `vim.treesitter.get_parser()` returns `nil` on failure (doesn't throw)
+- `vim.text.diff()` replaces `vim.diff()`
+- New options: `pumborder`, `pummaxwidth`, `autocomplete`, `nearest` in `completeopt`
+- Built-in LSP defaults: `grt` (type def), `grx` (codelens), `gO` (symbols), `Ctrl-S` (signature help)
 
 ## Conventions
 

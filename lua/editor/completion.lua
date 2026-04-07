@@ -3,7 +3,7 @@
 local M = {}
 
 function M.setup()
-  vim.opt.completeopt = { "menu", "menuone", "noselect" }
+  vim.opt.completeopt = { "menu", "menuone", "noselect", "nearest" }
   vim.opt.pumheight = 15
 end
 

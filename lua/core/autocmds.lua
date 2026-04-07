@@ -19,7 +19,7 @@ local progress = vim.defaulttable()
 vim.api.nvim_create_autocmd("LspProgress", {
   ---@param ev {data: {client_id: integer, params: lsp.ProgressParams}}
   callback = function(ev)
-    local client = vim.lsp.get_client_by_id(ev.data.client_id)
+    local client = vim.lsp.get_clients({ id = ev.data.client_id })[1]
     local value = ev.data.params
         .value --[[@as {percentage?: number, title?: string, message?: string, kind: "begin" | "report" | "end"}]]
     if not client or type(value) ~= "table" then
@@ -87,7 +87,7 @@ vim.api.nvim_create_autocmd({ "FocusGained", "TermClose", "TermLeave" }, {
 vim.api.nvim_create_autocmd("TextYankPost", {
   group = augroup("highlight_yank"),
   callback = function()
-    (vim.hl or vim.highlight).on_yank()
+    vim.hl.on_yank()
   end,
 })
 
@@ -270,12 +270,15 @@ vim.api.nvim_create_autocmd("BufReadPre", {
     -- Desactivar matchparen
     vim.cmd("NoMatchParen")
 
-    -- Detach LSP clients del buffer
+    -- Detach LSP clients del buffer (0.12: reemplaza vim.lsp.buf_detach_client)
     vim.api.nvim_create_autocmd("LspAttach", {
       buffer = ev.buf,
       callback = function(args)
         vim.schedule(function()
-          vim.lsp.buf_detach_client(ev.buf, args.data.client_id)
+          local client = vim.lsp.get_clients({ id = args.data.client_id })[1]
+          if client then
+            client:_detach(ev.buf)
+          end
         end)
       end,
     })
