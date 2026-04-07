@@ -35,6 +35,7 @@
 | **TOML** | `taplo` | TOML validation and formatting |
 | **YAML** | `yamlls` | Schema validation with SchemaStore |
 | **JSON** | `jsonls` | Schema validation with SchemaStore |
+| **Python** | `basedpyright` | Type checking, workspace diagnostics, auto-imports |
 | **Bash** | `bashls` | Shell script support |
 | **PHP** | `intelephense` | Autocompletado, diagnósticos, refactors, indexación |
 | **Laravel/Blade** | `laravel.nvim` + `blade-nav` | Artisan, routes, views, Blade navigation, IDE helper |
@@ -90,6 +91,7 @@ nvim
 │   ├── yamlls.lua
 │   ├── jsonls.lua
 │   ├── bashls.lua
+│   ├── basedpyright.lua
 │   └── intelephense.lua
 ├── after/ftplugin/             # Per-language buffer-local settings
 │   ├── lua.lua
@@ -272,6 +274,8 @@ nvim
 | Key | Action |
 |-----|--------|
 | `<leader>cd` | Diagnostic float (inline) |
+| `<leader>cD` | Project-wide diagnostics (static analysis) |
+| `<leader>ct` | TSC: TypeScript project diagnostics |
 | `<leader>sd` | All diagnostics (picker) |
 | `<leader>sD` | Buffer diagnostics |
 | `]d` / `[d` | Next/prev diagnostic |

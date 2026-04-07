@@ -26,3 +26,8 @@ vim.keymap.set("n", "<leader>cd", vim.diagnostic.open_float, { desc = "Diagnóst
 vim.keymap.set("n", "[d", function() vim.diagnostic.jump({ count = -1 }) end, { desc = "Diagnóstico anterior" })
 vim.keymap.set("n", "]d", function() vim.diagnostic.jump({ count = 1 }) end, { desc = "Diagnóstico siguiente" })
 vim.keymap.set("n", "<leader>cq", vim.diagnostic.setloclist, { desc = "Diagnósticos a loclist" })
+
+-- Diagnósticos del proyecto completo (análisis estático bajo demanda)
+vim.keymap.set("n", "<leader>cD", function()
+  require("core.project_diagnostics").run()
+end, { desc = "Diagnósticos del proyecto completo" })
