@@ -219,7 +219,7 @@ return {
           Snacks.debug.backtrace()
         end
 
-        if vim.fn.has("nvim-0.11") == 1 then
+        if vim.fn.has("nvim-0.12") == 1 then
           vim._print = function(_, ...)
             dd(...)
           end

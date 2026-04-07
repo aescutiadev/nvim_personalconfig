@@ -1,10 +1,10 @@
 # Copilot Instructions — Neovim Configuration
 
-Se usa NEOVIM 0.11.6
+Se usa NEOVIM 0.12
 
 ## Architecture
 
-Personal Neovim 0.11.6+ configuration using Lazy.nvim. Structure follows domain-based organization.
+Personal Neovim 0.12+ configuration using Lazy.nvim. Structure follows domain-based organization.
 
 ### Estructura del proyecto
 
