@@ -1,20 +1,72 @@
+---@brief
+--- https://github.com/tailwindlabs/tailwindcss-intellisense
+---
+--- Tailwind CSS Language Server can be installed via npm:
+---
+--- npm install -g @tailwindcss/language-server
+---
+--- To manually set the config file or CSS entry-point, see:
+--- https://github.com/tailwindlabs/tailwindcss-intellisense#tailwindcssexperimentalconfigfile
+
 ---@type vim.lsp.Config
 return {
   cmd = { 'tailwindcss-language-server', '--stdio' },
+  -- filetypes copied and adjusted from tailwindcss-intellisense
   filetypes = {
     -- html
-    'aspnetcorerazor', 'astro', 'astro-markdown', 'blade', 'clojure',
-    'django-html', 'htmldjango', 'edge', 'eelixir', 'elixir', 'ejs',
-    'erb', 'eruby', 'gohtml', 'gohtmltmpl', 'haml', 'handlebars', 'hbs',
-    'html', 'htmlangular', 'html-eex', 'heex', 'jade', 'leaf', 'liquid',
-    'markdown', 'mdx', 'mustache', 'njk', 'nunjucks', 'php', 'razor', 'slim', 'twig',
+    'aspnetcorerazor',
+    'astro',
+    'astro-markdown',
+    'blade',
+    'clojure',
+    'django-html',
+    'htmldjango',
+    'edge',
+    'eelixir', -- vim ft
+    'elixir',
+    'ejs',
+    'erb',
+    'eruby', -- vim ft
+    'gohtml',
+    'gohtmltmpl',
+    'haml',
+    'handlebars',
+    'hbs',
+    'html',
+    'htmlangular',
+    'html-eex',
+    'heex',
+    'jade',
+    'leaf',
+    'liquid',
+    'markdown',
+    'mdx',
+    'mustache',
+    'njk',
+    'nunjucks',
+    'php',
+    'razor',
+    'slim',
+    'twig',
     -- css
-    'css', 'less', 'postcss', 'sass', 'scss', 'stylus', 'sugarss',
+    'css',
+    'less',
+    'postcss',
+    'sass',
+    'scss',
+    'stylus',
+    'sugarss',
     -- js
-    'javascript', 'javascriptreact', 'reason', 'rescript',
-    'typescript', 'typescriptreact',
+    'javascript',
+    'javascriptreact',
+    'reason',
+    'rescript',
+    'typescript',
+    'typescriptreact',
     -- mixed
-    'vue', 'svelte', 'templ',
+    'vue',
+    'svelte',
+    'templ',
   },
   capabilities = {
     workspace = {
@@ -23,6 +75,7 @@ return {
       },
     },
   },
+  ---@type lspconfig.settings.tailwindcss
   settings = {
     tailwindCSS = {
       validate = true,
@@ -53,21 +106,29 @@ return {
     },
   },
   before_init = function(_, config)
-    if not config.settings then
-      config.settings = {}
-    end
-    if not config.settings.editor then
-      config.settings.editor = {}
-    end
-    if not config.settings.editor.tabSize then
-      config.settings.editor.tabSize = vim.lsp.util.get_effective_tabstop()
-    end
+    config.settings = vim.tbl_deep_extend('keep', config.settings, {
+      editor = { tabSize = vim.lsp.util.get_effective_tabstop() },
+    })
   end,
   workspace_required = true,
   root_dir = function(bufnr, on_dir)
     local root_files = {
-      'tailwind.config.js', 'tailwind.config.cjs', 'tailwind.config.mjs', 'tailwind.config.ts',
-      'postcss.config.js', 'postcss.config.cjs', 'postcss.config.mjs', 'postcss.config.ts',
+      -- Generic
+      'tailwind.config.js',
+      'tailwind.config.cjs',
+      'tailwind.config.mjs',
+      'tailwind.config.ts',
+      'postcss.config.js',
+      'postcss.config.cjs',
+      'postcss.config.mjs',
+      'postcss.config.ts',
+      -- Django
+      'theme/static_src/tailwind.config.js',
+      'theme/static_src/tailwind.config.cjs',
+      'theme/static_src/tailwind.config.mjs',
+      'theme/static_src/tailwind.config.ts',
+      'theme/static_src/postcss.config.js',
+      -- Fallback for tailwind v4, where tailwind.config.* is not required anymore
       '.git',
     }
     local fname = vim.api.nvim_buf_get_name(bufnr)
