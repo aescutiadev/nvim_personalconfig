@@ -25,7 +25,7 @@ vim.api.nvim_create_autocmd("LspProgress", {
     if not client or type(value) ~= "table" then
       return vim.notify_once(
         "[LSP Progress] clint not found or invalid value",
-        "warn",
+        vim.log.levels.WARN,
         { title = "LSP Progress" }
       )
     end
