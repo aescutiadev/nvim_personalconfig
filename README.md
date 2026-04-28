@@ -19,6 +19,7 @@
 - 📄 **Big File Optimization**: Auto-disables expensive features (treesitter, LSP, syntax) for files >1MB
 - 🔧 **Format on Save**: Toggle with `<leader>uf` (disabled by default)
 - 📁 **Project-local Config**: `exrc` support for per-project `.nvim.lua` files
+- 🪟 **Visual Buffer Switcher**: floating Alt+Tab-style popup on `<Tab>` / `<S-Tab>`
 
 ### 🆕 Neovim 0.12 Highlights
 
@@ -124,6 +125,8 @@ nvim
     │   ├── treesitter.lua      # Treesitter setup + ensure_installed
     │   ├── completion.lua      # Completion settings
     │   ├── folding.lua         # Fold enhancements
+    │   ├── buffers.lua         # Shared listed buffer ordering helpers
+    │   ├── buffer_switcher.lua # Floating visual buffer switcher
     │   └── formatting.lua      # Format commands
     └── plugins/                # Plugin specs (one file per plugin)
         ├── init.lua            # devicons, mini.icons
@@ -186,8 +189,8 @@ nvim
 
 | Key | Action |
 |-----|--------|
-| `<Tab>`    | Next buffer |
-| `<S-Tab>`    | Previous buffer |
+| `<Tab>` | Open visual switcher / next buffer |
+| `<S-Tab>` | Previous buffer in visual switcher |
 | `<leader>x"` | Delete buffer |
 | `<leader>X"` | Force delete buffer |
 | `<leader>bd` | Delete all buffers |

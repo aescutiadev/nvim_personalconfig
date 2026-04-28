@@ -10,6 +10,7 @@ local lualine = {
   end,
   dependencies = { "nvim-tree/nvim-web-devicons" },
   opts = function()
+    local buffers = require("editor.buffers")
     local icons = {
       diagnostics = { Error = " ", Warn = " ", Info = " ", Hint = " " },
       git = { added = "+", modified = "~", removed = "-" },
@@ -23,59 +24,21 @@ local lualine = {
       return file
     end
 
-    -- Lista ordenada de buffers (permite reordenar)
-    _G._buf_order = _G._buf_order or {}
-
-    local function get_file_bufs()
-      local bufs = {}
-      for _, buf in ipairs(vim.api.nvim_list_bufs()) do
-        if vim.api.nvim_buf_is_loaded(buf) then
-          local name = vim.api.nvim_buf_get_name(buf)
-          if name ~= "" and vim.bo[buf].buflisted and vim.bo[buf].buftype == "" then
-            bufs[buf] = true
-          end
-        end
-      end
-      return bufs
-    end
-
-    local function sync_buf_order()
-      local file_bufs = get_file_bufs()
-      -- Eliminar buffers que ya no existen
-      local new_order = {}
-      for _, buf in ipairs(_G._buf_order) do
-        if file_bufs[buf] then
-          new_order[#new_order + 1] = buf
-          file_bufs[buf] = nil
-        end
-      end
-      -- Agregar buffers nuevos al final
-      for buf in pairs(file_bufs) do
-        new_order[#new_order + 1] = buf
-      end
-      _G._buf_order = new_order
-      return new_order
-    end
-
     local function buffer_position()
-      local order = sync_buf_order()
+      local order = buffers.sync_order()
       local cur = vim.api.nvim_get_current_buf()
-      for i, buf in ipairs(order) do
-        if buf == cur then
-          return i .. " : " .. #order
-        end
+      local index = buffers.index_of(cur, order)
+      if index then
+        return index .. " : " .. #order
       end
       return "- : " .. #order
     end
 
     -- Mover buffer en la lista ordenada
     local function move_buffer(direction)
-      local order = sync_buf_order()
+      local order = buffers.sync_order()
       local cur = vim.api.nvim_get_current_buf()
-      local idx
-      for i, buf in ipairs(order) do
-        if buf == cur then idx = i; break end
-      end
+      local idx = buffers.index_of(cur, order)
       if not idx then return end
       local target = idx + direction
       if target < 1 or target > #order then return end
