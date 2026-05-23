@@ -5,6 +5,8 @@ local devicons = {
     override_by_extension = {
       css = { icon = "󰌜", color = "#42a5f5", name = "Css" },
       postcss = { icon = "󰌜", color = "#e65100", name = "PostCss" },
+      yml = { icon = "󰈙", color = "#cb171e", name = "Yml" },
+      yaml = { icon = "󰈙", color = "#cb171e", name = "Yaml" },
     },
   },
 }
@@ -22,6 +24,8 @@ local minicons = {
     if not opts.extension then opts.extension = {} end
     opts.extension["css"] = { glyph = "󰌜", hl = "MiniIconsBlue" }
     opts.extension["postcss"] = { glyph = "󰌜", hl = "MiniIconsOrange" }
+    opts.extension["yml"] = { glyph = "󰈙", hl = "MiniIconsRed" }
+    opts.extension["yaml"] = { glyph = "󰈙", hl = "MiniIconsRed" }
     opts.file["postcss.config.js"] = { glyph = "󰌜", hl = "MiniIconsOrange" }
     opts.file["postcss.config.cjs"] = { glyph = "󰌜", hl = "MiniIconsOrange" }
     opts.file["postcss.config.mjs"] = { glyph = "󰌜", hl = "MiniIconsOrange" }
