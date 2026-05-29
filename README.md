@@ -11,7 +11,7 @@
 - 🌳 **Syntax Highlighting**: [nvim-treesitter](https://github.com/nvim-treesitter/nvim-treesitter) with native `vim.treesitter.start()`
 - 🗂️ **File Explorer**: [neo-tree.nvim](https://github.com/nvim-neo-tree/neo-tree.nvim) with git integration and file operations
 - 🔍 **Search & Replace**: [grug-far.nvim](https://github.com/MagicDuck/grug-far.nvim) for project-wide find and replace
-- 🎨 **Catppuccin Mocha**: Beautiful dark theme with LSP and Treesitter integration
+- 🎨 **Tokyonight or Catppuccin Mocha**: Beautiful dark theme with LSP and Treesitter integration
 - ⚡ **Quick Navigation**: [flash.nvim](https://github.com/folke/flash.nvim) for jumping anywhere
 - 📝 **Git Integration**: [gitsigns.nvim](https://github.com/lewis6991/gitsigns.nvim) with inline blame and hunks
 - 🔑 **Keymap Discovery**: [which-key.nvim](https://github.com/folke/which-key.nvim) with helix preset
@@ -131,7 +131,7 @@ nvim
     └── plugins/                # Plugin specs (one file per plugin)
         ├── init.lua            # devicons, mini.icons
         ├── ui/
-        │   ├── catppuccin.lua
+        │   ├── theme.lua
         │   ├── neo-tree.lua
         │   ├── snacks.lua
         │   ├── which-key.lua
