@@ -28,11 +28,64 @@ vim.keymap.set("n", "<S-Tab>", function()
   buffer_switcher.toggle()
 end, { desc = "Toggle buffer switcher" })
 
-map.set("n", "<leader>x", "<cmd>bdelete<cr>", { desc = "Delete buffer" })
-map.set("n", "<leader>X", "<cmd>bdelete!<cr>", { desc = "Force delete buffer" })
+local function delete_current_buffer(force)
+  local current_buffer = vim.api.nvim_get_current_buf()
+  local current_filetype = vim.bo[current_buffer].filetype
+  local current_buftype = vim.bo[current_buffer].buftype
+
+  -- If we're in neo-tree, don't close it, just ignore
+  if current_filetype == "neo-tree" then
+    return
+  end
+
+  if current_buftype ~= "" and current_buftype ~= "acwrite" then
+    vim.notify("Cannot delete special buffer", vim.log.levels.WARN)
+    return
+  end
+
+  -- Get all listed buffers excluding neo-tree
+  local listed_buffers = vim.tbl_filter(function(buf)
+    return vim.api.nvim_buf_is_valid(buf)
+      and vim.bo[buf].buflisted
+      and vim.bo[buf].filetype ~= "neo-tree"
+  end, vim.api.nvim_list_bufs())
+
+  -- If this is the last real buffer, open Snacks dashboard instead
+  if #listed_buffers <= 1 then
+    local delete_command = force and "bdelete!" or "bdelete"
+    pcall(vim.cmd, delete_command)
+    -- Open Snacks dashboard (home)
+    require("snacks").dashboard()
+    return
+  end
+
+  -- Switch to another buffer before deleting, so neo-tree stays open
+  for _, buf in ipairs(listed_buffers) do
+    if buf ~= current_buffer then
+      vim.api.nvim_set_current_buf(buf)
+      break
+    end
+  end
+
+  local delete_command = force and "bdelete!" or "bdelete"
+  local ok, error_message = pcall(vim.cmd, delete_command .. " " .. current_buffer)
+  if not ok then
+    vim.notify(error_message, vim.log.levels.ERROR)
+  end
+end
+
+map.set("n", "<leader>x", function()
+  delete_current_buffer(false)
+end, { desc = "Delete buffer" })
+
+map.set("n", "<leader>X", function()
+  delete_current_buffer(true)
+end, { desc = "Force delete buffer" })
+
 map.set("n", "<leader>bd", "<cmd>%bdelete|edit#|bdelete#<cr>", { desc = "Delete all buffers except current" })
 map.set("n", "<leader>bb", "<cmd>ls<cr>", { desc = "List buffers" })
 map.set("n", "<leader>bp", "<cmd>b#<cr>", { desc = "Go to previos buffer" })
+map.set("n", "<leader>bb", "<cmd>ls<cr>", { desc = "List buffers" })
 
 -- ❌ Cerrar
 map.set("n", "<leader>q", "<CMD>q<CR>", { desc = "Cerrar ventana" })

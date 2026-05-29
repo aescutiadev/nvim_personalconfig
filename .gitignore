@@ -5,6 +5,12 @@
 # Archivos compilados de spell
 spell/*.spl
 
+# Modulos de node
+node_modules/
+
+# Archivos de configuración local
+*.DS_Store
+
 # Plugin auto-generados
 plugin/
 
