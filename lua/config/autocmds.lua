@@ -3,75 +3,60 @@ local function augroup(name)
   return vim.api.nvim_create_augroup(name, { clear = true })
 end
 
-vim.api.nvim_create_autocmd("CompleteChanged", {
-  group = augroup("PmenuBorderColor"),
+vim.api.nvim_create_autocmd("ColorScheme", {
   callback = function()
-    local pumvisible = vim.fn.pumvisible()
-    if pumvisible == 1 then
-      vim.cmd('highlight PmenuBorder guifg=#555555')
-      vim.cmd('redraw')
-    end
-  end
-})
-
----@type table<number, {token:lsp.ProgressToken, msg:string, done:boolean}[]>
-local progress = vim.defaulttable()
-vim.api.nvim_create_autocmd("LspProgress", {
-  ---@param ev {data: {client_id: integer, params: lsp.ProgressParams}}
-  callback = function(ev)
-    local client = vim.lsp.get_client_by_id(ev.data.client_id)
-    local value = ev.data.params
-        .value --[[@as {percentage?: number, title?: string, message?: string, kind: "begin" | "report" | "end"}]]
-    if not client or type(value) ~= "table" then
-      return vim.notify_once(
-        "[LSP Progress] clint not found or invalid value",
-        "warn",
-        { title = "LSP Progress" }
-      )
-    end
-    local p = progress[client.id]
-
-    for i = 1, #p + 1 do
-      if i == #p + 1 or p[i].token == ev.data.params.token then
-        p[i] = {
-          token = ev.data.params.token,
-          msg = ("[%3d%%] %s%s"):format(
-            value.kind == "end" and 100 or value.percentage or 100,
-            value.title or "",
-            value.message and (" **%s**"):format(value.message) or ""
-          ),
-          done = value.kind == "end",
-        }
-        break
-      end
-    end
-
-    local msg = {} ---@type string[]
-    progress[client.id] = vim.tbl_filter(function(v)
-      return table.insert(msg, v.msg) or not v.done
-    end, p)
-
-    local spinner = { "⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏" }
-    vim.notify(table.concat(msg, "\n"), "info", {
-      id = "lsp_progress",
-      title = client.name,
-      opts = function(notif)
-        notif.icon = #progress[client.id] == 0 and " "
-            or spinner[math.floor(vim.uv.hrtime() / (1e6 * 80)) % #spinner + 1]
-      end,
-    })
+    vim.api.nvim_set_hl(0, "PmenuBorder", { fg = "#555555" })
   end,
 })
 
--- Iniciar Tree-sitter al abrir un archivo (excepto bigfiles)
-vim.api.nvim_create_autocmd("FileType", {
-  callback = function(args)
-    if vim.b[args.buf].bigfile then
-      return
-    end
-    pcall(vim.treesitter.start, args.buf)
-  end,
-})
+-- ---@type table<number, {token:lsp.ProgressToken, msg:string, done:boolean}[]>
+-- local progress = vim.defaulttable()
+-- vim.api.nvim_create_autocmd("LspProgress", {
+--   ---@param ev {data: {client_id: integer, params: lsp.ProgressParams}}
+--   callback = function(ev)
+--     local client = vim.lsp.get_clients({ id = ev.data.client_id })[1]
+--     local value = ev.data.params
+--         .value --[[@as {percentage?: number, title?: string, message?: string, kind: "begin" | "report" | "end"}]]
+--     if not client or type(value) ~= "table" then
+--       return vim.notify_once(
+--         "[LSP Progress] clint not found or invalid value",
+--         vim.log.levels.WARN,
+--         { title = "LSP Progress" }
+--       )
+--     end
+--     local p = progress[client.id]
+--
+--     for i = 1, #p + 1 do
+--       if i == #p + 1 or p[i].token == ev.data.params.token then
+--         p[i] = {
+--           token = ev.data.params.token,
+--           msg = ("[%3d%%] %s%s"):format(
+--             value.kind == "end" and 100 or value.percentage or 100,
+--             value.title or "",
+--             value.message and (" **%s**"):format(value.message) or ""
+--           ),
+--           done = value.kind == "end",
+--         }
+--         break
+--       end
+--     end
+--
+--     local msg = {} ---@type string[]
+--     progress[client.id] = vim.tbl_filter(function(v)
+--       return table.insert(msg, v.msg) or not v.done
+--     end, p)
+--
+--     local spinner = { "⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏" }
+--     vim.notify(table.concat(msg, "\n"), "info", {
+--       id = "lsp_progress",
+--       title = client.name,
+--       opts = function(notif)
+--         notif.icon = #progress[client.id] == 0 and " "
+--             or spinner[math.floor(vim.uv.hrtime() / (1e6 * 80)) % #spinner + 1]
+--       end,
+--     })
+--   end,
+-- })
 
 -- 1. Recargar archivos si cambiaron fuera de Neovim
 vim.api.nvim_create_autocmd({ "FocusGained", "TermClose", "TermLeave" }, {
@@ -87,7 +72,7 @@ vim.api.nvim_create_autocmd({ "FocusGained", "TermClose", "TermLeave" }, {
 vim.api.nvim_create_autocmd("TextYankPost", {
   group = augroup("highlight_yank"),
   callback = function()
-    (vim.hl or vim.highlight).on_yank()
+    vim.hl.on_yank()
   end,
 })
 
@@ -203,10 +188,10 @@ vim.api.nvim_create_autocmd("TextYankPost", {
 -- 11. Quitar resaltado de búsqueda al presionar ESC
 vim.api.nvim_create_autocmd("CmdlineLeave", {
   group = augroup("clear_search_highlight"),
-  callback = function()
-    vim.schedule(function()
-      vim.cmd("nohlsearch")
-    end)
+  callback = function(_)
+    if vim.fn.getcmdtype() == ":" then
+      vim.schedule(function() vim.cmd("nohlsearch") end)
+    end
   end,
 })
 
@@ -270,12 +255,12 @@ vim.api.nvim_create_autocmd("BufReadPre", {
     -- Desactivar matchparen
     vim.cmd("NoMatchParen")
 
-    -- Detach LSP clients del buffer
+    -- Detach LSP clients del buffer (0.12: reemplaza vim.lsp.buf_detach_client)
     vim.api.nvim_create_autocmd("LspAttach", {
       buffer = ev.buf,
       callback = function(args)
         vim.schedule(function()
-          vim.lsp.buf_detach_client(ev.buf, args.data.client_id)
+        vim.lsp.buf_detach_client(ev.buf, args.data.client_id)
         end)
       end,
     })

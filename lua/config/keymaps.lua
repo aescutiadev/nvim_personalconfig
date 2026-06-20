@@ -1,5 +1,6 @@
 -- Función auxiliar
 local map = vim.keymap
+local buffer_switcher = require("editor.buffer_switcher").setup()
 
 -- Cambiar la tecla líder (asegúrate de que esto esté también en init.lua antes de cargar plugins)
 vim.g.mapleader = " "
@@ -18,43 +19,111 @@ map.set("n", "<Esc>", ":nohlsearch<CR><Esc>", { desc = "Quitar resaltado de bús
 map.set("n", "<leader>w", "<CMD>w<CR>", { desc = "Guardar archivo" })
 map.set("n", "<leader>W", "<CMD>wa<CR>", { desc = "Guardar todos los buffers" })
 
+-- Autocompletado nativo de Neovim
+-- Navegar y aceptar el menú de completado nativo
+map.set("i", "<C-y>", function()
+  return vim.fn.pumvisible() == 1 and "<C-y>" or "<C-y>"
+end, { expr = true, desc = "Aceptar completado" })
+
+map.set("i", "<C-e>", "<C-e>", { desc = "Cancelar completado" })
+
+-- Disparar el menú manualmente si autotrigger no lo abrió
+map.set("i", "<C-Space>", function()
+  vim.lsp.completion.get()
+end, { desc = "Disparar completado LSP manualmente" })
+
+-- Navegar entre matches con Tab/S-Tab dentro del menú
+map.set("i", "<Tab>", function()
+  return vim.fn.pumvisible() == 1 and "<C-n>" or "<Tab>"
+end, { expr = true, desc = "Siguiente match" })
+
+map.set("i", "<S-Tab>", function()
+  return vim.fn.pumvisible() == 1 and "<C-p>" or "<S-Tab>"
+end, { expr = true, desc = "Match anterior" })
+
 -- Buffers
--- Navegación usando lista ordenada personalizada
 vim.keymap.set("n", "<Tab>", function()
-  if vim.bo.filetype == "neo-tree" then return end
-  local order = (_G._buf_order and #_G._buf_order > 0) and _G._buf_order or {}
-  if #order == 0 then vim.cmd("bnext"); return end
-  local cur = vim.api.nvim_get_current_buf()
-  for i, buf in ipairs(order) do
-    if buf == cur then
-      local next = order[i % #order + 1]
-      vim.api.nvim_set_current_buf(next)
-      return
-    end
-  end
-  vim.cmd("bnext")
-end, { desc = "Next buffer" })
+  buffer_switcher.toggle()
+end, { desc = "Toggle buffer switcher" })
 
 vim.keymap.set("n", "<S-Tab>", function()
-  if vim.bo.filetype == "neo-tree" then return end
-  local order = (_G._buf_order and #_G._buf_order > 0) and _G._buf_order or {}
-  if #order == 0 then vim.cmd("bprevious"); return end
-  local cur = vim.api.nvim_get_current_buf()
-  for i, buf in ipairs(order) do
-    if buf == cur then
-      local prev = order[(i - 2) % #order + 1]
-      vim.api.nvim_set_current_buf(prev)
-      return
+  buffer_switcher.toggle()
+end, { desc = "Toggle buffer switcher" })
+
+local function delete_current_buffer(force)
+  local current_buffer = vim.api.nvim_get_current_buf()
+  local current_filetype = vim.bo[current_buffer].filetype
+  local current_buftype = vim.bo[current_buffer].buftype
+
+  -- If we're in neo-tree, don't close it, just ignore
+  if current_filetype == "neo-tree" then
+    return
+  end
+
+  if current_buftype ~= "" and current_buftype ~= "acwrite" then
+    vim.notify("Cannot delete special buffer", vim.log.levels.WARN)
+    return
+  end
+
+  -- Get all listed buffers excluding neo-tree
+  local listed_buffers = vim.tbl_filter(function(buf)
+    return vim.api.nvim_buf_is_valid(buf)
+      and vim.bo[buf].buflisted
+      and vim.bo[buf].filetype ~= "neo-tree"
+  end, vim.api.nvim_list_bufs())
+
+  -- If this is the last real buffer, open Snacks dashboard instead
+  if #listed_buffers <= 1 then
+    local delete_command = force and "bdelete!" or "bdelete"
+    pcall(vim.cmd, delete_command)
+    require("snacks").dashboard()
+    return
+  end
+
+  -- Intentar cambiar al buffer alterno (el anteriormente activo)
+  local alt_buffer = vim.fn.bufnr("#")
+  local switched = false
+
+  if alt_buffer ~= -1 and alt_buffer ~= current_buffer then
+    local alt_is_valid = vim.api.nvim_buf_is_valid(alt_buffer)
+      and vim.bo[alt_buffer].buflisted
+      and vim.bo[alt_buffer].filetype ~= "neo-tree"
+
+    if alt_is_valid then
+      vim.api.nvim_set_current_buf(alt_buffer)
+      switched = true
     end
   end
-  vim.cmd("bprevious")
-end, { desc = "Previous buffer" })
 
-map.set("n", "<leader>x", "<cmd>bdelete<cr>", { desc = "Delete buffer" })
-map.set("n", "<leader>X", "<cmd>bdelete!<cr>", { desc = "Force delete buffer" })
+  -- Si no hay un alterno válido, caer al primero de la lista (comportamiento anterior)
+  if not switched then
+    for _, buf in ipairs(listed_buffers) do
+      if buf ~= current_buffer then
+        vim.api.nvim_set_current_buf(buf)
+        break
+      end
+    end
+  end
+
+  local delete_command = force and "bdelete!" or "bdelete"
+  local ok, error_message = pcall(vim.cmd, delete_command .. " " .. current_buffer)
+  if not ok then
+    vim.notify(error_message, vim.log.levels.ERROR)
+  end
+end
+
+map.set("n", "<leader>x", function()
+  delete_current_buffer(false)
+end, { desc = "Delete buffer" })
+
+map.set("n", "<leader>X", function()
+  delete_current_buffer(true)
+end, { desc = "Force delete buffer" })
+
 map.set("n", "<leader>bd", "<cmd>%bdelete|edit#|bdelete#<cr>", { desc = "Delete all buffers except current" })
 map.set("n", "<leader>bb", "<cmd>ls<cr>", { desc = "List buffers" })
 map.set("n", "<leader>bp", "<cmd>b#<cr>", { desc = "Go to previos buffer" })
+map.set("n", "<leader>bb", "<cmd>ls<cr>", { desc = "List buffers" })
 
 -- ❌ Cerrar
 map.set("n", "<leader>q", "<CMD>q<CR>", { desc = "Cerrar ventana" })

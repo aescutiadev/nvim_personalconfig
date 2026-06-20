@@ -1,3 +1,95 @@
+vim.pack.add({
+  { src = "https://github.com/folke/snacks.nvim" },
+  { src = "https://github.com/nvim-tree/nvim-web-devicons" },
+}, {
+  load = true,
+})
+
+local snacks = require("snacks")
+snacks.setup({
+  bigfile = { enabled = true },
+    dashboard = {
+      enabled = true,
+      preset = {
+        header = table.concat({
+          "                                                                 ",
+          "   █████╗ ███████╗███████╗ ██████╗██╗   ██╗████████╗██╗ █████╗   ",
+          "  ██╔══██╗██╔════╝██╔════╝██╔════╝██║   ██║╚══██╔══╝██║██╔══██╗  ",
+          "  ███████║█████╗  ███████╗██║     ██║   ██║   ██║   ██║███████║  ",
+          "  ██╔══██║██╔══╝  ╚════██║██║     ██║   ██║   ██║   ██║██╔══██║  ",
+          "  ██║  ██║███████╗███████║╚██████╗╚██████╔╝   ██║   ██║██║  ██║  ",
+          "  ╚═╝  ╚═╝╚══════╝╚══════╝ ╚═════╝ ╚═════╝    ╚═╝   ╚═╝╚═╝  ╚═╝  ",
+          "                                                                 ",
+          "                     ██████╗ ███████╗██╗   ██╗                   ",
+          "                     ██╔══██╗██╔════╝██║   ██║                   ",
+          "                     ██║  ██║█████╗  ██║   ██║                   ",
+          "                     ██║  ██║██╔══╝  ╚██╗ ██╔╝                   ",
+          "                     ██████╔╝███████╗ ╚████╔╝                    ",
+          "                     ╚═════╝ ╚══════╝  ╚═══╝                     ",
+          "                                                                 ",
+        }, "\n"),
+      },
+      sections = {
+        { section = "header" },
+        { section = "keys",  gap = 1,    padding = 1 },
+        { pane = 1,          icon = " ", title = "Projects", section = "projects", indent = 2, padding = 1 },
+        {
+          pane = 1,
+          icon = " ",
+          desc = "Browse Repo",
+          padding = 1,
+          key = "b",
+          action = function()
+            Snacks.gitbrowse()
+          end,
+        },
+        {
+          pane = 1,
+          icon = " ",
+          title = "Git Status",
+          section = "terminal",
+          enabled = function()
+            return Snacks.git.get_root() ~= nil
+          end,
+          cmd = "git status --short --branch --renames",
+          height = 5,
+          padding = 1,
+          ttl = 5 * 60,
+          indent = 3,
+        },
+      },
+      keys = {
+        { key = "g", action = false },
+      },
+    },
+  explorer = { enabled = false },
+  indent = {
+      indent = { enabled = false },
+      scope = {
+        enabled = true,
+        only_current = true,
+        only_scope = true,
+        char = "│",
+      },
+    },
+    input = { enabled = true },
+    notifier = {
+      enabled = true,
+      timeout = 6000,
+    },
+    picker = { enabled = true, use_icons = true, ui_select = true },
+    quickfile = { enabled = true },
+    scope = { enabled = true },
+    scroll = { enabled = true },
+    statuscolumn = { enabled = true },
+    words = { enabled = true },
+    styles = {
+      notification = {
+        wo = { wrap = true }
+      }
+    },
+})
+
 local excludeData = {
   ".git",
   "node_modules",
@@ -14,7 +106,7 @@ local excludeData = {
   ".DS_Store",
 }
 
-local map = vim.keymap.set
+local map = Snacks.keymap.set
 
 -- Top Pickers & Explorer
 map("n", "<leader>fs", function() Snacks.picker.smart() end,                         { desc = "Smart Find Files" })
@@ -78,7 +170,7 @@ map("n", "<leader>uC", function() Snacks.picker.colorschemes() end,      { desc 
 -- LSP
 map("n", "gd",         function() Snacks.picker.lsp_definitions() end,       { desc = "Goto Definition" })
 map("n", "gD",         function() Snacks.picker.lsp_declarations() end,      { desc = "Goto Declaration" })
-map("n", "gr",         function() Snacks.picker.lsp_references() end,        { nowait = true, desc = "References" })
+map("n", "grr",        function() Snacks.picker.lsp_references() end,        { nowait = true, desc = "References" })
 map("n", "gI",         function() Snacks.picker.lsp_implementations() end,   { desc = "Goto Implementation" })
 map("n", "gy",         function() Snacks.picker.lsp_type_definitions() end,  { desc = "Goto T[y]pe Definition" })
 map("n", "gai",        function() Snacks.picker.lsp_incoming_calls() end,    { desc = "C[a]lls Incoming" })
@@ -157,89 +249,3 @@ vim.api.nvim_create_autocmd("VimEnter", {
     Snacks.toggle.dim():map("<leader>uD")
   end,
 })
-
-require("snacks.nvim").setup({
-    bigfile = { enabled = true },
-    dashboard = {
-      enabled = true,
-      preset = {
-        header = table.concat({
-          "                                                                 ",
-          "   █████╗ ███████╗███████╗ ██████╗██╗   ██╗████████╗██╗ █████╗   ",
-          "  ██╔══██╗██╔════╝██╔════╝██╔════╝██║   ██║╚══██╔══╝██║██╔══██╗  ",
-          "  ███████║█████╗  ███████╗██║     ██║   ██║   ██║   ██║███████║  ",
-          "  ██╔══██║██╔══╝  ╚════██║██║     ██║   ██║   ██║   ██║██╔══██║  ",
-          "  ██║  ██║███████╗███████║╚██████╗╚██████╔╝   ██║   ██║██║  ██║  ",
-          "  ╚═╝  ╚═╝╚══════╝╚══════╝ ╚═════╝ ╚═════╝    ╚═╝   ╚═╝╚═╝  ╚═╝  ",
-          "                                                                 ",
-          "                     ██████╗ ███████╗██╗   ██╗                   ",
-          "                     ██╔══██╗██╔════╝██║   ██║                   ",
-          "                     ██║  ██║█████╗  ██║   ██║                   ",
-          "                     ██║  ██║██╔══╝  ╚██╗ ██╔╝                   ",
-          "                     ██████╔╝███████╗ ╚████╔╝                    ",
-          "                     ╚═════╝ ╚══════╝  ╚═══╝                     ",
-          "                                                                 ",
-        }, "\n"),
-      },
-      sections = {
-        { section = "header" },
-        { section = "keys",  gap = 1,    padding = 1 },
-        { pane = 1,          icon = " ", title = "Projects", section = "projects", indent = 2, padding = 1 },
-        {
-          pane = 1,
-          icon = " ",
-          desc = "Browse Repo",
-          padding = 1,
-          key = "b",
-          action = function()
-            Snacks.gitbrowse()
-          end,
-        },
-        {
-          pane = 1,
-          icon = " ",
-          title = "Git Status",
-          section = "terminal",
-          enabled = function()
-            return Snacks.git.get_root() ~= nil
-          end,
-          cmd = "git status --short --branch --renames",
-          height = 5,
-          padding = 1,
-          ttl = 5 * 60,
-          indent = 3,
-        },
-        { section = "startup" },
-      },
-      keys = {
-        { key = "g", action = false },
-      },
-    },
-    explorer = { enabled = false },
-    indent = {
-      indent = { enabled = false },
-      scope = {
-        enabled = true,
-        only_current = true,
-        only_scope = true,
-        char = "│",
-      },
-    },
-    input = { enabled = true },
-    notifier = {
-      enabled = true,
-      timeout = 6000,
-    },
-    picker = { enabled = true, use_icons = true, ui_select = true },
-    quickfile = { enabled = true },
-    scope = { enabled = true },
-    scroll = { enabled = true },
-    statuscolumn = { enabled = true },
-    words = { enabled = true },
-    styles = {
-      notification = {
-        wo = { wrap = true }
-      }
-    }
-})
-

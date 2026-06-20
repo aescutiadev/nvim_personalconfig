@@ -2,6 +2,9 @@ local opt = vim.opt
 
 vim.o.statuscolumn = ""
 
+vim.o.autocomplete = false
+opt.completeopt = { "menu", "menuone", "noselect" } -- "nearest", "popup"
+
 -- 📄 Apariencia y navegación
 opt.number = true         -- Números de línea
 opt.relativenumber = true -- Números relativos
@@ -13,6 +16,10 @@ opt.wrap = true           -- Ajusta líneas largas visualmente
 opt.linebreak = true      -- Rompe líneas por palabras
 opt.termguicolors = true  -- Colores verdaderos
 opt.winborder = "rounded" -- Set the default border for all floating windows
+
+-- 🆕 Neovim 0.12: Popup menu improvements
+vim.o.pumborder = "rounded" -- Borde del popup de completado (nuevo en 0.12)
+vim.o.pummaxwidth = 40      -- Ancho máximo del popup de completado (nuevo en 0.12)
 
 -- ⌨️ Edición y sangría
 opt.tabstop = 2        -- Espacios por tabulador
@@ -38,7 +45,6 @@ opt.showcmd = true                                  -- Ver comandos mientras se 
 -- opt.clipboard = "unnamedplus"    -- Copiar/pegar al portapapeles del sistema
 opt.confirm = true                                  -- Confirmar al cerrar buffers con cambios
 opt.timeoutlen = 400                                -- Popup de which-key más rápido
-opt.completeopt = { "menu", "menuone", "noselect" } -- Autocompletado amigable
 -- opt.timeoutlen = 300             -- Delay corto para combinaciones de teclas
 
 -- 📂 Ventanas y splits
@@ -116,7 +122,7 @@ vim.opt.inccommand = "split"
 opt.showmode = false                                  -- Lualine ya muestra el modo
 opt.cmdheight = 1                                     -- Altura de línea de comandos (0 = auto)
 opt.laststatus = 3                                    -- Statusline global (una sola barra)
-opt.showtabline = 1                                   -- No mostrar tabline por defecto
+opt.showtabline = 1                                   -- no mostrar tabline por defecto
 opt.winbar = "%=%m %{fnamemodify(expand('%'), ':.')}" -- Winbar simple con nombre de archivo
 
 -- 🎯 Fold (plegado de código)
@@ -145,7 +151,7 @@ opt.sessionoptions = {
 -- 🎪 Diff mode
 opt.diffopt:append("iwhite")             -- Ignorar whitespace en diffs
 opt.diffopt:append("algorithm:patience") -- Mejor algoritmo de diff
-opt.diffopt:append("indent-heuristic")
+-- indent-heuristic y inline:char son defaults en Neovim 0.12
 opt.diffopt:append("linematch:60")    -- Mejor matching intra-línea (Neovim 0.9+)
 
 -- 💡 Diagnósticos y LSP

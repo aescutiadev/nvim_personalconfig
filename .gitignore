@@ -8,6 +8,9 @@ spell/*.spl
 # Plugin auto-generados
 plugin/
 
+# Mac files
+*.DS_Store
+
 # Swap/backup (desactivados pero por seguridad)
 *.swp
 *.swo
