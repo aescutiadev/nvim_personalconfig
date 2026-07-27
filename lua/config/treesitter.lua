@@ -9,6 +9,7 @@ end
 -- Parsers que no vienen incluidos por defecto en Neovim 0.12
 nvim_ts.install({
   "javascript",
+  "astro",
   "typescript",
   "tsx",
   "jsx",
@@ -41,4 +42,3 @@ vim.api.nvim_create_autocmd("FileType", {
     vim.bo[args.buf].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
   end,
 })
-

@@ -34,19 +34,25 @@ vim.lsp.config("*", {
 vim.lsp.enable({
   "html",
   "cssls",
+  "astro",
   "vtsls",
   "gopls",
   "taplo",
+  "biome",
   "lua_ls",
   "yamlls",
   "bashls",
   "jsonls",
   "bashls",
   "marksman",
+  "dockerls",
   "tailwindcss",
+  "mdx_analizer",
   "basedpyright",
   "intelephense",
   "css_variables",
+  "docker_language_server",
+  "docker_compose_language_service",
 })
 
 -- 💡 Inlay hints

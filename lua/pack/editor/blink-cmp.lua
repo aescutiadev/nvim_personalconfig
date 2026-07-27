@@ -1,7 +1,7 @@
 vim.pack.add({
   'https://github.com/saghen/blink.lib',
   'https://github.com/saghen/blink.cmp',
-  "https://github.com/rafamadriz/friendly-snippets" 
+  "https://github.com/rafamadriz/friendly-snippets"
 })
 
 local cmp = require('blink.cmp')
@@ -9,7 +9,7 @@ local cmp = require('blink.cmp')
 cmp.build():pwait()
 cmp.setup({
 
-  keymap = { preset = "super-tab" },
+  keymap = { preset = "super-tab", ["<C-y>"] = { "select_and_accept" } },
 
   completion = {
     documentation = { auto_show = true },

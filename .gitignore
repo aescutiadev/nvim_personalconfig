@@ -15,3 +15,5 @@ plugin/
 *.swp
 *.swo
 *~
+
+.env

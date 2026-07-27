@@ -91,7 +91,7 @@ neotree.setup({
       folder_closed = "",
       folder_open = "",
       folder_empty = "󰜌",
-      provider = function(icon, node, state) -- default icon provider utilizes nvim-web-devicons if available
+      provider = function(icon, node) -- default icon provider utilizes nvim-web-devicons if available
         if node.type == "file" or node.type == "terminal" then
           local success, web_devicons = pcall(require, "nvim-web-devicons")
           local name = node.type == "terminal" and "terminal" or node.name
@@ -164,7 +164,7 @@ neotree.setup({
   commands = {},
   window = {
     position = "left",
-    width = 40,
+    width = 35,
     mapping_options = {
       noremap = true,
       nowait = true,
@@ -244,6 +244,7 @@ neotree.setup({
       ["<"] = "prev_source",
       [">"] = "next_source",
       ["i"] = "show_file_details",
+      ["O"] = "system_open",
       -- ["i"] = {
       --   "show_file_details",
       --   -- format strings of the timestamps shown for date created and last modified (see `:h os.date()`)
@@ -292,9 +293,9 @@ neotree.setup({
       },
     },
     follow_current_file = {
-      enabled = false,                      -- This will find and focus the file in the active buffer every time
+      enabled = true,                       -- this will find and focus the file in the active buffer every time
       --               -- the current file is changed while the tree is open.
-      leave_dirs_open = false,              -- `false` closes auto expanded dirs, such as with `:Neotree reveal`
+      leave_dirs_open = true,               -- `false` closes auto expanded dirs, such as with `:Neotree reveal`
     },
     group_empty_dirs = false,               -- when true, empty folders will be grouped together
     hijack_netrw_behavior = "open_default", -- netrw disabled, opening a directory opens neo-tree
@@ -358,12 +359,14 @@ neotree.setup({
     commands = {
       system_open = function(state)
         local node = state.tree:get_node()
+        if node == nil then return end
         local path = node:get_id()
         vim.ui.open(path)
       end,
 
       parent_or_close = function(state)
         local node = state.tree:get_node()
+        if node == nil then return end
         if node:has_children() and node:is_expanded() then
           state.commands.toggle_node(state)
         else
@@ -373,6 +376,7 @@ neotree.setup({
 
       child_or_open = function(state)
         local node = state.tree:get_node()
+        if node == nil then return end
         if node:has_children() then
           if not node:is_expanded() then
             state.commands.toggle_node(state)
@@ -390,6 +394,7 @@ neotree.setup({
 
       copy_selector = function(state)
         local node = state.tree:get_node()
+        if node == nil then return end
         local filepath = node:get_id()
         local filename = node.name
         local modify = vim.fn.fnamemodify
