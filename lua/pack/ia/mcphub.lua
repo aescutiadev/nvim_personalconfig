@@ -55,7 +55,7 @@ require("mcphub").setup({
   },
 
   on_ready = function(_)
-    vim.notify("MCPHub listo ✅", vim.log.levels.INFO)
+    vim.notify("MCPHub ✅", vim.log.levels.INFO)
   end,
 
   on_error = function(err)
@@ -68,4 +68,4 @@ require("mcphub").setup({
   },
 })
 
-vim.keymap.set("n", "<leader>mh", "<cmd>MCPHub<cr>", { desc = "Abrir MCPHub UI" })
+vim.keymap.set("n", "<leader>ah", "<cmd>MCPHub<cr>", { desc = "Abrir MCPHub UI" })
