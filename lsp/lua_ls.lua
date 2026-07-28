@@ -20,7 +20,7 @@ return {
       codeLens = { enable = true },
       hint = { enable = true, semicolon = 'Disable' },
       diagnostics = {
-        globals = { "vim" },
+        globals = { "vim", "Snacks" },
       },
       workspace = {
         library = vim.api.nvim_get_runtime_file("", true),

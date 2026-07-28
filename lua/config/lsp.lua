@@ -44,6 +44,7 @@ vim.lsp.enable({
   "bashls",
   "jsonls",
   "bashls",
+  "ast_grep",
   "marksman",
   "dockerls",
   "tailwindcss",
