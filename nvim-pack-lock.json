@@ -132,6 +132,10 @@
       "rev": "e083bcf1e54bc3af7df92b33235efb334e8c782c",
       "src": "https://github.com/dmmulroy/tsc.nvim"
     },
+    "typescript-tools.nvim": {
+      "rev": "c2f5910074103705661e9651aa841e0d7eea9932",
+      "src": "https://github.com/pmizio/typescript-tools.nvim"
+    },
     "vim-matchup": {
       "rev": "a2d618496223386844acb5a6763cfc3cc1357af1",
       "src": "https://github.com/andymass/vim-matchup"

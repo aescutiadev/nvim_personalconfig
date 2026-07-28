@@ -58,7 +58,7 @@ return {
     return vim.lsp.rpc.start({ cmd, '--stdio' }, dispatchers)
   end,
   filetypes = { 'astro' },
-  root_markers = { 'package.json', 'tsconfig.json', 'jsconfig.json', '.git' },
+  root_markers = { 'package.json', 'tsconfig.json', 'jsconfig.json', '.git', '.astro' },
   init_options = {
     typescript = {},
   },

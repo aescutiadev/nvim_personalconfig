@@ -35,7 +35,7 @@ vim.lsp.enable({
   "html",
   "cssls",
   "astro",
-  "vtsls",
+  -- "vtsls",
   "gopls",
   "taplo",
   "biome",
