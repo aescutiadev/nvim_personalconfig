@@ -86,12 +86,15 @@ local options = function()
         "location",
       },
       lualine_z = {
-        {
-          'datetime',
-          -- options: default, us, uk, iso, or your own format string ("%H:%M", etc..)
-          style = 'default',
-          icon = ""
-        },
+        -- {
+        --   'datetime',
+        --   -- options: default, us, uk, iso, or your own format string ("%H:%M", etc..)
+        --   style = 'default',
+        --   icon = ""
+        -- },
+        function()
+          return " " .. os.date("%R")
+        end,
       },
     },
   }
