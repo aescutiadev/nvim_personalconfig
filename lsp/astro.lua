@@ -60,11 +60,15 @@ return {
   filetypes = { 'astro' },
   root_markers = { 'package.json', 'tsconfig.json', 'jsconfig.json', '.git', '.astro' },
   init_options = {
-    typescript = {},
+    typescript = {
+      enabled = true,
+    },
   },
   before_init = function(_, config)
-    if config.init_options and config.init_options.typescript and not config.init_options.typescript.tsdk then
-      config.init_options.typescript.tsdk = util.get_typescript_server_path(config.root_dir)
+    local tsdk = util.get_typescript_server_path(config.root_dir)
+
+    if tsdk then
+      config.init_options.typescript.tsdk = tsdk
     end
-  end,
+  end
 }

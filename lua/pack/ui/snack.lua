@@ -111,7 +111,49 @@ local map = Snacks.keymap.set
 
 -- Top Pickers & Explorer
 map("n", "<leader>fs", function() Snacks.picker.smart() end, { desc = "Smart Find Files" })
-map("n", "<leader>,", function() Snacks.picker.buffers({ current = false }) end, { desc = "Buffers" })
+map("n", "<leader>,", function()
+  Snacks.picker.buffers({
+    focus = "list",
+    win = {
+      list = {
+        keys = {
+          ["<tab>"] = "confirm",
+        },
+      },
+    },
+  })
+end, { desc = "Buffers" })
+
+-- Tab / S-Tab buffer cycling
+map("n", "<Tab>", function()
+  Snacks.picker.buffers({
+    focus = "list",
+    win = {
+      list = {
+        keys = {
+          ["<tab>"] = "confirm",
+        },
+      },
+    },
+  })
+end, { desc = "Next buffer" })
+
+map("n", "<S-Tab>", function()
+  Snacks.picker.buffers({
+    focus = "list",
+    sort_lastused = false,
+    on_show = function(picker)
+      picker.list:view(#picker:items())
+    end,
+    win = {
+      list = {
+        keys = {
+          ["<tab>"] = "confirm",
+        },
+      },
+    },
+  })
+end, { desc = "Prev buffer" })
 map("n", "<leader>/", function() Snacks.picker.grep({ exclude = excludeData }) end, { desc = "Grep" })
 map("n", "<leader>:", function() Snacks.picker.command_history() end, { desc = "Command History" })
 map("n", "<leader>n", function() Snacks.picker.notifications() end, { desc = "Notification History" })

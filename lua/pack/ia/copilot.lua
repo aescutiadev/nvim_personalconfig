@@ -5,7 +5,7 @@ vim.pack.add({
 
 require("dotenv").setup()
 
-local api_key = vim.env.NAN_API_KEY
+local api_key = "sk-8ITuQ4wYuzQvFakg8vHpXA"
 
 -- CopilotChat necesita "make tiktoken" para contar tokens con precisión.
 -- vim.pack no ejecuta builds automáticamente, así que lo disparamos nosotros
@@ -30,7 +30,7 @@ local chat = require("CopilotChat")
 
 chat.setup({
   -- Modelo por defecto
-  model = "gpt-5-mini",
+  model = "qwen3.6",
   temperature = 0.1,
 
   -- Herramientas de confianza automática (lectura, sin riesgo)
@@ -77,22 +77,15 @@ All code comments must be written in English and reflect industry best practices
 
   -- ──────────────────────────────────────────────────────────
   -- PROVIDER PERSONALIZADO: "nan" (api.nan.builders)
-  -- Adaptado desde tu config estilo opencode/ai-sdk
-  -- (npm: "@ai-sdk/openai-compatible", baseURL, apiKey, models{})
-  -- a la interfaz oficial de CopilotChat: get_url, get_headers,
-  -- get_models, prepare_input, prepare_output, resolve_model
   -- ──────────────────────────────────────────────────────────
   providers = {
     nan = {
       disabled = false,
 
-      -- baseURL + "/chat/completions" (@ai-sdk/openai-compatible == endpoint OpenAI-style)
       get_url = function(_)
         return "https://api.nan.builders/v1/chat/completions"
       end,
 
-      -- No hardcodees la apiKey: usa una variable de entorno.
-      -- export NAN_API_KEY="..." en tu shell / .env
       get_headers = function()
         assert(api_key, "NAN_API_KEY env var no está definida")
         return {
@@ -101,11 +94,6 @@ All code comments must be written in English and reflect industry best practices
         }, nil -- sin expiración
       end,
 
-      -- Modelos definidos manualmente a partir de tu JSON de "nan".
-      -- contextWindow -> max_input_tokens (usado por CopilotChat para
-      -- gestión de historial/tiktoken). Los campos "modalities" no
-      -- tienen un slot 1:1 en CopilotChat.Provider.model; se documentan
-      -- abajo como referencia y se marca "tools/reasoning" cuando aplica.
       get_models = function(_)
         return {
           {
@@ -156,36 +144,11 @@ All code comments must be written in English and reflect industry best practices
   },
 })
 
-local select = require("CopilotChat.select")
-
 local map = Snacks.keymap.set
 
-local function quick(selection)
-  return function()
-    vim.ui.input({ prompt = "󰊿 Prompt: " }, function(input)
-      if input and input ~= "" then
-        chat.ask(input, {
-          selection = selection,
-        })
-      end
-    end)
-  end
-end
-
-local toggle = Snacks.toggle({
-  id = "copilot-chat",
-  name = "CopilotChat",
-
-  get = function()
-    return require("CopilotChat").chat:is_open()
-  end,
-
-  set = function()
-    require("CopilotChat").toggle()
-  end,
+map("n", "<leader>aa", chat.toggle, {
+  desc = "AI Toggle",
 })
-
-toggle:map("<leader>aa")
 
 map("n", "<leader>ao", chat.open, {
   desc = "AI Open",
@@ -208,27 +171,9 @@ map("n", "<leader>am", "<cmd>CopilotChatModels<CR>", {
 })
 
 map("n", "<leader>ap", function()
-  chat.select_prompt({
-    selection = select.buffer,
-  })
+  chat.select_prompt()
 end, {
   desc = "Prompt Actions",
-})
-
-map("x", "<leader>ap", function()
-  chat.select_prompt({
-    selection = select.visual,
-  })
-end, {
-  desc = "Prompt Actions",
-})
-
-map("n", "<leader>aq", quick(select.buffer), {
-  desc = "Quick Chat",
-})
-
-map("x", "<leader>aq", quick(select.visual), {
-  desc = "Quick Chat",
 })
 
 map("n", "<leader>aS", function()
@@ -239,6 +184,16 @@ map("n", "<leader>aS", function()
   end)
 end, {
   desc = "Save Chat",
+})
+
+map("n", "<leader>aq", function()
+  vim.ui.input({ prompt = "Quick Chat: " }, function(input)
+    if input and input ~= "" then
+      require("CopilotChat").ask(input, { sticky = { '#selection' } })
+    end
+  end)
+end, {
+  desc = "Quick chat (buffer)",
 })
 
 map("n", "<leader>aL", function()
@@ -268,5 +223,9 @@ map("x", "<leader>ar", "<cmd>CopilotChatReview<CR>", {
 })
 
 map("x", "<leader>aO", "<cmd>CopilotChatOptimize<CR>", {
+  desc = "Optimize Code",
+})
+
+map("x", "<leader>aC", "<cmd>CopilotChatCommit<CR>", {
   desc = "Optimize Code",
 })

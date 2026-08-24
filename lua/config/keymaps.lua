@@ -1,6 +1,5 @@
 -- Función auxiliar
 local map = vim.keymap
-local buffer_switcher = require("editor.buffer_switcher").setup()
 
 -- Cambiar la tecla líder (asegúrate de que esto esté también en init.lua antes de cargar plugins)
 vim.g.mapleader = " "
@@ -32,23 +31,7 @@ map.set("i", "<C-Space>", function()
   vim.lsp.completion.get()
 end, { desc = "Disparar completado LSP manualmente" })
 
--- Navegar entre matches con Tab/S-Tab dentro del menú
-map.set("i", "<Tab>", function()
-  return vim.fn.pumvisible() == 1 and "<C-n>" or "<Tab>"
-end, { expr = true, desc = "Siguiente match" })
-
-map.set("i", "<S-Tab>", function()
-  return vim.fn.pumvisible() == 1 and "<C-p>" or "<S-Tab>"
-end, { expr = true, desc = "Match anterior" })
-
 -- Buffers
-vim.keymap.set("n", "<Tab>", function()
-  buffer_switcher.toggle()
-end, { desc = "Toggle buffer switcher" })
-
-vim.keymap.set("n", "<S-Tab>", function()
-  buffer_switcher.toggle()
-end, { desc = "Toggle buffer switcher" })
 
 local function delete_current_buffer(force)
   local current_buffer = vim.api.nvim_get_current_buf()
