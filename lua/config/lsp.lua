@@ -32,11 +32,11 @@ vim.lsp.config("*", {
 
 -- 🚀 Servidores a activar
 vim.lsp.enable({
+  "tsc",
   "html",
-  "tsgo",
   "cssls",
   "astro",
-  "vtsls",
+  -- "vtsls",
   "gopls",
   "taplo",
   "biome",

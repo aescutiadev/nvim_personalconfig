@@ -112,22 +112,14 @@ local map = Snacks.keymap.set
 -- Top Pickers & Explorer
 map("n", "<leader>fs", function() Snacks.picker.smart() end, { desc = "Smart Find Files" })
 map("n", "<leader>,", function()
-  Snacks.picker.buffers({
-    focus = "list",
-    win = {
-      list = {
-        keys = {
-          ["<tab>"] = "confirm",
-        },
-      },
-    },
-  })
+  Snacks.picker.buffers()
 end, { desc = "Buffers" })
 
 -- Tab / S-Tab buffer cycling
 map("n", "<Tab>", function()
   Snacks.picker.buffers({
     focus = "list",
+    current = false,
     win = {
       list = {
         keys = {
@@ -141,6 +133,7 @@ end, { desc = "Next buffer" })
 map("n", "<S-Tab>", function()
   Snacks.picker.buffers({
     focus = "list",
+    current = false,
     sort_lastused = false,
     on_show = function(picker)
       picker.list:view(#picker:items())
