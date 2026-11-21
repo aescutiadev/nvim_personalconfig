@@ -21,10 +21,6 @@
       "rev": "7039bc1d130e424232a7aa64ceddb170a154ff5b",
       "src": "https://github.com/saecki/crates.nvim"
     },
-    "dotenv.nvim": {
-      "rev": "7d516e9293c6e3ac21830fb10a4e8674c02747c6",
-      "src": "https://github.com/ellisonleao/dotenv.nvim"
-    },
     "flash.nvim": {
       "rev": "5f0f270fdc7c5b0c21d903ee85b9cb06f2ac636a",
       "src": "https://github.com/folke/flash.nvim"
@@ -52,10 +48,6 @@
     "mcphub.nvim": {
       "rev": "7cd5db330f41b7bae02b2d6202218a061c3ebc1f",
       "src": "https://github.com/ravitemer/mcphub.nvim"
-    },
-    "mini.icons": {
-      "rev": "5d58117d176c133f4cb5585ec8cb3450881c89a0",
-      "src": "https://github.com/nvim-mini/mini.icons"
     },
     "mini.nvim": {
       "rev": "b8a0af521530f8ee68c738657429eab59de6a2ae",

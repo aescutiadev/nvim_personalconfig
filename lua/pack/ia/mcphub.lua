@@ -20,7 +20,10 @@ vim.api.nvim_create_autocmd("PackChanged", {
   end,
 })
 
-require("mcphub").setup({
+-- MCPHub levanta un proceso node y es ~20 ms de módulos: no va en el arranque.
+-- El keymap usa `<cmd>MCPHub<cr>`, que existe en cuanto corre el setup diferido.
+require("config.defer").run("mcphub", function()
+  require("mcphub").setup({
   -- Archivo de configuración de servidores MCP
   config = vim.fn.expand("~/.config/mcphub/servers.json"),
   port = 37373,
@@ -66,6 +69,7 @@ require("mcphub").setup({
     level = vim.log.levels.WARN,
     to_file = false,
   },
-})
+  })
+end)
 
 vim.keymap.set("n", "<leader>ah", "<cmd>MCPHub<cr>", { desc = "Abrir MCPHub UI" })

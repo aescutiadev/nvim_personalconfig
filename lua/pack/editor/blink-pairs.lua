@@ -3,10 +3,18 @@ vim.pack.add({
   { src = 'https://github.com/saghen/blink.pairs', version = vim.version.range('*') },
 })
 
--- download prebuilt binaries from github releases, must be on a versioned release
-require('blink.pairs').download():pwait(60000)
--- OR build from source
--- require('blink.pairs').build():pwait(60000)
+-- El download del binario tampoco va en el arranque: `pwait()` bloquea hasta
+-- 60 s si hay que bajar la release. Sólo en install/update.
+vim.api.nvim_create_autocmd("PackChanged", {
+  callback = function(ev)
+    local spec = ev.data.spec
+    if spec and spec.name == "blink.pairs" and (ev.data.kind == "install" or ev.data.kind == "update") then
+      vim.schedule(function()
+        require('blink.pairs').download():pwait(60000)
+      end)
+    end
+  end,
+})
 
 -- see above for the config
 require('blink.pairs').setup({

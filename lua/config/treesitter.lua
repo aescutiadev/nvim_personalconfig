@@ -1,13 +1,6 @@
 -- Parsers que no vienen incluidos por defecto en Neovim 0.12
 -- (los más comunes —lua, c, vim, markdown, query— ya vienen bundled)
-local ok_ts, nvim_ts = pcall(require, "nvim-treesitter")
-if not ok_ts then
-  vim.notify("nvim-treesitter not installed; skipping Treesitter setup", vim.log.levels.WARN)
-  return
-end
-
--- Parsers que no vienen incluidos por defecto en Neovim 0.12
-nvim_ts.install({
+local parsers = {
   "javascript",
   "astro",
   "typescript",
@@ -24,6 +17,25 @@ nvim_ts.install({
   "scss",
   "typst",
   "regex",
+}
+
+local ok_ts, nvim_ts = pcall(require, "nvim-treesitter")
+if not ok_ts then
+  vim.notify("nvim-treesitter not installed; skipping Treesitter setup", vim.log.levels.WARN)
+  return
+end
+
+-- Instalar en cada arranque es trabajo que ya está hecho: sólo tiene sentido
+-- cuando el plugin se instala o se actualiza.
+vim.api.nvim_create_autocmd("PackChanged", {
+  callback = function(ev)
+    local spec = ev.data.spec
+    if spec and spec.name == "nvim-treesitter" and (ev.data.kind == "install" or ev.data.kind == "update") then
+      vim.schedule(function()
+        require("nvim-treesitter").install(parsers)
+      end)
+    end
+  end,
 })
 
 local ts_group = vim.api.nvim_create_augroup("native_treesitter", { clear = true })
@@ -35,10 +47,12 @@ vim.api.nvim_create_autocmd("FileType", {
       return
     end
 
-    -- Highlighting (ya lo tenés en autocmds.lua, podés mover esto acá)
-    pcall(vim.treesitter.start, args.buf)
+    -- Sólo si hay parser: setear el indentexpr de nvim-treesitter en un filetype
+    -- sin parser rompe la indentación nativa y agrega trabajo por buffer.
+    if not pcall(vim.treesitter.start, args.buf) then
+      return
+    end
 
-    -- Indentación basada en Treesitter (vía el plugin, el core no la trae)
     vim.bo[args.buf].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
   end,
 })

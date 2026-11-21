@@ -3,13 +3,31 @@ vim.pack.add({
   { src = "https://github.com/CopilotC-Nvim/CopilotChat.nvim" },
 })
 
-require("dotenv").setup()
+local function read_env(name)
+  local value = os.getenv(name)
+  if value then
+    return value
+  end
+  local ok, fallback = pcall(function()
+    return vim.env[name]
+  end)
+  return ok and fallback or nil
+end
 
-local api_key = "sk-8ITuQ4wYuzQvFakg8vHpXA"
+local api_key = read_env("IA_API_KEY")
 
--- CopilotChat necesita "make tiktoken" para contar tokens con precisión.
--- vim.pack no ejecuta builds automáticamente, así que lo disparamos nosotros
--- cuando el plugin se instale o actualice.
+local function api_endpoint()
+  local url = read_env("IA_API_URL")
+  if not url or url == "" then
+    return nil
+  end
+  url = url:gsub("/+$", "")
+  if url:match("/chat/completions$") then
+    return url
+  end
+  return url .. "/chat/completions"
+end
+
 vim.api.nvim_create_autocmd("PackChanged", {
   callback = function(ev)
     local spec = ev.data.spec
@@ -26,9 +44,7 @@ vim.api.nvim_create_autocmd("PackChanged", {
   end,
 })
 
-local chat = require("CopilotChat")
-
-chat.setup({
+local copilot_opts = {
   -- Modelo por defecto
   model = "qwen3.6",
   temperature = 0.1,
@@ -75,19 +91,19 @@ All code comments must be written in English and reflect industry best practices
     tool = "🔧 Herramienta",
   },
 
-  -- ──────────────────────────────────────────────────────────
-  -- PROVIDER PERSONALIZADO: "nan" (api.nan.builders)
-  -- ──────────────────────────────────────────────────────────
   providers = {
+    copilot = { disabled = true },
+    github_models = { disabled = true },
+
     nan = {
       disabled = false,
 
       get_url = function(_)
-        return "https://api.nan.builders/v1/chat/completions"
+        return api_endpoint()
       end,
 
       get_headers = function()
-        assert(api_key, "NAN_API_KEY env var no está definida")
+        assert(api_key, "IA_API_KEY no está definida en el entorno")
         return {
           ["Authorization"] = "Bearer " .. api_key,
           ["Content-Type"] = "application/json",
@@ -117,21 +133,15 @@ All code comments must be written in English and reflect industry best practices
             streaming = true,
             -- modalities: input [text] · output [text]
           },
-          {
-            id = "mimo-v2.5",
-            name = "Xiaomi MiMo V2.5",
-            max_input_tokens = 750000,
-            streaming = true,
-            -- modalities: input [text, image, audio] · output [text]
-          },
         }
       end,
 
-      -- Reutilizamos el formato de entrada/salida estilo OpenAI que ya
-      -- trae CopilotChat, ya que "@ai-sdk/openai-compatible" implica
-      -- que el endpoint habla el mismo protocolo chat/completions
-      prepare_input = require("CopilotChat.config.providers").copilot.prepare_input,
-      prepare_output = require("CopilotChat.config.providers").copilot.prepare_output,
+      prepare_input = function(...)
+        return require("CopilotChat.config.providers").copilot.prepare_input(...)
+      end,
+      prepare_output = function(...)
+        return require("CopilotChat.config.providers").copilot.prepare_output(...)
+      end,
 
       resolve_model = function(_, model)
         return model
@@ -142,27 +152,45 @@ All code comments must be written in English and reflect industry best practices
       end,
     },
   },
-})
+}
+
+require("config.defer").run("copilot", function()
+  require("CopilotChat").setup(copilot_opts)
+end)
 
 local map = Snacks.keymap.set
 
-map("n", "<leader>aa", chat.toggle, {
+local function chat()
+  return require("CopilotChat")
+end
+
+map("n", "<leader>aa", function()
+  chat().toggle()
+end, {
   desc = "AI Toggle",
 })
 
-map("n", "<leader>ao", chat.open, {
+map("n", "<leader>ao", function()
+  chat().open()
+end, {
   desc = "AI Open",
 })
 
-map("n", "<leader>ac", chat.close, {
+map("n", "<leader>ac", function()
+  chat().close()
+end, {
   desc = "AI Close",
 })
 
-map("n", "<leader>ax", chat.reset, {
+map("n", "<leader>ax", function()
+  chat().reset()
+end, {
   desc = "AI Reset",
 })
 
-map("n", "<leader>as", chat.stop, {
+map("n", "<leader>as", function()
+  chat().stop()
+end, {
   desc = "AI Stop",
 })
 
@@ -171,7 +199,7 @@ map("n", "<leader>am", "<cmd>CopilotChatModels<CR>", {
 })
 
 map("n", "<leader>ap", function()
-  chat.select_prompt()
+  chat().select_prompt()
 end, {
   desc = "Prompt Actions",
 })
@@ -179,7 +207,7 @@ end, {
 map("n", "<leader>aS", function()
   vim.ui.input({ prompt = "Save Chat: " }, function(name)
     if name and name ~= "" then
-      chat.save(name)
+      chat().save(name)
     end
   end)
 end, {
@@ -197,7 +225,7 @@ end, {
 })
 
 map("n", "<leader>aL", function()
-  chat.load()
+  chat().load()
 end, {
   desc = "Load Chat",
 })
